@@ -1,4 +1,7 @@
 .banner_img{
+  width: 100vw;
+}
+.banner_img{
   width: 100%;
   min-height: 300px;
   object-fit: cover;

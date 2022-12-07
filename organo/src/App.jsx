@@ -2,6 +2,7 @@ import "./App.css";
 import Banner from "./components/Banner";
 import Body from "./components/Body";
 import DevCards from "./components/DevCards";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Banner />
       <Body />
       <DevCards />
+      <Footer />
     </>
   );
 }
