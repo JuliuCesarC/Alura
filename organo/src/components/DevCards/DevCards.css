@@ -1,0 +1,30 @@
+.card_exposition{
+  width: 100vw;
+}
+.container_cards{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card_role{
+  background-color: blueviolet;
+  width: 90%;
+  max-width: 840px;
+  border-radius: 10px;
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+.card{
+  background-color: darkgray;
+  /* width: 120px; */
+  min-width: 120px;
+  text-align: center;
+  padding: 10px;
+}
+.card img{
+  width: 70%;
+}
