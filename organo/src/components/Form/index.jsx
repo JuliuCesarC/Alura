@@ -1,6 +1,11 @@
+import config from "../../../config.json"
 import "./Body.css";
 
-export default function Body() {
+export default function Form() {
+
+  function randomID() {
+    return Math.random().toString(36).substring(2, 9);
+  }
   return (
     <main className="container">
       <form
@@ -24,9 +29,7 @@ export default function Body() {
         />
         <label for="Team">Time</label>
         <select name="Team" id="Team" placeholder="teste">
-          <option value="time1">FrontEnd</option>
-          <option value="time1">BackEnd</option>
-          <option value="time1">DataScience</option>
+          {config.role.map((eRole)=><option value={eRole.name} key={randomID()}>{eRole.name}</option>)}
         </select>
         <button type="submit">Criar card</button>
       </form>

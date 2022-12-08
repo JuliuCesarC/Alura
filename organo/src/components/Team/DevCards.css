@@ -2,11 +2,11 @@
   width: 100%;
 }
 .container_cards {
+  background-color: var(--prog-opacity);
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--prog-opacity);
 }
 .card_role {
   width: 90%;
