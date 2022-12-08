@@ -1,6 +1,6 @@
 import Card from "./Card";
 
-export default function ContainerCards({ name, color, colorOpacity, team }) {
+export default function ContainerCards({name, color, colorOpacity,team, setTeam}) {
   function randomID() {
     return Math.random().toString(36).substring(2, 9);
   }

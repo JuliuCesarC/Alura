@@ -1,7 +1,16 @@
 import config from "../../../config.json"
+import { AddTeacher } from "../Localstorage";
 import "./Body.css";
 
 export default function Form() {
+
+  function addCollaborators(eColl){
+    let Name = document.getElementById('Name').value
+    let Role = document.getElementById('Role').value
+    let Img = document.getElementById('Img').value
+    let Team = document.getElementById('Team').value
+    AddTeacher(Name, Role, Img, Team)
+  }
 
   function randomID() {
     return Math.random().toString(36).substring(2, 9);
@@ -11,8 +20,9 @@ export default function Form() {
       <form
         action=""
         className="Form"
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={(eForm) => {
+          eForm.preventDefault();
+          addCollaborators(eForm.target)
         }}
       >
         <h2>Preencha os dados para criar o card do colaborador.</h2>
@@ -32,8 +42,7 @@ export default function Form() {
           {config.role.map((eRole)=><option value={eRole.name} key={randomID()}>{eRole.name}</option>)}
         </select>
         <button type="submit">Criar card</button>
-      </form>
-      <h1>Minha Organização:</h1>
+      </form>      
     </main>
   );
 }
