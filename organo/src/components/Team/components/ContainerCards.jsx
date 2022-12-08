@@ -1,22 +1,33 @@
-export default function ContainerCards({role, team}) {
+import Card from "./Card";
 
+export default function ContainerCards({ name, color, colorOpacity, team }) {
   function randomID() {
     return Math.random().toString(36).substring(2, 9);
   }
   return (
-    <div className="container_cards" key={randomID()}>
-      <h2>{role}</h2>
-      <div className="card_role">
+    <div
+      className="Role"
+      style={{ backgroundColor: colorOpacity }}
+    >
+      <h2
+        style={{
+          borderBottomWidth: "4px",
+          borderBottomStyle: "solid",
+          borderBottomColor: color,
+        }}
+      >
+        {name}
+      </h2>
+      <div className="container_cards">
         {team.map((eCard) => {
           return (
-            <div className="card" key={randomID()}>
-              <div className="card_top"></div>
-              <div className="card_body">
-                <img src={eCard.url} alt="Foto do colaborador" />
-                <p className="card_name">{eCard.name}</p>
-                <p className="Role">{eCard.role}</p>
-              </div>
-            </div>
+            <Card
+              color={color}
+              name={eCard.name}
+              role={eCard.role}
+              url={eCard.url}
+              key={randomID()}
+            />
           );
         })}
       </div>

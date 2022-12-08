@@ -1,51 +1,42 @@
 .card_exposition {
   width: 100%;
 }
-.container_cards {
-  background-color: var(--prog-opacity);
+.Role {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.card_role {
-  width: 90%;
-  max-width: 840px;
-  padding: 20px;
+.container_cards {
+  width: 95%;
+  max-width: 1200px;
+  margin-bottom: 30px;
   border-radius: 10px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  grid-auto-columns: minmax(150px, 1fr);
-  grid-auto-flow: column;
-  grid-gap: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
 }
 .card {
   position: relative;
   background-color: white;
-  width: 150px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   text-align: center;
-  padding: 10px;
-  margin-top: 30px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 .card_top{
-  position: absolute;
-  background-color: var(--prog-color);
-  top: -60px;
-  left: 0;
   width: 100%;
   height: 60px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
 }
 .card_body{
   position: absolute;
-  top: -40px;
-  left: calc(50% - 70px);
-  width: 140px;
-  height: 150px;
+  top: 20px;
+  left: calc(50% - 75px);
+  width: 150px;
 }
 .card img {
   width: 60%;
@@ -57,7 +48,7 @@
   font-size: 15px;
   font-weight: bold;
 }
-.Role{
+.card_role{
   margin-top: 5px;
   font-size: 12px;
 }

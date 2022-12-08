@@ -16,18 +16,18 @@ export default function Form() {
         }}
       >
         <h2>Preencha os dados para criar o card do colaborador.</h2>
-        <label for="Name">Nome</label>
+        <label htmlFor="Name">Nome</label>
         <input type="text" name="Name" id="Name" placeholder="Digite o nome" />
-        <label for="Role">Cargo</label>
+        <label htmlFor="Role">Cargo</label>
         <input type="text" name="Role" id="Role" placeholder="Digite o cargo" />
-        <label for="Img">Imagem</label>
+        <label htmlFor="Img">Imagem</label>
         <input
           type="text"
           name="Img"
           id="Img"
           placeholder="Informe o endereço da imagem."
         />
-        <label for="Team">Time</label>
+        <label htmlFor="Team">Time</label>
         <select name="Team" id="Team" placeholder="teste">
           {config.role.map((eRole)=><option value={eRole.name} key={randomID()}>{eRole.name}</option>)}
         </select>

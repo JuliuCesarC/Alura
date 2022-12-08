@@ -36,14 +36,19 @@ export default function Team() {
     },
   ];
 
-
+  function randomID() {
+    return Math.random().toString(36).substring(2, 9);
+  }
   return (
     <div className="card_exposition">
       {config.role.map((eRole) => {
         return (
           <ContainerCards 
-            role={eRole.name}
+            name={eRole.name}
+            color={eRole.color}
+            colorOpacity={eRole.colorOpacity}
             team={provisorio}
+            key={randomID()}
           />
         );
       })}

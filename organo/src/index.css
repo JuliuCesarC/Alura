@@ -3,21 +3,6 @@
   --secondary-color: #95FFD4;
   --third-color: #F2F2F2;
 
-  --prog-color: #57C278;
-  --prog-opacity: #D9F7E9;
-  --front-end-color: #82CFFA;
-  --front-end-opacity: #E8F8FF;
-  --data-science-color: #A6D157;
-  --data-science-opacity: #F0F8E2;
-  --devops-color: #E06B69;
-  --devops-opacity: #FDE7E8;
-  --ux-design-color: #DB6EBF;
-  --ux-design-opacity: #FAE9F5;
-  --mobile-color: #FFBA05;
-  --mobile-opacity: #FFF5D9;
-  --inovacao-color: #FF8A29;
-  --inovacao-opacity: #FFEEDF;
-
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
