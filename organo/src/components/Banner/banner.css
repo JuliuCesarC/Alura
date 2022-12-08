@@ -1,8 +1,8 @@
-.banner_img{
+.banner{
+  background-color: var(--primary-color);
   width: 100vw;
+  text-align: center;
 }
 .banner_img{
-  width: 100%;
-  min-height: 300px;
-  object-fit: cover;
+  max-width: 100%;
 }

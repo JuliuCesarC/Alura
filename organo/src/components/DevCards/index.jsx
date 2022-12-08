@@ -49,9 +49,11 @@ export default function DevCards() {
                 return (
                   <div className="card" key={randomID()}>
                     <div className="card_top"></div>
-                    <img src={eCard.url} alt="Foto do colaborador" />
-                    <p>{eCard.name}</p>
-                    <p>{eCard.role}</p>
+                    <div className="card_body">
+                      <img src={eCard.url} alt="Foto do colaborador" />
+                      <p className="card_name">{eCard.name}</p>
+                      <p className="Role">{eCard.role}</p>
+                    </div>
                   </div>
                 );
               })}
