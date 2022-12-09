@@ -2,6 +2,12 @@
   width: 100%;
   text-align: center;
 }
+.card_exposition h1{
+  color: var(--primary-color);
+  border-bottom: 4px solid var(--primary-color);
+  display: inline-block;
+  margin: 40px 0;
+}
 .Role {
   width: 100%;
   display: flex;
