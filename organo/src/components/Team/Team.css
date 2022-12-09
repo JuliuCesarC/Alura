@@ -41,12 +41,12 @@
 }
 .card_body{
   position: absolute;
-  top: 20px;
-  left: calc(50% - 75px);
-  width: 150px;
+  top: 15px;
+  left: calc(50% - 90px);
+  width: 180px;
 }
 .card img {
-  width: 60%;
+  width: 55%;
   border-radius: 50%;
 }
 .card_name{

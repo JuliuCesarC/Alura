@@ -5,18 +5,22 @@ import "./Body.css";
 export default function Form({team, setTeam}) {
 
   function addCollaborators(eColl){
-    let Name = document.getElementById('Name').value
-    let Role = document.getElementById('Role').value
-    let Img = document.getElementById('Img').value
-    let Team = document.getElementById('Team').value
+    let Name = document.getElementById('Name')
+    let Role = document.getElementById('Role')
+    let Img = document.getElementById('Img')
+    let Team = document.getElementById('Team')
     let newTeam = {
-      name: Name,
-      role: Role,
-      team: Team,
-      url: Img
+      name: Name.value,
+      role: Role.value,
+      team: Team.value,
+      url: Img.value
     }
-    AddTeacher(Name, Role, Img, Team)
+    AddTeacher(Name.value, Role.value, Img.value, Team.value)
     setTeam([...team, newTeam])
+    Name.value = ''
+    Role.value = ''
+    Img.value = ''
+    Team.value = ''
   }
 
   function randomID() {

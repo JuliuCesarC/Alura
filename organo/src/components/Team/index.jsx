@@ -11,13 +11,6 @@ export default function Team({team}) {
   return (
     <div className="card_exposition">
       <h1>Minha Organização:</h1>
-      <form onSubmit={(e)=>{
-        e.preventDefault()
-        DeleteColl(e.target.children[0].value)
-      }}>
-        <input type="text" placeholder="Nome"/>
-        <button type="submit">Excluir</button>
-      </form>
       {team.length > 0 && config.role.map((eRole) => {
         let roleTeam = team.filter(e=>e.team === eRole.name);
         if(team.filter(e=>e.team === eRole.name).length > 0){
