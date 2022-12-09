@@ -38,3 +38,8 @@ export function AddTeacher(name, role, url, team) {
     SetLS(addLS)
   }
 }
+
+export function DeleteColl(name){
+  let newLS = JSON.parse(GetLS())
+  SetLS(newLS.filter(e=>e.name != name))
+}

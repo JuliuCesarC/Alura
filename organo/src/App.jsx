@@ -4,7 +4,7 @@ import Form from "./components/Form";
 import Team from "./components/Team";
 import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
-import { LocalStorage } from "./components/Localstorage";
+import { LocalStorage } from "./components/LocalStorage";
 
 function App() {
   const [team, setTeam] = useState([]);
@@ -15,8 +15,8 @@ function App() {
   return (
     <>
       <Banner />
-      <Form />
-      <Team team={team} setTeam={setTeam}/>
+      <Form team={team} setTeam={setTeam}/>
+      <Team team={team} />
       <Footer />
     </>
   );

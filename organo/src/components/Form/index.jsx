@@ -1,15 +1,22 @@
 import config from "../../../config.json"
-import { AddTeacher } from "../Localstorage";
+import { AddTeacher } from "../LocalStorage";
 import "./Body.css";
 
-export default function Form() {
+export default function Form({team, setTeam}) {
 
   function addCollaborators(eColl){
     let Name = document.getElementById('Name').value
     let Role = document.getElementById('Role').value
     let Img = document.getElementById('Img').value
     let Team = document.getElementById('Team').value
+    let newTeam = {
+      name: Name,
+      role: Role,
+      team: Team,
+      url: Img
+    }
     AddTeacher(Name, Role, Img, Team)
+    setTeam([...team, newTeam])
   }
 
   function randomID() {
