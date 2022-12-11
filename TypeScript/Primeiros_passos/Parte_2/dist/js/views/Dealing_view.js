@@ -1,8 +1,6 @@
-export class Dealing_view {
-    constructor(selector) {
-        this.element = document.querySelector(selector);
-    }
-    template() {
+import { View } from "./view.js";
+export class Dealing_view extends View {
+    template(model) {
         return `
     <table class="table table-hover table-bordered">
       <thead>
@@ -12,12 +10,18 @@ export class Dealing_view {
           <th>VALOR</th>
         </tr>
       </thead>
-      <tbody>        
+      <tbody>    
+      ${model.list().map(DList => {
+            return `
+          <tr>
+            <td>${new Intl.DateTimeFormat().format(DList.date)}</td>
+            <td>${DList.amount}</td>
+            <td>${DList.value}</td>
+          </tr>
+        `;
+        }).join('')}   
       </tbody>
     </table>
     `;
-    }
-    update() {
-        this.element.innerHTML = this.template();
     }
 }

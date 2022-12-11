@@ -1,14 +1,14 @@
 export class Dealing {
-    constructor(_date, _amount, _value) {
+    constructor(_date, amount, value) {
         this._date = _date;
-        this._amount = _amount;
-        this._value = _value;
+        this.amount = amount;
+        this.value = value;
     }
     get date() {
         const date = new Date(this._date.getTime());
         return date;
     }
     get volume() {
-        return this._amount * this._value;
+        return this.amount * this.value;
     }
 }

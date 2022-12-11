@@ -1,8 +1,8 @@
 export class Dealing {
   constructor(
     private _date: Date,
-    public readonly _amount: number,
-    public readonly _value: number
+    public readonly amount: number,
+    public readonly value: number
   ) {}
 
   get date(): Date {
@@ -10,6 +10,6 @@ export class Dealing {
     return date;
   }
   get volume(): number {
-    return this._amount * this._value;
+    return this.amount * this.value;
   }
 } 
