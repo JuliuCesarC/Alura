@@ -3,15 +3,16 @@
 export abstract class View<T>{
 
   protected element: HTMLElement;
+  // A propriedade 'protected' permite que apenas a própria classe e as classes filhas possam acessar essa variável.
 
   constructor(selector: string){
     this.element = document.querySelector(selector)
   }
   // Dentro de uma classe abstrata, é possível criar um ou mais métodos abstratos. 
-  // O que significa que a classe pai não sabe como sera implementado o método, isso é responsabilidade do filho, dessa forma o compilador mostrara um erro caso a classe filha não implemente, ou implemente de maneira errada o método.
-  abstract template(model: T): string;
+  // Um método abstrato significa que a implementação das funcionalidades do método é de responsabilidade do filho, dessa forma o compilador mostrara um erro caso a classe filha não implemente, ou implemente de maneira errada o método.
+  protected abstract template(model: T): string;
 
-  update(model: T): void{
+  public update(model: T): void{
     const template = this.template(model)
     this.element.innerHTML = template
   }

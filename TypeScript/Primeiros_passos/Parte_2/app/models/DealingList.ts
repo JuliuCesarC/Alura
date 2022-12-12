@@ -3,10 +3,10 @@ import { Dealing } from "./Dealing.js";
 export class DealingList{
   private dealingList: Dealing[] = []
 
-  add(dealing: Dealing){
+  public addDealing(dealing: Dealing){
     this.dealingList.push(dealing)
   }
-  list(): ReadonlyArray<Dealing>{
+  public list(): ReadonlyArray<Dealing>{
     return this.dealingList;
   }
 }

@@ -7,35 +7,44 @@ export class Controller {
   private inputDate: HTMLInputElement;
   private inputAmount: HTMLInputElement;
   private inputValue: HTMLInputElement;
-  private dealingList = new DealingList;
-  private dealingView = new Dealing_view("#dealingView")
-  private messageView = new MessageAdd("#messageView")
+  private dealingList = new DealingList();
+  private dealingView = new Dealing_view("#dealingView");
+  private messageView = new MessageAdd("#messageView");
 
   constructor() {
     this.inputDate = document.querySelector("#data");
     this.inputAmount = document.querySelector("#quantidade");
     this.inputValue = document.querySelector("#valor");
-    this.dealingView.update(this.dealingList)
+    this.dealingView.update(this.dealingList);
   }
-  addToList(): void {
-    const dealingList = this.createDealing()
-    this.dealingList.add(dealingList)
-    console.log(this.dealingList.list());
-    this.dealingView.update(this.dealingList)
-    this.messageView.update('Negociação adicionada com sucesso.')
-    this.clearForm()
+  public addToList(): void {
+    const dealingList = this.createDealing();
+    if (!this.isBusinessDay(dealingList.date)) {
+      this.messageView.update("Apenas negociações em dias uteis.");
+    }
+
+    this.dealingList.addDealing(dealingList);
+    this.updateView();
+    this.clearForm();
   }
-  createDealing(): Dealing {
+  private isBusinessDay(date: Date) {
+    return date.getDay() > 0 && date.getDay() < 6;
+  }
+  private createDealing(): Dealing {
     const exp = /-/g;
     const date = new Date(this.inputDate.value.replace(exp, ","));
     const amount = parseInt(this.inputAmount.value);
     const value = parseFloat(this.inputValue.value);
     return new Dealing(date, amount, value);
   }
-  clearForm(): void{
-    this.inputDate.value = ""
-    this.inputAmount.value = ""
-    this.inputValue.value = ""
-    this.inputDate.focus()
+  private clearForm(): void {
+    this.inputDate.value = "";
+    this.inputAmount.value = "";
+    this.inputValue.value = "";
+    this.inputDate.focus();
+  }
+  private updateView(): void {
+    this.dealingView.update(this.dealingList);
+    this.messageView.update("Negociação adicionada com sucesso.");
   }
 }
