@@ -5,7 +5,9 @@
         "noEmitOnError": true,
         "noImplicitAny": true,
         "removeComments": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "experimentalDecorators": true
+        // O 'Decorator' é um padrão estrutural que permite adicionar novos comportamentos aos objetos dinamicamente.
     },
     "include": ["app/src/**/*"]
 }
