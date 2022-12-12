@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "app/dist/js",
+        "target": "ES6",
+        // Serve o arquivo resultando no formato ECMAScript 6.
+        "noEmitOnError": true,
+        // O compilador não gera um arquivo casa tenha algum erro nele.
+        "noImplicitAny": true,
+        // Por padrão o TypeScript faz a tipagem da variável como 'any' caso seja omitido o tipo. Já o 'noImplicitAny: true' faz com que seja necessário a tipagem de uma variável, caso o usuário queira que ela seja 'any' é preciso tipar ela como 'any'.
+        "removeComments": true,
+        // Remove os comentários
+        "strictNullChecks": true,
+        // Métodos de instância como o 'querySelector', o 'getElementById' podem retornar o elemento ou null. Por padrão o TypeScript assume que ele sempre retornara um elemento, mas caso ocorra algum erro onde ele retorne null, somente em runtime que sera descoberto o problema. Com o 'strictNullChecks: true' ele assume que pode retornar null, oque obriga o programador a tratar desse problema. Nem sempre é recomendado ativar esse modo.
+    },
+    "include": ["app/src/**/*"]
+}
