@@ -1,6 +1,7 @@
 // ---------- Exe 02 ----------
 // Com o 'abstract' garantimos que não seja possível criar uma instancia diretamente de View, somente do filho que estende de View. 
 export class View {
+    // A propriedade 'protected' permite que apenas a própria classe e as classes filhas possam acessar essa variável.
     constructor(selector) {
         this.element = document.querySelector(selector);
     }

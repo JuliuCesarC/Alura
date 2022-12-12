@@ -1,10 +1,11 @@
 import { DealingList } from "../models/DealingList.js";
 import { Dealing } from "../models/Dealing.js";
 import { Dealing_view } from "../views/Dealing_view.js";
-import { MessageAdd } from "../views/Messge_add.js";
+import { MessageAdd } from "../views/Message_add.js";
+import { DaysOfWeek } from "../enums/DaysOfWeek.js";
 export class Controller {
     constructor() {
-        this.dealingList = new DealingList;
+        this.dealingList = new DealingList();
         this.dealingView = new Dealing_view("#dealingView");
         this.messageView = new MessageAdd("#messageView");
         this.inputDate = document.querySelector("#data");
@@ -14,11 +15,15 @@ export class Controller {
     }
     addToList() {
         const dealingList = this.createDealing();
-        this.dealingList.add(dealingList);
-        console.log(this.dealingList.list());
-        this.dealingView.update(this.dealingList);
-        this.messageView.update('Negociação adicionada com sucesso.');
+        if (!this.isBusinessDay(dealingList.date)) {
+            this.messageView.update("Apenas negociações em dias uteis.");
+        }
+        this.dealingList.addDealing(dealingList);
+        this.updateView();
         this.clearForm();
+    }
+    isBusinessDay(date) {
+        return date.getDay() > DaysOfWeek.SUNDAY && date.getDay() < DaysOfWeek.SATURDAY;
     }
     createDealing() {
         const exp = /-/g;
@@ -32,5 +37,9 @@ export class Controller {
         this.inputAmount.value = "";
         this.inputValue.value = "";
         this.inputDate.focus();
+    }
+    updateView() {
+        this.dealingView.update(this.dealingList);
+        this.messageView.update("Negociação adicionada com sucesso.");
     }
 }

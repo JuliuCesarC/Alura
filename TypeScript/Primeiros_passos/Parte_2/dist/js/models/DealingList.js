@@ -2,7 +2,7 @@ export class DealingList {
     constructor() {
         this.dealingList = [];
     }
-    add(dealing) {
+    addDealing(dealing) {
         this.dealingList.push(dealing);
     }
     list() {

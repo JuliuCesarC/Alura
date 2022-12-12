@@ -1,7 +1,8 @@
 import { DealingList } from "../models/DealingList.js";
 import { Dealing } from "../models/Dealing.js";
 import { Dealing_view } from "../views/Dealing_view.js";
-import { MessageAdd } from "../views/Messge_add.js";
+import { MessageAdd } from "../views/Message_add.js";
+import { DaysOfWeek } from "../enums/DaysOfWeek.js";
 
 export class Controller {
   private inputDate: HTMLInputElement;
@@ -28,7 +29,7 @@ export class Controller {
     this.clearForm();
   }
   private isBusinessDay(date: Date) {
-    return date.getDay() > 0 && date.getDay() < 6;
+    return date.getDay() > DaysOfWeek.SUNDAY && date.getDay() < DaysOfWeek.SATURDAY;
   }
   private createDealing(): Dealing {
     const exp = /-/g;
