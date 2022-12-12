@@ -28,8 +28,10 @@ export class Controller {
       this.inputAmount.value,
       this.inputValue.value,
     )
+    
     if (!this.isBusinessDay(dealingList.date)) {
       this.messageView.update("Apenas negociações em dias uteis.");
+      return;
     }
 
     this.dealingList.addDealing(dealingList);
