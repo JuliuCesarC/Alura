@@ -11,11 +11,15 @@ export function LogRuntime(){
     // Agora sobrescrevemos o 'descriptor.value' e adicionamos os códigos da funcionalidade desejada.
     descriptor.value = function(...args: any[]){
       const time1 = performance.now()
-      // 
-      const Return = originalMethod.apply(this, args)
+      // Para medir a performance precisamos executar todos os códigos do método onde foi aplicado o Decorator entre as 2 funções 'performance.now'. Por isso salvamos as funções do método 'addToList' na constante 'originalMethod'.
+      const RetornoOriginal = originalMethod.apply(this, args)
+      // ----- IMPORTANTE -----
+      // TODO ESSE BLOCO DE FUNÇÕES que passamos para o 'descriptor.value' substituirá o método 'addToList' lá no arquivo 'Controller', e as funções desse método serão passadas como argumento para o 'originalMethod', o problema é que os 'this' utilizados nessas funções perderam o contexto, por isso utilizamos o 'apply'.
+      // O que o 'apply' faz é informar o contexto para as funções que serão executadas no 'originalMethod', pois como informado acima, esse bloco de comando sera suplantado lá na classe Controller, então o 'this' que passamos para o 'apply' é o contexto dessa classe. O segundo parâmetro do apply é um array contento os argumentos, que nesse caso são as funções do 'addToList'.
       const time2 = performance.now()
       console.log(`${propertyKey}, tempo de execução: ${(time2 - time1)/1000} segundos`);
-      Return
+      // Por fim caso ao executar o 'originalMethod' ele possua algum retorno, então ao final do código retornamos esse retorno, como foi feito abaixo:
+      RetornoOriginal
     }
     return descriptor
   }
