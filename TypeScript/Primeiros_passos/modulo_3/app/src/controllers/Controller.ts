@@ -40,12 +40,12 @@ export class Controller {
       return date.getDay() > DaysOfWeek.SUNDAY && date.getDay() < DaysOfWeek.SATURDAY;
     }
     private clearForm(): void {
-    this.inputDate.value = "";
-    this.inputAmount.value = "";
-    this.inputValue.value = "";
-    this.inputDate.focus();
-  }
-  private updateView(): void {
+      this.inputDate.value = "";
+      this.inputAmount.value = "";
+      this.inputValue.value = "";
+      this.inputDate.focus();
+    }
+    private updateView(): void {
     this.dealingView.update(this.dealingList);
     this.messageView.update("Negociação adicionada com sucesso.");
   }

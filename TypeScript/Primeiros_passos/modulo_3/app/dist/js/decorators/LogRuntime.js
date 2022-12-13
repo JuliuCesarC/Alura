@@ -1,6 +1,7 @@
 export function LogRuntime() {
     return function (target, propertyKey, descriptor) {
         const originalMethod = descriptor.value;
+        console.log(descriptor);
         descriptor.value = function (...args) {
             const time1 = performance.now();
             const Return = originalMethod.apply(this, args);
