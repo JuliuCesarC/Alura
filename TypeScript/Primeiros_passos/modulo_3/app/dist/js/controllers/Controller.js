@@ -10,6 +10,7 @@ import { Dealing_view } from "../views/Dealing_view.js";
 import { MessageAdd } from "../views/Message_add.js";
 import { DaysOfWeek } from "../enums/DaysOfWeek.js";
 import { LogRuntime } from "../decorators/LogRuntime.js";
+import { Inspect } from "../decorators/Inspect.js";
 export class Controller {
     constructor() {
         this.dealingList = new DealingList();
@@ -45,5 +46,6 @@ export class Controller {
     }
 }
 __decorate([
-    LogRuntime()
+    LogRuntime(),
+    Inspect()
 ], Controller.prototype, "addToList", null);
