@@ -31,3 +31,4 @@ export class Dealing {
             this.date.getFullYear() === dealing.date.getFullYear());
     }
 }
+//# sourceMappingURL=Dealing.js.map

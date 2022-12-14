@@ -35,3 +35,4 @@ export class Dealing_view extends View {
 __decorate([
     Escape
 ], Dealing_view.prototype, "template", null);
+//# sourceMappingURL=Dealing_view.js.map

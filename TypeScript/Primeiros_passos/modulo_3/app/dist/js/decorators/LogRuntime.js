@@ -43,3 +43,4 @@ export function LogRuntime_01() {
         return descriptor;
     };
 }
+//# sourceMappingURL=LogRuntime.js.map

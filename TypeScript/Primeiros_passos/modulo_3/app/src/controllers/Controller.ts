@@ -20,7 +20,7 @@ export class Controller {
   private dealingList = new DealingList();
   private dealingView = new Dealing_view("#dealingView");
   private messageView = new MessageAdd("#messageView");
-  private dealingService = new DealingService()
+  private dealingService = new DealingService();
 
   constructor() {
     this.dealingView.update(this.dealingList);
@@ -39,22 +39,41 @@ export class Controller {
     }
 
     this.dealingList.addDealing(dealing);
-    Print(dealing)
-    
+    Print(dealing);
+
     this.updateView();
     this.clearForm();
   }
-  // -------------------- Exe 03 --------------------
+  // -------------------- Exe 04 --------------------
   public importData(): void {
-    // Criamos um serviço com o 'fetch' para que caso seja necessário chamar essa api em outros lugares, não seja necessário repetir os mesmos códigos.
-    // Assim como no exercício 2, podemos alterar o nome do método 'getDealing' utilizando o alterar simbolo(F2), que automaticamente ele sera atualizado onde o método foi chamado.
-      this.dealingService.getDealing()
-      .then((dealingNow) => {
-        for (let dealing of dealingNow) {
+    this.dealingService
+      .getDealing()
+      // Para evitar que seja importado uma lista duplicada, precisamos criar um filtro que verifique se a negociação que sera adicionada ja exista na lista.
+      .then((dealingListNow) => {
+        return dealingListNow.filter((dealingNow) => {
+          // Para isso utilizamos um 'filter' e o método 'some' que verifica se algum elemento passa pelo teste implementado. Como o 'some' retorna true caso encontre um elemento igual, precisamos do ponto de exclamação no return do filter.
+          return !this.dealingList
+            .list()
+            .some((dealing) => dealing.equals(dealingNow));
+        });
+      })
+      .then((dealingListNow) => {
+        for (let dealing of dealingListNow) {
           this.dealingList.addDealing(dealing);
         }
         this.dealingView.update(this.dealingList);
       });
+  }
+  // -------------------- Exe 03 --------------------
+  public importData_exe_03(): void {
+    // Criamos um serviço com o 'fetch' para que caso seja necessário chamar essa api em outros lugares, não seja necessário repetir os mesmos códigos.
+    // Assim como no exercício 2, podemos alterar o nome do método 'getDealing' utilizando o alterar simbolo(F2), que automaticamente ele sera atualizado onde o método foi chamado.
+    this.dealingService.getDealing().then((dealingNow) => {
+      for (let dealing of dealingNow) {
+        this.dealingList.addDealing(dealing);
+      }
+      this.dealingView.update(this.dealingList);
+    });
   }
   // -------------------- Exe 02 --------------------
   public importData_exe_02(): void {

@@ -10,3 +10,4 @@ export function Inspect() {
         return descriptor;
     };
 }
+//# sourceMappingURL=Inspect.js.map

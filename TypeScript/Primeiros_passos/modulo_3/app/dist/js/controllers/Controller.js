@@ -34,8 +34,24 @@ export class Controller {
         this.clearForm();
     }
     importData() {
-        this.dealingService.getDealing()
-            .then((dealingNow) => {
+        this.dealingService
+            .getDealing()
+            .then((dealingListNow) => {
+            return dealingListNow.filter((dealingNow) => {
+                return !this.dealingList
+                    .list()
+                    .some((dealing) => dealing.equals(dealingNow));
+            });
+        })
+            .then((dealingListNow) => {
+            for (let dealing of dealingListNow) {
+                this.dealingList.addDealing(dealing);
+            }
+            this.dealingView.update(this.dealingList);
+        });
+    }
+    importData_exe_03() {
+        this.dealingService.getDealing().then((dealingNow) => {
             for (let dealing of dealingNow) {
                 this.dealingList.addDealing(dealing);
             }
@@ -99,3 +115,4 @@ __decorate([
     LogRuntime(),
     Inspect()
 ], Controller.prototype, "addToList", null);
+//# sourceMappingURL=Controller.js.map

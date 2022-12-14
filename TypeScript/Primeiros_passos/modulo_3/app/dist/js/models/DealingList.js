@@ -12,3 +12,4 @@ export class DealingList {
         return JSON.stringify(this.dealingList, null, 2);
     }
 }
+//# sourceMappingURL=DealingList.js.map

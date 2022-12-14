@@ -6,3 +6,4 @@ export class MessageAdd extends View {
     `;
     }
 }
+//# sourceMappingURL=Message_add.js.map

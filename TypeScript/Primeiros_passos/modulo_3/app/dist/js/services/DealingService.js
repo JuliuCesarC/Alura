@@ -10,3 +10,4 @@ export class DealingService {
         });
     }
 }
+//# sourceMappingURL=DealingService.js.map
