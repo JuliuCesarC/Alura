@@ -5,7 +5,8 @@ export function LogRuntime(Seconds : boolean = false){
     propertyKey:string,
     descriptor: PropertyDescriptor
   ){
-    const originalMethod = descriptor.value;    
+    const originalMethod = descriptor.value;
+    // Detalhe, a função que iremos atribuir para o descriptor precisa ser uma função anonima, pois uma arrow function tornaria o this léxico.
     descriptor.value = function(...args: any[]){
       let divider = 1;
       let unit = 'milissegundos'

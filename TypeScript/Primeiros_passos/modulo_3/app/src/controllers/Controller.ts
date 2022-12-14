@@ -11,7 +11,7 @@ export class Controller {
   private inputAmount: HTMLInputElement;
   private inputValue: HTMLInputElement;
   private dealingList = new DealingList();
-  private dealingView = new Dealing_view("#dealingView", true);
+  private dealingView = new Dealing_view("#dealingView");
   private messageView = new MessageAdd("#messageView");
 
   constructor() {

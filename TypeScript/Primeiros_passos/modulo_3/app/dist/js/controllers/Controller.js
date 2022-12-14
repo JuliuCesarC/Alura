@@ -14,7 +14,7 @@ import { Inspect } from "../decorators/Inspect.js";
 export class Controller {
     constructor() {
         this.dealingList = new DealingList();
-        this.dealingView = new Dealing_view("#dealingView", true);
+        this.dealingView = new Dealing_view("#dealingView");
         this.messageView = new MessageAdd("#messageView");
         this.inputDate = document.querySelector("#data");
         this.inputAmount = document.querySelector("#quantidade");
