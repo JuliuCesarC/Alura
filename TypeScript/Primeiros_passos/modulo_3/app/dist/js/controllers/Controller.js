@@ -11,14 +11,14 @@ import { MessageAdd } from "../views/Message_add.js";
 import { DaysOfWeek } from "../enums/DaysOfWeek.js";
 import { LogRuntime } from "../decorators/LogRuntime.js";
 import { Inspect } from "../decorators/Inspect.js";
+import { DomInjector } from "../decorators/DomInjector.js";
+import { DealingService } from "../services/DealingService.js";
 export class Controller {
     constructor() {
         this.dealingList = new DealingList();
         this.dealingView = new Dealing_view("#dealingView");
         this.messageView = new MessageAdd("#messageView");
-        this.inputDate = document.querySelector("#data");
-        this.inputAmount = document.querySelector("#quantidade");
-        this.inputValue = document.querySelector("#valor");
+        this.dealingService = new DealingService();
         this.dealingView.update(this.dealingList);
     }
     addToList() {
@@ -31,8 +31,47 @@ export class Controller {
         this.updateView();
         this.clearForm();
     }
+    importData() {
+        this.dealingService.getDealing()
+            .then((dealingNow) => {
+            for (let dealing of dealingNow) {
+                this.dealingList.addDealing(dealing);
+            }
+            this.dealingView.update(this.dealingList);
+        });
+    }
+    importData_exe_02() {
+        fetch("http://localhost:8080/dados")
+            .then((res) => res.json())
+            .then((data) => {
+            return data.map((dataNow) => {
+                return new Dealing(new Date(), dataNow.vezes, dataNow.montante);
+            });
+        })
+            .then((dealingNow) => {
+            for (let dealing of dealingNow) {
+                this.dealingList.addDealing(dealing);
+            }
+            this.dealingView.update(this.dealingList);
+        });
+    }
+    importData_exe_01() {
+        fetch("http://localhost:8080/dados")
+            .then((res) => res.json())
+            .then((data) => {
+            return data.map((dataNow) => {
+                return new Dealing(new Date(), dataNow.vezes, dataNow.montante);
+            });
+        })
+            .then((dealingNow) => {
+            for (let dealing of dealingNow) {
+                this.dealingList.addDealing(dealing);
+            }
+            this.dealingView.update(this.dealingList);
+        });
+    }
     isBusinessDay(date) {
-        return date.getDay() > DaysOfWeek.SUNDAY && date.getDay() < DaysOfWeek.SATURDAY;
+        return (date.getDay() > DaysOfWeek.SUNDAY && date.getDay() < DaysOfWeek.SATURDAY);
     }
     clearForm() {
         this.inputDate.value = "";
@@ -45,6 +84,15 @@ export class Controller {
         this.messageView.update("Negociação adicionada com sucesso.");
     }
 }
+__decorate([
+    DomInjector("#data")
+], Controller.prototype, "inputDate", void 0);
+__decorate([
+    DomInjector("#quantidade")
+], Controller.prototype, "inputAmount", void 0);
+__decorate([
+    DomInjector("#valor")
+], Controller.prototype, "inputValue", void 0);
 __decorate([
     LogRuntime(),
     Inspect()

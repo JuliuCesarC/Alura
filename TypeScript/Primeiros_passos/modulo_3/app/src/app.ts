@@ -10,4 +10,12 @@ if(form){
 }else{
   throw Error('Elemento "form" não criado.')
 }
+const btnImport = document.querySelector('#btn_Import')
+if(btnImport){
+  btnImport.addEventListener('click', ()=>{
+    controller.importData()
+  })
+}else{
+  throw Error('Botão importar não encontrado.')
+}
 
