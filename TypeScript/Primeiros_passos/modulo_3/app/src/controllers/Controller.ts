@@ -8,6 +8,7 @@ import { Inspect } from "../decorators/Inspect.js";
 import { DomInjector } from "../decorators/DomInjector.js";
 import { DealingDay } from "../interface/DealingDay.js";
 import { DealingService } from "../services/DealingService.js";
+import { Print } from "../utils/Print.js";
 
 export class Controller {
   @DomInjector("#data")
@@ -27,17 +28,19 @@ export class Controller {
   @LogRuntime()
   @Inspect()
   public addToList(): void {
-    const dealingList = Dealing.createDealing(
+    const dealing = Dealing.createDealing(
       this.inputDate.value,
       this.inputAmount.value,
       this.inputValue.value
     );
-    if (!this.isBusinessDay(dealingList.date)) {
+    if (!this.isBusinessDay(dealing.date)) {
       this.messageView.update("Apenas negociações em dias uteis.");
       return;
     }
 
-    this.dealingList.addDealing(dealingList);
+    this.dealingList.addDealing(dealing);
+    Print(dealing)
+    
     this.updateView();
     this.clearForm();
   }

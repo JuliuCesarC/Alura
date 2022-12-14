@@ -13,6 +13,7 @@ import { LogRuntime } from "../decorators/LogRuntime.js";
 import { Inspect } from "../decorators/Inspect.js";
 import { DomInjector } from "../decorators/DomInjector.js";
 import { DealingService } from "../services/DealingService.js";
+import { Print } from "../utils/Print.js";
 export class Controller {
     constructor() {
         this.dealingList = new DealingList();
@@ -22,12 +23,13 @@ export class Controller {
         this.dealingView.update(this.dealingList);
     }
     addToList() {
-        const dealingList = Dealing.createDealing(this.inputDate.value, this.inputAmount.value, this.inputValue.value);
-        if (!this.isBusinessDay(dealingList.date)) {
+        const dealing = Dealing.createDealing(this.inputDate.value, this.inputAmount.value, this.inputValue.value);
+        if (!this.isBusinessDay(dealing.date)) {
             this.messageView.update("Apenas negociações em dias uteis.");
             return;
         }
-        this.dealingList.addDealing(dealingList);
+        this.dealingList.addDealing(dealing);
+        Print(dealing);
         this.updateView();
         this.clearForm();
     }

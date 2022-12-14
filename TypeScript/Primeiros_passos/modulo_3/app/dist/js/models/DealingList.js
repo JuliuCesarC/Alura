@@ -8,4 +8,7 @@ export class DealingList {
     list() {
         return this.dealingList;
     }
+    convertToText() {
+        return JSON.stringify(this.dealingList, null, 2);
+    }
 }
