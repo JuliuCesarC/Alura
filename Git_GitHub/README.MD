@@ -1,6 +1,8 @@
-# Comandos básicos para criar e gerenciar um repositório.
+# Curso de Git e GitHub com o instrutor Vinicius Dias
 
-### Os comando podem ser executados em diversos tipos de terminais, porém nesse curso utilizamos o Git Bash.
+### Para este curso utilizaremos o Git Bash, porem os comando podem ser executados em diversos tipos de terminais. No começo do arquivo temos os comando para gerenciar um repositório, e ao final do arquivo os comando para inspecionar o repositório.
+
+## Comandos básicos para criar e gerenciar um repositório.
 &nbsp;
 
 ---
@@ -75,6 +77,11 @@ git checkout
 Utilizado para navegar entre estados no repositório. Podemos utilizar para alternar entre as branchs, para voltar a um estado anterior das modificações entre outros.
   - git checkout nome_da_branch: alterna entre as branchs
 
+```
+git checkout hash_do_commit
+```
+#### Retorna para o estado do repositório do commit selecionado. Ao fazer isso o git nos avisa que o estado atual esta desanexado da HEAD(referencia a ramificação atual de trabalhando), ou seja, não esta em nenhuma branch, qualquer commit feito sera descartado ao voltarmos para alguma branch. Porem podemos salvar as alterações criando uma nova branch e 'commitando' nela. Obs: não é preciso utilizar o hash inteiro do commit, a versão resumida com 7 dígitos sera suficiente.
+
 ---
 ```
 git merge
@@ -100,7 +107,49 @@ Caso as alterações tenham sido adicionadas com o git add, porém ainda não te
 ```
 git revert hash_do_commit
 ```
-Reverte o commit selecionado. É preciso utilizar a hash inteiro do commit, e não a versão resumida. Não remove o commit do historio, apenas reverte as alterações e adiciona um commit informando o revert.
+Reverte o commit selecionado. Não remove o commit do historio, apenas reverte as alterações e adiciona um commit informando o revert.
+
+---
+### Git Stash
+
+A funcionalidade do stash é muito interessante, ele remove e guarda todas as alterações feitas que ainda não foram "commitadas" em um local temporário, deixando o repositório no estado do ultimo commit feito. Dessa forma não é necessario criar uma branch nova para pequenas modificações ou criar um commit com alterações não prontas. Posteriormente podemos escolher se iremos trazer de volta ou descartar essas alterações.
+
+```
+git stash
+```
+Guarda as alterações ainda não "commitadas" em um local temporário. Por exemplo pode ser utilizado para salvar alguma alteração antes de executar um git pull.
+  - git stash list: mostra a lista de todos os stash's criados.
+
+```
+git stash apply
+```
+Aplica as alterações do ultimo stash salvo no estado atual do repositório. Caso seja necessario trazer as alterações de um stash especifico, adicionamos o numero dele no final:
+  - "git stash apply 3"
+
+```
+git stash pop
+```
+Muito parecido com o apply, porem alem de aplicar as alterações, ele remove o stash da lista.
+
+```
+git stash drop
+```
+Remove o ultimo stash da lista, pode também remover um stash especifico passando o numero do mesmo no final do comando.
+  - "git stash drop 1"
+
+```
+git stash clear
+```
+Remove todos os stash's salvos.
+
+### Release
+
+---
+```
+git tag -a nome_da_tag -m "mensagem_aqui_dentro"
+```
+Adiciona uma tag no estado atual. Geralmente utilizado para indicar uma versão release do programa, e ao enviar essa tag para o GitHub por exemplo, temos uma aba especifica de Release do repositório onde sera mostrado todas as tags e os estados/commit dessas tags. É possível também baixar um arquivo compactado dessa versão do repositório.
+
 
 ## Comandos para inspecionar e analisar um repositório.
 
@@ -122,6 +171,13 @@ Mostra uma lista de commits desse repositório. Caso haja muitos commits ele ira
   - git log --pretty="format:%H" : mostra apenas o hash do commit 
   - git log --pretty="format:%h %s" : mostra apenas o hash resumido e a mensagem do commit 
   - git log --pretty="format:%s %ae" : mostra a mensagem e o email do altor do commit
+
+---
+```
+git diff
+git diff hash_1..hash_2
+```
+No primeiro código mostra de forma detalhada as alterações feitas que ainda não foram adicionadas e 'commitadas', e no segundo código mostra a diferença entre o primeiro commit e segundo commit selecionados. Excelente comando para verificar o que foi modificado e implementado até o estado atual do repositório. Obs: é preciso colocar os 2 pontos entre a hash's para funcionar o comando.
 
 ---
 ```
