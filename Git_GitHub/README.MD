@@ -2,8 +2,9 @@
 
 ## Para este curso utilizaremos o Git Bash, porem os comando podem ser executados em diversos tipos de terminais. No começo do arquivo temos os comando para gerenciar um repositório, e ao final do arquivo os comando para inspecionar o repositório
 
-## Comandos básicos para criar e gerenciar um repositório
+### Os comando podem ser executados em diversos tipos de terminais, porém nesse curso utilizamos o Git Bash
 
+## Comandos básicos para criar e gerenciar um repositório.
 &nbsp;
 
 ---
@@ -241,6 +242,18 @@ Mostra uma lista de commits desse repositório. Caso haja muitos commits ele ira
 - git log --pretty="format:%H" : mostra apenas o hash do commit
 - git log --pretty="format:%h %s" : mostra apenas o hash resumido e a mensagem do commit
 - git log --pretty="format:%s %ae" : mostra a mensagem e o email do altor do commit
+
+---
+
+```bash
+git diff
+git diff hash_1..hash_2
+```
+git diff
+git diff hash_1..hash_2
+```
+
+No primeiro código mostra de forma detalhada as alterações feitas que ainda não foram adicionadas e 'commitadas', e no segundo código mostra a diferença entre o primeiro commit e segundo commit selecionados. Excelente comando para verificar o que foi modificado e implementado até o estado atual do repositório. Obs: é preciso colocar os 2 pontos entre a hash's para funcionar o comando.
 
 ---
 
