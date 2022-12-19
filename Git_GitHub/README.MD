@@ -89,7 +89,7 @@ Lista todos as branch do projeto.
 - `git branch nome_nova_branch`: cria uma nova branch. É possível criar uma nova branch e ja entrar nela com o código abaixo.
 - `git checkout -b nome_nova_branch`: o '-b' é o responsável por criar a branch.
 
-### Quando criamos uma nova branch e trabalhamos dentro dela, garantimos que o conteúdo da branch original não seja alterado, dessa forma caso as novas alterações não funcionem, podemos simplesmente descartar esse branch, porém caso seja necessário implementar essas alterações, então precisamos efetuar um 'merge'
+> Quando criamos uma nova branch e trabalhamos dentro dela, garantimos que o conteúdo da branch original não seja alterado, dessa forma caso as novas alterações não funcionem, podemos simplesmente descartar esse branch, porém caso seja necessário implementar essas alterações, então podemos efetuar um 'merge'
 
 - `git branch -m novo_nome_da_branch`: renomear a branch.
 
@@ -109,7 +109,8 @@ Utilizado para navegar entre estados no repositório. Podemos utilizar para alte
 git checkout hash_do_commit
 ```
 
-#### Retorna para o estado do repositório do commit selecionado. Ao fazer isso o git nos avisa que o estado atual esta desanexado da HEAD(referencia a ramificação atual de trabalho), ou seja, não esta em nenhuma branch, qualquer commit feito sera descartado se sairmos desse commit. Porem podemos salvar as alterações criando uma nova branch e 'commitando' nela. Obs: não é preciso utilizar o hash inteiro do commit, a versão resumida com 7 dígitos sera suficiente
+Retorna para o estado do repositório do commit selecionado. Ao fazer isso o git nos avisa que o estado atual esta desanexado da HEAD(referencia a ramificação atual de trabalho), ou seja, não esta em nenhuma branch, qualquer commit feito sera descartado se sairmos desse commit. Porem podemos salvar as alterações criando uma nova branch e 'commitando' nela.
+> Obs: não é preciso utilizar o hash inteiro do commit, a versão resumida com 7 dígitos sera suficiente
 
 ---
 
@@ -117,7 +118,8 @@ git checkout hash_do_commit
 git merge
 ```
 
-Junta uma branch selecionada com a branch atual, exemplo: `git merge new_list`. Caso haja algum conflito entre as branch, o Vscode ira mostrar onde os códigos se conflitaram, basta remover um dos 2 códigos e prosseguir com o merge. Preserva os commits das 2 branchs, isso significa que ouve uma bifurcação quando a branch secundaria foi criada, e, uma intersecção quando houve um 'merge', mas os 2 caminhos continuam no histórico.
+Junta uma branch selecionada com a branch atual, exemplo: `git merge new_list`. Preserva os commits das 2 branchs, isso significa que ouve uma bifurcação quando a branch secundaria foi criada, e, uma intersecção quando executamos um 'merge', mas os 2 caminhos continuam no histórico.
+> Caso haja algum conflito entre as branch, o Vscode ira mostrar na tela onde os códigos se conflitaram, basta remover um dos 2 códigos e prosseguir com o merge.
 
 ---
 
@@ -127,9 +129,17 @@ git rebase
 
 Mescla 2 branchs, diferentemente do 'merge', não preserva o caminho das branchs, ou seja, ira mesclar todos os commits em um único caminho, deixando o histórico aparentando que nunca houve uma bifurcação. Existe alguns problemas de rastreabilidade e segurança com esse método, por isso é preciso saber quando utilizar.
 
-### Utilizando o rebase para juntar vários commits em um só
+---
+
+&nbsp;
+
+### Utilizando o Rebase para juntar vários commits em um só
+
+&nbsp;
 
 Uma das funcionalidades do rebase é poder juntar alguns commits em apenas um, e isso é possível com o rebase interativo `git rebase -i`.
+
+> Apos executar o comando, o git bash ira mostrar uma tela com varias informações, e no topo dessa tela temos os commits selecionados, a ordem é de cima para baixo do mais antigo para o mais novo commit. Na frente de cada commit temos a palavra 'pick', que deve ser substituída por um 's' caso esse commit deva se ligar ao commit anterior. Geralmente o commit principal sera o mais antigo e ficara com o 'pick', os outros commits ficaram com um 's'. Para terminar essa parte é só apertar a tecla "esc" e executar o `:x`. Após isso ira aparecer a segunda tela com o comentário de todos os commits, que devem ser apagados para restar apenas um comentário no topo da tela. No git bash o comentário resultante ira ficar na cor amarela. Novamente para finalizar a tarefa, clicar na tecla "esc" e executar o `:x`.
 
 ```bash
 git rebase -i estado_atual~numero_de_commits
@@ -145,7 +155,19 @@ Podemos também selecionar o hash do commit anterior ao qual eu quero selecionar
 
 ---
 
+```bash
+git cherry-pick hash_do_commit
+```
+
+Traz um commit especifico para o estado atual. Não é um como um merge que traz todos os commits da branch, traz apenas as alterações que estavam incluídas no commit. Por exemplo, suponhamos uma branch secundaria feita para adicionar novas funcionalidades, porem apos descobrir um bug na branch master, criamos um hotfix nessa branch secundaria, então podemos trazer apenas esse hotfix para a master, sem trazer as funcionalidades da branch secundaria que ainda não estão prontas.
+
+---
+
+&nbsp;
+
 ### Como desfazer alterações
+
+&nbsp;
 
 ```bash
 git checkout -- nome_do_arquivo
@@ -167,7 +189,11 @@ Reverte o commit selecionado. Não remove o commit do historio, apenas reverte a
 
 ---
 
+&nbsp;
+
 ### Git Stash
+
+&nbsp;
 
 A funcionalidade do stash é muito interessante, ele remove e guarda todas as alterações feitas que ainda não foram "commitadas" em um local temporário, deixando o repositório no estado do ultimo commit feito. Dessa forma não é necessario criar uma branch nova para pequenas modificações ou criar um commit com alterações não prontas. Posteriormente podemos escolher se iremos trazer de volta ou descartar essas alterações.
 
@@ -177,7 +203,11 @@ git stash
 
 Guarda as alterações ainda não "commitadas" em um local temporário. Por exemplo pode ser utilizado para salvar alguma alteração antes de executar um git pull.
 
-- `git stash list`: mostra a lista de todos os stash's criados.
+```bash
+git stash list
+```
+
+Mostra a lista de todos os stash's criados.
 
 ```bash
 git stash apply
@@ -189,13 +219,13 @@ Aplica as alterações do ultimo stash salvo no estado atual do repositório. Ca
 git stash pop
 ```
 
-Muito parecido com o apply, porem além de aplicar as alterações, ele remove o stash da lista.
+Muito parecido com o apply, porem além de aplicar as alterações do stash mais recente, ele remove o stash da lista.
 
 ```bash
 git stash drop
 ```
 
-Remove o ultimo stash da lista, pode também remover um stash especifico passando o numero do mesmo no final do comando: `git stash drop 1`.
+Remove o ultimo stash da lista, pode também remover um stash especifico passando o numero do mesmo no final do comando: `git stash drop 4`.
 
 ```bash
 git stash clear
@@ -203,7 +233,11 @@ git stash clear
 
 Remove todos os stash's salvos.
 
+&nbsp;
+
 ### Release
+
+&nbsp;
 
 ---
 
@@ -213,9 +247,50 @@ git tag -a nome_da_tag -m "mensagem_aqui_dentro"
 
 Adiciona uma tag no estado atual. Geralmente utilizado para indicar uma versão release do programa, e ao enviar essa tag para o GitHub por exemplo, temos uma aba especifica de Release do repositório onde sera mostrado todas as tags e os estados/commit dessas tags. É possível também baixar um arquivo compactado dessa versão do repositório.
 
+---
+
+&nbsp;
+
+### Buscando por bugs com o Bisect
+
+&nbsp;
+
+O Bisect é uma poderosa ferramenta para buscar bugs, o usuário indica entre quais commits deve ser feita a pesquisa, então ele executa uma busca binaria com o intuito de encontrar o commit onde foi adicionado o bug.
+> A busca funciona como um passeio, o git ira ficar mudando o estado do repositório, e cabe a nos indicar se o commit esta bom ou ruim a cada novo estado que o bisect nos apresenta, dependendo da quantidade de commits selecionados a busca encontrara rapidamente o bug.
+
+```bash
+git bisect start
+```
+
+O primeiro comando é o que ira iniciar o git bisect.
+
+```bash
+git bisect bad estado_ruim
+```
+
+O segundo comando é o que iremos informar o commit que esta ruim, podemos navegar até o commit com o git checkout e executar o comando `git bisect bad`, ou apenas informar o hash/tag/HEAD do commit: `git bisect bad HEAD`. Lembrando que o HEAD é o estado atual de trabalho.
+
+```bash
+git bisect good estado_bom
+```
+
+O terceiro comando é o que iremos informar o commit que esta bom. Possui as mesmas funcionalidades do segundo comando. `git checkout` -> `git bisect good` ou apenas `git bisect good 20b92f9`.
+
+> Após executar o segundo e terceiro comando, começa a busca, onde iremos informar com `git bisect good` se o estado que ele entrou esta bom, e `git bisect bad` se o estado esta ruim. No final da busca ele ira mostrar os detalhes do commit que adicionou o bug. Então é só aplicar um `git revert` para desfazer o commit.
+
+```bash
+git bisect reset
+```
+
+Finaliza o comando bisect.
+
+---
+
 &nbsp;
 
 ## Comandos para inspecionar e analisar um repositório
+
+&nbsp;
 
 ```bash
 git status
@@ -229,16 +304,17 @@ Mostra quais arquivos foram alterados, se existe algum arquivo não monitorado, 
 git log
 ```
 
-Mostra uma lista de commits desse repositório. Caso haja muitos commits ele ira mostrar alguns por vez, com a tecla 'f' ele mostra mais commits, e a tecla 'q' sai desse modo. O git log possui diversos parâmetros, dentre eles
+Mostra uma lista de commits desse repositório.
+> Caso haja muitos commits, ele ira mostrar alguns por vez, com a tecla 'f' ele mostra mais commits, e a tecla 'q' sai desse modo.
 
 - `git log --oneline`: mostra os commits em uma linha
 - `git log -p`: mostra em detalhe as alterações que foram executadas
 - `git log -S "pesquisa_aqui"`: faz uma pesquisa nos aquivos do repositório para encontrar dentro do código o que foi digitado no campo de pesquisa. Exemplo:
   - `git log -S "console.log"`: retorna os commits que possuem um arquivo com esse código.
 
-### É possível formatar de maneira muito especifica como os comandos abaixo
+É possível também formatar de maneira muito especifica o git log, exemplos:
 
-- `git log --pretty="format:%H"` : mostra apenas o hash do commit
+- `git log --pretty="format:%H"` : mostra apenas o hash inteiro do commit
 - `git log --pretty="format:%h %s"` : mostra apenas o hash resumido e a mensagem do commit
 - `git log --pretty="format:%s %ae"` : mostra a mensagem e o email do altor do commit
 
@@ -249,7 +325,8 @@ git diff
 git diff hash_1..hash_2
 ```
 
-No primeiro código mostra de forma detalhada as alterações feitas que ainda não foram adicionadas e 'commitadas', e no segundo código mostra a diferença entre o primeiro commit e segundo commit selecionados. Excelente comando para verificar o que foi modificado e implementado até o estado atual do repositório. Obs: é preciso colocar os 2 pontos entre as hash's para funcionar o comando.
+No primeiro código mostra de forma detalhada as alterações feitas que ainda não foram adicionadas e 'commitadas', e no segundo código mostra a diferença entre o primeiro commit e segundo commit selecionados.
+> Um ótimo comando para verificar tudo o que já foi modificado e implementado até o estado atual do repositório. Obs: é preciso colocar os 2 pontos entre as hash's para funcionar o comando.
 
 ---
 
@@ -268,6 +345,7 @@ Gerencia as configurações do git, pode ser utilizado para setar ou obter dados
 - `git config --local committer.name ""`
 - `git config --local committer.email ""`
 
-#### É possível obter a informação omitindo a parte com as aspas. Exe
+É possível obter a informação omitindo a parte com as aspas. Exemplo:
 
 - `git config --local user.name`
+- `git config --global author.email`
