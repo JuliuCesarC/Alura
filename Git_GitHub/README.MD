@@ -46,6 +46,7 @@ Lista todos os repositórios remotos disponíveis no arquivo.
 - `git remote add nome_do_remoto caminho_para_repositório`: adiciona um repositório remoto, o caminho pode ser uma pasta, uma url, um repositório GitHub. exemplo:
 - `git remote add repoLocal C:\Users\Cesar\Desktop\Curso_Dev`
 - `git remote rename nome_atual novo_nome`: renomeia o repositório remoto.
+- `git remote -v`: mostra a url dos repositórios remotos.
 
 ---
 
@@ -93,7 +94,9 @@ Lista todos as branch do projeto.
 
 - `git branch -m novo_nome_da_branch`: renomear a branch.
 
-- `git branch -d/-D nome_da_branch`: deleta uma branch local
+- `git branch -d/-D nome_da_branch`: deleta uma branch local, caso a branch possua commits a frente da branch principal, então só sera possível excluir utilizando o `-D`.
+
+> Geralmente excluimos uma branch enquanto estamos na branch principal.
 
 ---
 
@@ -145,7 +148,7 @@ Uma das funcionalidades do rebase é poder juntar alguns commits em apenas um, e
 git rebase -i estado_atual~numero_de_commits
 ```
 
-Para juntar os commits primeiro precisamos informar o estado atual e o numero de commits que iremos juntar, ficando assim: `git rebase -i HEAD~3`. O resultado sera a junção dos 3 commits anteriores ao estado atual de trabalho(HEAD).
+Para juntar os commits primeiro precisamos informar o estado atual e o numero de commits que iremos juntar. Por exemplo, estamos no estado mais atual e precisamos juntar os 3 ultimos commits, então podemos executar o comando: `git rebase -i HEAD~3`.
 
 ```bash
 git rebase -i hash_do_commit_anterior
@@ -155,11 +158,20 @@ Podemos também selecionar o hash do commit anterior ao qual eu quero selecionar
 
 ---
 
+&nbsp;
+
+### Trazendo um commit especifico para o estado atual com cherry-pick
+
+&nbsp;
+
+O cherry-pick nos permite trazer apenas um commit especifico para o estado que estamos trabalhando. Isso o diferencia bastante de um merge ou um rebase.
+
 ```bash
 git cherry-pick hash_do_commit
 ```
 
-Traz um commit especifico para o estado atual. Não é um como um merge que traz todos os commits da branch, traz apenas as alterações que estavam incluídas no commit. Por exemplo, suponhamos uma branch secundaria feita para adicionar novas funcionalidades, porem apos descobrir um bug na branch master, criamos um hotfix nessa branch secundaria, então podemos trazer apenas esse hotfix para a master, sem trazer as funcionalidades da branch secundaria que ainda não estão prontas.
+Traz apenas as alterações que estavam incluídas no commit.
+> Por exemplo, suponhamos uma branch secundaria feita para adicionar novas funcionalidades, porem apos descobrir um bug na branch master, criamos um hotfix nessa branch secundaria, então podemos levar esse hotfix para a master, sem trazer as funcionalidades da branch secundaria que ainda não estão prontas.
 
 ---
 
@@ -340,12 +352,21 @@ Gerencia as configurações do git, pode ser utilizado para setar ou obter dados
 - `git config --local`: define o escopo local, no repositório.
 - `git config --local user.name "nome_do_usuário"`: define ou altera o nome de usuário no escopo local.
 - `git config --global user.email "email"`: define ou altera o email do usuário no escopo global
-- `git config --local author.name ""`
+- `git config author.name ""`
 - `git config --local author.email ""`
-- `git config --local committer.name ""`
-- `git config --local committer.email ""`
+- `git config committer.name ""`
+- `git config committer.email ""`
 
 É possível obter a informação omitindo a parte com as aspas. Exemplo:
 
-- `git config --local user.name`
+- `git config local user.name`
 - `git config --global author.email`
+
+---
+
+```bash
+git blame nome_do_arquivo
+```
+
+Mostra quem foi o responsável por cada linha no arquivo indicado.
+> O vscode possui uma extenção chamada "GitLens", que fornece essa funcionalidade dentre outras. Como funciona dentro do vscode, qualquer arquivo aberto que esta sendo monitorado pelo git, apresentara as funcionalidades do GitLens, facilitando muito a pesquisa dentro do repositório.
