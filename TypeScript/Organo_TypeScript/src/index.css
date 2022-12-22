@@ -1,0 +1,18 @@
+:root {
+  --primary-color: #6278F7;
+  --secondary-color: #95FFD4;
+  --third-color: #F2F2F2;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+body{
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Montserrat', sans-serif;
+}
+h1, h2, h3, h4{
+  font-family: 'Prata', serif;
+}

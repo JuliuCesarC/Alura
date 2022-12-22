@@ -1,42 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { IntTask } from "../../types/Interface_taskList";
 import Button from "../Button";
 import style from "./Form.module.scss";
 
-class Form extends React.Component<{
+interface Props{
   setTaskList: React.Dispatch<React.SetStateAction<IntTask[]>>;
-}> {
-  state = {
-    task: "",
-    time: "00:00",
+}
+
+export default function Form({setTaskList}: Props){
+  const [task, setTask] = useState<string>("")
+  const [time, setTime] = useState<string>("00:00")
+
+  function addTask(eAdd: React.FormEvent<HTMLFormElement>) {
+    eAdd.preventDefault();
+    setTaskList((prevTask) => [
+      ...prevTask,
+      { task, time, selected: false, finish: false, id: randomID() },
+    ]
+      );
+    setTask("")
+    setTime("00:00")
   };
 
-  addTask(eAdd: React.FormEvent<HTMLFormElement>) {
-    eAdd.preventDefault();
-    this.props.setTaskList((prevTask) => [
-      ...prevTask,
-      { ...this.state, selected: false, finish: false, id: this.randomID() },
-    ]);
-    this.setState({
-      task: "",
-      time: "00:00",
-    });
-  }
-
-  randomID() {
+  function randomID() {
     return Math.random().toString(36).substring(2, 12);
   }
-  render() {
     return (
-      <form className={style.newTask} onSubmit={this.addTask.bind(this)}>
+      <form className={style.newTask} onSubmit={addTask}>
         <div className={style.inputContainer}>
           <label htmlFor={style.task}>Cursos</label>
           <input
             type="text"
             name="task"
-            value={this.state.task}
+            value={task}
             onChange={(e) =>
-              this.setState({ ...this.state, task: e.target.value })
+              setTask(e.target.value)
             }
             id="task"
             placeholder="Cursos para estudar?"
@@ -48,9 +46,9 @@ class Form extends React.Component<{
           <input
             type="time"
             name="Time"
-            value={this.state.time}
+            value={time}
             onChange={(e) =>
-              this.setState({ ...this.state, time: e.target.value })
+              setTime(e.target.value)
             }
             id="Time"
             step="1"
@@ -62,7 +60,5 @@ class Form extends React.Component<{
         <Button type="submit">Adicionar</Button>
       </form>
     );
-  }
 }
 
-export default Form;

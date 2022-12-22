@@ -1,0 +1,47 @@
+.container{
+  width: 90%;
+  max-width: 840px;
+  margin: auto;
+  margin-top: 50px;
+}
+.Form{
+  background-color: var(--third-color);
+  padding: 5%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 1px 3px 7px rgba(82, 82, 82, 0.4);
+}
+.Form input, select{
+  padding: 0px 10px;
+  height: 50px;
+  border: none;
+  box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+.Form input::placeholder{
+  color: #afafaf;
+}
+.Form label{
+  margin-top: 20px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.Form button{
+  background-color: var(--primary-color);
+  color: white;
+  width: 100px;
+  height: 50px;
+  margin-top: 25px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  transition: all .2s;
+}
+.Form button:hover{
+  color: #95FFD4;
+  box-shadow: 0 0 5px var(--primary-color);
+}
+.container h1{
+  text-align: center;
+}

@@ -1,0 +1,15 @@
+{
+  "role": [
+    { "name": "Programação", "color": "#57C278", "colorOpacity": "#D9F7E9" },
+    { "name": "Front End", "color": "#82CFFA", "colorOpacity": "#E8F8FF" },
+    { "name": "Data Science", "color": "#A6D157", "colorOpacity": "#F0F8E2" },
+    { "name": "Devops", "color": "#E06B69", "colorOpacity": "#FDE7E8" },
+    { "name": "UX e Design", "color": "#DB6EBF", "colorOpacity": "#FAE9F5" },
+    { "name": "Mobile", "color": "#FFBA05", "colorOpacity": "#FFF5D9" },
+    {
+      "name": "Inovação e Gestão",
+      "color": "#FF8A29",
+      "colorOpacity": "#FFEEDF"
+    }
+  ]
+}

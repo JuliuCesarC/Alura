@@ -1,0 +1,28 @@
+.container_footer{
+  position: relative;
+  background-color: var(--primary-color);
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.social img{
+  width: 25px;
+  margin: 0 10px;
+}
+.bg_footer{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  object-fit: cover;
+}
+.logo_footer img{
+  width: 150px;
+}
+.owner{
+  color: white;
+}
