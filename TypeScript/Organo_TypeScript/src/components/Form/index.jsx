@@ -1,26 +1,27 @@
-import config from "../../../config.json"
+import config from "../../../config.json";
+import InputText from "../InputText";
 import { AddTeacher } from "../LocalStorage";
+import Button from "../Button";
 import "./Body.css";
 
-export default function Form({team, setTeam}) {
-
-  function addCollaborators(eColl){
-    let Name = document.getElementById('Name')
-    let Role = document.getElementById('Role')
-    let Img = document.getElementById('Img')
-    let Team = document.getElementById('Team')
+export default function Form({ team, setTeam }) {
+  function addCollaborators(eColl) {
+    let Name = document.getElementById("Name");
+    let Role = document.getElementById("Role");
+    let Img = document.getElementById("Img");
+    let Team = document.getElementById("Team");
     let newTeam = {
       name: Name.value,
       role: Role.value,
       team: Team.value,
-      url: Img.value
-    }
-    AddTeacher(Name.value, Role.value, Img.value, Team.value)
-    setTeam([...team, newTeam])
-    Name.value = ''
-    Role.value = ''
-    Img.value = ''
-    Team.value = ''
+      url: Img.value,
+    };
+    AddTeacher(Name.value, Role.value, Img.value, Team.value);
+    setTeam([...team, newTeam]);
+    Name.value = "";
+    Role.value = "";
+    Img.value = "";
+    Team.value = "";
   }
 
   function randomID() {
@@ -33,27 +34,27 @@ export default function Form({team, setTeam}) {
         className="Form"
         onSubmit={(eForm) => {
           eForm.preventDefault();
-          addCollaborators(eForm.target)
+          addCollaborators(eForm.target);
         }}
       >
         <h2>Preencha os dados para criar o card do colaborador.</h2>
-        <label htmlFor="Name">Nome</label>
-        <input type="text" name="Name" id="Name" placeholder="Digite o nome" />
-        <label htmlFor="Role">Cargo</label>
-        <input type="text" name="Role" id="Role" placeholder="Digite o cargo" />
-        <label htmlFor="Img">Imagem</label>
-        <input
-          type="text"
-          name="Img"
-          id="Img"
+        <InputText placeholder="Digite o nome" label="Nome" required={true} />
+        <InputText placeholder="Digite o cargo" label="Cargo" required={true} />
+        <InputText
           placeholder="Informe o endereço da imagem."
+          label="Imagem"
+          required={true}
         />
         <label htmlFor="Team">Time</label>
         <select name="Team" id="Team" placeholder="teste">
-          {config.role.map((eRole)=><option value={eRole.name} key={randomID()}>{eRole.name}</option>)}
+          {config.role.map((eRole) => (
+            <option value={eRole.name} key={randomID()}>
+              {eRole.name}
+            </option>
+          ))}
         </select>
-        <button type="submit">Criar card</button>
-      </form>      
+        <Button type="submit">Criar card</Button>
+      </form>
     </main>
   );
 }
