@@ -1,8 +1,8 @@
 import config from "../../../config.json";
 import ContainerCards from "./components/ContainerCards";
 import { randomID } from "../LocalStorage";
-import "./Team.css";
 import { ITeam } from "../interfaces/ITeam";
+import "./Team.css";
 
 interface TeamProps {
   team: ITeam[];
@@ -12,11 +12,11 @@ export default function Team({ team }: TeamProps) {
   const havePeopleOnTheTeam = team.length > 0;
   const allRoles = config.role;
 
-  function havePeopleOnTheRole(roleName: string) {
+  function havePeopleOnTheRole(roleName: string): boolean {
     return team.filter((e) => e.team === roleName).length > 0;
   }
 
-  function allPeopleWithTheSameRole(roleName: string) {
+  function allPeopleWithTheSameRole(roleName: string): ITeam[] {
     return team.filter((e) => e.team === roleName);
   }
 

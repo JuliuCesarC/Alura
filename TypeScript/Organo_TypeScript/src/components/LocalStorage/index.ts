@@ -7,6 +7,7 @@ function GetLS() {
 function SetLS(ls: ITeam[]): void{
  localStorage.setItem(TEAM ,JSON.stringify(ls))
 }
+// Como estamos setando ou buscando um objeto no formato da interface ITeam do localStorage, então basta tipar os arquivos que possuem esse formato com o tipo ITeam. No caso de quando estamos criando um novo colaborador, então é só ITeam, mas quando é a lista de colaboradores, então fica 'ITeam[]'. 
 
 export function LocalStorage() {
   const collaborators: ITeam[] = [];
@@ -21,7 +22,7 @@ export function LocalStorage() {
 }
 export function AddCollaborator({name, role, url, team}: ITeam): void {
   if (!GetLS()) {
-    let newLS = {
+    let newLS: ITeam = {
       name,
       role,
       url,

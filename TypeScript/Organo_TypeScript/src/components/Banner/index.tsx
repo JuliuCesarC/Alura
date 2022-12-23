@@ -4,6 +4,7 @@ import "./banner.css";
 interface BannerProps {
   imageUrl: string;
   altText?: string;
+  // O texto alternativo é extremamente indicado para as tags img, mas não obrigatório, com isso "tipamos" ele como opcional 'altText?: ...' 
 }
 
 export default function Banner({ imageUrl, altText }: BannerProps) {

@@ -7,7 +7,9 @@ import { ITeam } from "../interfaces/ITeam";
 import InputSelect from "../InputSelect";
 
 interface FormProps {
+  // Para definir o tipo do parâmetro que estamos recebendo na função 'Form' como um 'setState', utilizamos o tipo abaixo.
   setTeam: React.Dispatch<React.SetStateAction<ITeam[]>>
+  // Obs: Para descobrir esse tipo com o VsCode utilizando TypeScript, basta passar o mouse em cima do setState onde ele foi declarado, que ira mostrar o tipo. Para garantir o funcionamento correto, o useState precisa já estar "tipado".
 }
 
 export default function Form({ setTeam }: FormProps) {
@@ -25,6 +27,7 @@ export default function Form({ setTeam }: FormProps) {
 
   function getByIdAndClearInput(id: string): string {
     let elem = document.getElementById(id) as HTMLInputElement;
+    // O 'getElementById' retorna um 'HTMLElement' ou null, porem o método '.value' só esta incluso no 'HTMLInputElement', por isso executamos o 'getElementById' como um 'InputElement'. Ao utilizar o 'as HTMLInputElement' garantimos para o TypeScript que nunca retornara null, então caso seja informado o id errado para a função, apenas em runtime quando essa função for executada que notaremos o erro.
       let tx = elem.value;
       elem.value = "";
     return tx;

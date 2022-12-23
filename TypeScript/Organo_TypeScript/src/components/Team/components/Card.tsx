@@ -1,11 +1,6 @@
-interface CardProps {
-  color: string;
-  name: string;
-  url: string;
-  role: string;
-}
+import { ITeam } from "../../interfaces/ITeam";
 
-export default function Card({ color, name, url, role }: CardProps) {
+export default function Card({ color, name, url, role }: ITeam) {
   return (
     <div className="card">
       <div className="card_top" style={{ backgroundColor: color }}></div>

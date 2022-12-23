@@ -6,7 +6,8 @@ interface InputTextProps{
   required?: boolean
 }
 
-export default function InputText({placeholder, label, required}: InputTextProps){ 
+export default function InputText({placeholder, label, required = false}: InputTextProps){
+  // Como o 'required' foi tipado como opcional, então passamos um valor padrão para ele. 
 
     return (
         <div className="inputText">          
