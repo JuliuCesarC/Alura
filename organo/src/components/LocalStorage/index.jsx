@@ -11,13 +11,10 @@ export function LocalStorage() {
     return collaborators;
   } else {
     let LS = JSON.parse(GetLS());
-    for (let i = 0; i < LS.length; i++) {
-      collaborators[i] = LS[i];
-    }
     return LS;
   }
 }
-export function AddTeacher(name, role, url, team) {
+export function AddTeacher({name, role, url, team}) {
   if (!GetLS()) {
     let newLS = {
       name,
@@ -42,4 +39,8 @@ export function AddTeacher(name, role, url, team) {
 export function DeleteColl(name){
   let newLS = JSON.parse(GetLS())
   SetLS(newLS.filter(e=>e.name != name))
+}
+
+export function randomID() {
+  return Math.random().toString(36).substring(2, 12);
 }

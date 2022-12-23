@@ -5,17 +5,18 @@ import Team from "./components/Team";
 import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
 import { LocalStorage } from "./components/LocalStorage";
+import { ITeam } from "./components/interfaces/ITeam";
 
 function App() {
-  const [team, setTeam] = useState([]);
+  const [team, setTeam] = useState<ITeam[]>([]);
 
-  useEffect(()=>{
-    setTeam(LocalStorage())
-  },[])
+  useEffect(() => {
+    setTeam(LocalStorage());
+  }, []);
   return (
     <>
-      <Banner />
-      <Form team={team} setTeam={setTeam}/>
+      <Banner imageUrl="img/banner.png" altText="Banner pagina principal" />
+      <Form setTeam={setTeam} />
       <Team team={team} />
       <Footer />
     </>
@@ -23,4 +24,3 @@ function App() {
 }
 
 export default App;
-

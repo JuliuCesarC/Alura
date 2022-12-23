@@ -1,5 +1,5 @@
 import config from "../../../config.json"
-import { AddTeacher } from "../LocalStorage";
+import { AddTeacher, randomID } from "../LocalStorage";
 import "./Body.css";
 
 export default function Form({team, setTeam}) {
@@ -23,9 +23,6 @@ export default function Form({team, setTeam}) {
     Team.value = ''
   }
 
-  function randomID() {
-    return Math.random().toString(36).substring(2, 9);
-  }
   return (
     <main className="container">
       <form
@@ -49,7 +46,7 @@ export default function Form({team, setTeam}) {
           placeholder="Informe o endereço da imagem."
         />
         <label htmlFor="Team">Time</label>
-        <select name="Team" id="Team" placeholder="teste">
+        <select name="Team" id="Team">
           {config.role.map((eRole)=><option value={eRole.name} key={randomID()}>{eRole.name}</option>)}
         </select>
         <button type="submit">Criar card</button>

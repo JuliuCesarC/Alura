@@ -1,32 +1,34 @@
 import config from "../../../config.json";
 import InputText from "../InputText";
-import { AddTeacher } from "../LocalStorage";
+import { AddCollaborator, randomID } from "../LocalStorage";
 import Button from "../Button";
 import "./Body.css";
+import { ITeam } from "../interfaces/ITeam";
 
-export default function Form({ team, setTeam }) {
-  function addCollaborators(eColl) {
-    let Name = document.getElementById("Name");
-    let Role = document.getElementById("Role");
-    let Img = document.getElementById("Img");
-    let Team = document.getElementById("Team");
-    let newTeam = {
-      name: Name.value,
-      role: Role.value,
-      team: Team.value,
-      url: Img.value,
+interface FormProps {
+  setTeam: React.Dispatch<React.SetStateAction<ITeam[]>>
+}
+
+export default function Form({ setTeam }: FormProps) {
+
+  function addCollaboratorAndClearForm() {
+    let newCollaborator: ITeam = {
+      name: getByIdAndClearInput("Nome"),
+      role: getByIdAndClearInput("Cargo"),
+      url: getByIdAndClearInput("Imagem"),
+      team: getByIdAndClearInput("Team"),
     };
-    AddTeacher(Name.value, Role.value, Img.value, Team.value);
-    setTeam([...team, newTeam]);
-    Name.value = "";
-    Role.value = "";
-    Img.value = "";
-    Team.value = "";
+    AddCollaborator(newCollaborator);
+    setTeam(prevTeam => [...prevTeam, newCollaborator]);
   }
 
-  function randomID() {
-    return Math.random().toString(36).substring(2, 9);
+  function getByIdAndClearInput(id: string): string {
+    let elem = document.getElementById(id) as HTMLInputElement;
+      let tx = elem.value;
+      elem.value = "";
+    return tx;
   }
+
   return (
     <main className="container">
       <form
@@ -34,7 +36,7 @@ export default function Form({ team, setTeam }) {
         className="Form"
         onSubmit={(eForm) => {
           eForm.preventDefault();
-          addCollaborators(eForm.target);
+          addCollaboratorAndClearForm();
         }}
       >
         <h2>Preencha os dados para criar o card do colaborador.</h2>
@@ -46,7 +48,7 @@ export default function Form({ team, setTeam }) {
           required={true}
         />
         <label htmlFor="Team">Time</label>
-        <select name="Team" id="Team" placeholder="teste">
+        <select name="Team" id="Team">
           {config.role.map((eRole) => (
             <option value={eRole.name} key={randomID()}>
               {eRole.name}

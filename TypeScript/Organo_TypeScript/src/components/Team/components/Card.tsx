@@ -1,5 +1,11 @@
-export default function Card({ color, name, url, role }) {
+interface CardProps {
+  color: string;
+  name: string;
+  url: string;
+  role: string;
+}
 
+export default function Card({ color, name, url, role }: CardProps) {
   return (
     <div className="card">
       <div className="card_top" style={{ backgroundColor: color }}></div>

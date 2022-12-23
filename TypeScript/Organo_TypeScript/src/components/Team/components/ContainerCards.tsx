@@ -1,13 +1,22 @@
+import { ITeam } from "../../interfaces/ITeam";
 import { randomID } from "../../LocalStorage";
 import Card from "./Card";
 
-export default function ContainerCards({name, color, colorOpacity, team}) {
+interface ContainerCardsProps {
+  name: string;
+  color: string;
+  colorOpacity: string;
+  team: ITeam[];
+}
 
+export default function ContainerCards({
+  name,
+  color,
+  colorOpacity,
+  team,
+}: ContainerCardsProps) {
   return (
-    <div
-      className="Role"
-      style={{ backgroundColor: colorOpacity }}
-    >
+    <div className="Role" style={{ backgroundColor: colorOpacity }}>
       <h2
         style={{
           borderBottomWidth: "4px",
@@ -18,14 +27,14 @@ export default function ContainerCards({name, color, colorOpacity, team}) {
         {name}
       </h2>
       <div className="container_cards">
-        {team.map(({Name, Role, Url}) => {
+        {team.map(({ name, role, url }) => {
           return (
             <Card
               key={randomID()}
               color={color}
-              Name={Name}
-              Role={Role}
-              Url={Url}
+              name={name}
+              role={role}
+              url={url}
             />
           );
         })}
