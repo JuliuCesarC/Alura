@@ -1,9 +1,10 @@
 import config from "../../../config.json";
 import InputText from "../InputText";
-import { AddCollaborator, randomID } from "../LocalStorage";
+import { AddCollaborator } from "../LocalStorage";
 import Button from "../Button";
 import "./Body.css";
 import { ITeam } from "../interfaces/ITeam";
+import InputSelect from "../InputSelect";
 
 interface FormProps {
   setTeam: React.Dispatch<React.SetStateAction<ITeam[]>>
@@ -47,14 +48,7 @@ export default function Form({ setTeam }: FormProps) {
           label="Imagem"
           required={true}
         />
-        <label htmlFor="Team">Time</label>
-        <select name="Team" id="Team">
-          {config.role.map((eRole) => (
-            <option value={eRole.name} key={randomID()}>
-              {eRole.name}
-            </option>
-          ))}
-        </select>
+        <InputSelect allRoles={config.role} />
         <Button type="submit">Criar card</Button>
       </form>
     </main>

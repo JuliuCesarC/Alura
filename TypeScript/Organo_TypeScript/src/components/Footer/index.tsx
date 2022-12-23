@@ -13,7 +13,7 @@ export default function Footer(){
         <div className="logo_footer">
           <img src="img/logo.png" alt="logo site" />
         </div>
-        <div className="owner">Desenvolvido por Alura.</div>
+        <div className="owner">By Alura.</div>
     </div>
   )
 }
