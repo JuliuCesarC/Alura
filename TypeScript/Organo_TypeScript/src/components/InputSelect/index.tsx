@@ -7,15 +7,16 @@ interface InputSelectProps {
     name: string;
     color?: string;
     colorOpacity?: string;
-  }[];
+  }[],
   // Informamos que o 'allRoles' é uma lista de objetos, e cada objeto possui os tres parâmetros informados, sendo 2 deles opcionais. Dessa forma fica bem explicito o que a função espera receber.
+  id: string
 }
 
-export default function InputSelect({ allRoles }: InputSelectProps) {
+export default function InputSelect({ allRoles, id }: InputSelectProps) {
   return (
     <div className="inputSelect">
-      <label htmlFor="Team">Time</label>
-      <select name="Team" id="Team">
+      <label htmlFor={id}>Time</label>
+      <select name={id} id={id}>
         {allRoles.map((eRole) => (
           <option value={eRole.name} key={randomID()}>
             {eRole.name}

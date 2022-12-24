@@ -3,5 +3,6 @@ export interface ITeam{
   role: string,
   url: string,
   team: string,
+  date: string,
   color?: string
 }

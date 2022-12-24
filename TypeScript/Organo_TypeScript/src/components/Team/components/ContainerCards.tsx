@@ -27,7 +27,7 @@ export default function ContainerCards({
         {name}
       </h2>
       <div className="container_cards">
-        {team.map(({ name, role, url }) => {
+        {team.map(({ name, role, url, date }) => {
           return (
             <Card
               key={randomID()}
@@ -35,6 +35,7 @@ export default function ContainerCards({
               name={name}
               role={role}
               url={url}
+              date={date}
             />
           );
         })}

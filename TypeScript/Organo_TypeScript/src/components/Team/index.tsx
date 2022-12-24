@@ -24,7 +24,7 @@ export default function Team({ team }: TeamProps) {
     <div className="card_exposition">
       <h1>Minha Organização:</h1>
       {havePeopleOnTheTeam &&
-        allRoles.map(({ color, colorOpacity, name }) => {
+        allRoles.map(({ color, colorOpacity, name,  }) => {
           if (havePeopleOnTheRole(name)) {
             return (
               <ContainerCards

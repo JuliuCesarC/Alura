@@ -3,10 +3,12 @@ import "./InputText.css"
 interface InputTextProps{
   placeholder: string,
   label: string,
-  required?: boolean
+  id: string,
+  required?: boolean,
+  type?: "text" | "date" | "number" | "password" | "email" | "tel"
 }
 
-export default function InputText({placeholder, label, required = false}: InputTextProps){
+export default function InputText({placeholder, label, id, required = false, type = "text"}: InputTextProps){
   // Como o 'required' foi tipado como opcional, então passamos um valor padrão para ele. 
 
     return (
@@ -14,7 +16,7 @@ export default function InputText({placeholder, label, required = false}: InputT
             <label htmlFor={label}>
                 {label}
             </label>
-            <input required={required} placeholder={placeholder} id={label}/>
+            <input type={type} required={required} placeholder={placeholder} id={id}/>
         </div>
     )
 }

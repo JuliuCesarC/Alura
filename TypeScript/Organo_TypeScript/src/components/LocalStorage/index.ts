@@ -20,13 +20,14 @@ export function LocalStorage() {
   }
   return collaborators;
 }
-export function AddCollaborator({name, role, url, team}: ITeam): void {
+export function AddCollaborator({name, role, url, team, date}: ITeam): void {
   if (!GetLS()) {
     let newLS: ITeam = {
       name,
       role,
       url,
-      team
+      team,
+      date
     };
     SetLS([newLS])
   }else{
@@ -37,7 +38,8 @@ export function AddCollaborator({name, role, url, team}: ITeam): void {
         name,
         role,
         url,
-        team
+        team,
+        date
       };
       addLS.push(newLS)
       SetLS(addLS)
