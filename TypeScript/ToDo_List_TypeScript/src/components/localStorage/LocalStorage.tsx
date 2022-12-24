@@ -1,3 +1,4 @@
+import { IListOfAllTasks, IListOfTasks } from "../interfaces/IListOfAllTasks";
 import { ILocalS } from "../interfaces/ILocalS";
 
 const keyLS = "ToDoList";
@@ -15,8 +16,8 @@ function GetLS(Key: string) {
 function SetLS(Key: string, months: ILocalS[] | ICurrent) {
 	localStorage.setItem(Key, JSON.stringify(months));
 }
-function isThereContentSavedInLS(key: string): boolean{
-	return GetLS(key)? true: false
+function isThereContentSavedInLS(key: string): boolean {
+	return GetLS(key) ? true : false;
 }
 
 export function getListOfAllTasksFromLS(): ILocalS[] {
@@ -36,7 +37,7 @@ export function getListOfAllTasksFromLS(): ILocalS[] {
 			month: "dezembro",
 			listOfAllTasks: [
 				{
-					year: 2022,
+					year: "2022",
 					day: "24",
 					tasks: [{ id: "fe1tilc", cont: "cfhvbjcvbn", check: "working" }],
 				},
@@ -59,113 +60,177 @@ export function getListOfAllTasksFromLS(): ILocalS[] {
 
 export function getCurrentMonthYearDay(): number[] {
 	let currentMYD: ICurrent = {
-			month: new Date().getMonth(),
-			year: new Date().getFullYear(),
-			day: new Date().getDate(),
-		};
-		SetLS(keyCurrent, currentMYD);
-	if(isThereContentSavedInLS(keyCurrent)){
-		let LSC = GetLS(keyCurrent)
-		if(LSC){
+		month: new Date().getMonth(),
+		year: new Date().getFullYear(),
+		day: new Date().getDate(),
+	};
+	SetLS(keyCurrent, currentMYD);
+	if (isThereContentSavedInLS(keyCurrent)) {
+		let LSC = GetLS(keyCurrent);
+		if (LSC) {
 			currentMYD = JSON.parse(LSC);
 		}
 	}
 	return [currentMYD.month, currentMYD.year, currentMYD.day];
-	}
+}
 
-export function prevNextMonth(e) {
-	let crrMonthYear = JSON.parse(localStorage.getItem("currentMYD"));
-	if (e.target.className == "btn-next") {
-		if (crrMonthYear.month == 11) {
+export function prevNextMonth(
+	ePrevNext: React.MouseEvent<HTMLButtonElement, MouseEvent>
+): void {
+	let LSC = GetLS(keyCurrent);
+	if (!LSC) {
+		return;
+	}
+	let crrMonthYear: ICurrent = JSON.parse(LSC);
+	const isTheNextButton: boolean =
+		(ePrevNext.target as HTMLButtonElement).className == "btn-next";
+	const isItDecember: boolean = crrMonthYear.month == 11;
+	const isItJanuary: boolean = crrMonthYear.month == 0;
+
+	if (isTheNextButton) {
+		if (isItDecember) {
 			crrMonthYear.month = 0;
 			crrMonthYear.year += 1;
 		} else {
 			crrMonthYear.month += 1;
 		}
-		localStorage.setItem("currentMYD", JSON.stringify(crrMonthYear));
+		SetLS(keyCurrent, crrMonthYear);
 	} else {
-		if (crrMonthYear.month == 0) {
+		if (isItJanuary) {
 			crrMonthYear.month = 11;
 			crrMonthYear.year -= 1;
 		} else {
 			crrMonthYear.month -= 1;
 		}
-		localStorage.setItem("currentMYD", JSON.stringify(crrMonthYear));
+		SetLS(keyCurrent, crrMonthYear);
 	}
 }
-function selectedDay(month, year, day) {
-	let crrMYD = JSON.parse(localStorage.getItem("currentMYD"));
+export function selectedDay(month: string, year: string, day: string): void {
+	let LSC = GetLS(keyCurrent);
+	if (!LSC) {
+		return;
+	}
+	let crrMYD = JSON.parse(LSC);
 	crrMYD.month = month;
+	0;
 	crrMYD.year = year;
 	crrMYD.day = day;
-	localStorage.setItem("currentMYD", JSON.stringify(crrMYD));
+	SetLS(keyCurrent, crrMYD);
 }
-function addNewTaskLS(month, year, day, TX) {
-	let fullLS = JSON.parse(localStorage.getItem("ToDoList"));
+export function addNewTaskLS(
+	month: string,
+	year: string,
+	day: string,
+	TX: string
+) {
+	let LS = GetLS(keyLS);
+	if (!LS) {
+		return;
+	}
+	let fullLS = JSON.parse(LS);
 	let LSMonth = fullLS[month];
-	let newTask = {
+	let newTask: IListOfAllTasks = {
 		year: year,
 		day: day,
 		tasks: [],
 	};
-	if (!LSMonth.listOfAllTasks) {
+	const isItTheFirstTaskOfTheMonth: boolean = !LSMonth.listOfAllTasks;
+
+	if (isItTheFirstTaskOfTheMonth) {
 		LSMonth.listOfAllTasks = [];
 	}
-	if (
-		!LSMonth.listOfAllTasks.filter((e) => e.year == year && e.day == day)
-			.length < 1
-	) {
+
+	const areThereTasksOnTheSameDay: boolean =
+		LSMonth.listOfAllTasks.filter(
+			(e: IListOfAllTasks) => e.year == year && e.day == day
+		).length > 1;
+
+	if (areThereTasksOnTheSameDay) {
 		newTask = LSMonth.listOfAllTasks.filter(
-			(e) => e.year == year && e.day == day
+			(e: IListOfAllTasks) => e.year == year && e.day == day
 		)[0];
 		newTask.tasks.push({ id: randomID(), cont: TX, check: "working" });
-	} else {
+	}
+	if (!areThereTasksOnTheSameDay) {
 		newTask.tasks.push({ id: randomID(), cont: TX, check: "working" });
 		LSMonth.listOfAllTasks.push(newTask);
 	}
-	localStorage.setItem("ToDoList", JSON.stringify(fullLS));
-	return LocalS;
+	SetLS(keyLS, fullLS);
 }
-function updateTaskLS(month, year, day, ID, TX) {
-	let fullLS = JSON.parse(localStorage.getItem("ToDoList"));
+export function updateTaskLS(
+	month: string,
+	year: string,
+	day: string,
+	ID: string,
+	TX: string
+) {
+	let LS = GetLS(keyLS);
+	if (!LS) {
+		return;
+	}
+	let fullLS = JSON.parse(LS);
 	let LSMonth = fullLS[month].listOfAllTasks;
-	let LSDay = LSMonth.filter((e) => e.year == year && e.day == day)[0].tasks;
-	let LSTask = LSDay.filter((e) => e.id == ID)[0];
+	let LSDay = LSMonth.filter(
+		(e: IListOfAllTasks) => e.year == year && e.day == day
+	)[0].tasks;
+	let LSTask = LSDay.filter((e: IListOfTasks) => e.id == ID)[0];
 	LSTask.cont = TX;
 
-	localStorage.setItem("ToDoList", JSON.stringify(fullLS));
+	SetLS(keyLS, fullLS);
 }
-function switchCheckLS(month, year, day, ID) {
-	let fullLS = JSON.parse(localStorage.getItem("ToDoList"));
+export function switchCheckLS(
+	month: string,
+	year: string,
+	day: string,
+	ID: string
+) {
+	let LS = GetLS(keyLS);
+	if (!LS) {
+		return;
+	}
+	let fullLS = JSON.parse(LS);
 	let task = fullLS[month].listOfAllTasks
-		.filter((e) => e.year == year && e.day == day)[0]
-		.tasks.filter((e) => e.id == ID)[0];
-	if (task.check == "working") {
+		.filter((e: IListOfAllTasks) => e.year == year && e.day == day)[0]
+		.tasks.filter((e: IListOfTasks) => e.id == ID)[0];
+	const taskCompleted: boolean = task.check == "working";
+
+	if (taskCompleted) {
 		task.check = "check";
 	} else {
 		task.check = "working";
 	}
-	localStorage.setItem("ToDoList", JSON.stringify(fullLS));
+
+	SetLS(keyLS, fullLS);
 }
-function deleteTaskLS(month, year, day, ID) {
-	let fullLS = JSON.parse(localStorage.getItem("ToDoList"));
+export function deleteTaskLS(
+	month: string,
+	year: string,
+	day: string,
+	ID: string
+) {
+	let LS = GetLS(keyLS);
+	if (!LS) {
+		return;
+	}
+	let fullLS = JSON.parse(LS);
 	let fullLSWithoutDelTask = fullLS[month].listOfAllTasks
-		.filter((e) => e.year == year && e.day == day)[0]
-		.tasks.filter((e) => e.id != ID);
+		.filter((e: IListOfAllTasks) => e.year == year && e.day == day)[0]
+		.tasks.filter((e: IListOfTasks) => e.id != ID);
 
 	fullLS[month].listOfAllTasks.filter(
-		(e) => e.year == year && e.day == day
+		(e: IListOfAllTasks) => e.year == year && e.day == day
 	)[0].tasks = fullLSWithoutDelTask;
 
-	if (
+	const isTheLastTaskOfTheDay: Boolean =
 		fullLS[month].listOfAllTasks.filter(
-			(e) => e.year == year && e.day == day
-		)[0].tasks.length < 1
-	) {
-		let delTaskDay = fullLS[month].listOfAllTasks.filter(
-			(e) => e.year != year || e.day != day
+			(e: IListOfAllTasks) => e.year == year && e.day == day
+		)[0].tasks.length < 1;
+
+	if (isTheLastTaskOfTheDay) {
+		let removingDayFromHistory = fullLS[month].listOfAllTasks.filter(
+			(e: IListOfAllTasks) => e.year != year || e.day != day
 		);
-		fullLS[month].listOfAllTasks = delTaskDay;
+		fullLS[month].listOfAllTasks = removingDayFromHistory;
 	}
 	localStorage.setItem("ToDoList", JSON.stringify(fullLS));
 }

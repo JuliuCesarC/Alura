@@ -1,9 +1,11 @@
 export interface IListOfAllTasks{
-	 	year: number;
+	 	year: string;
 		day: string;
-		tasks: {
-				id: string;
-				cont: string;
-				check: string;
-		}[];
+		tasks: IListOfTasks[];
+}
+
+export interface IListOfTasks{
+		id: string;
+		cont: string;
+		check: string;
 }
