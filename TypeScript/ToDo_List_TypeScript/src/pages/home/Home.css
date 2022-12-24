@@ -1,0 +1,30 @@
+:root{
+	--bg-pageColor: rgb(36, 41, 49);
+	--primary-color: #90aaa4;
+	--secondary-color: #ffd900;
+	--text-color: #fcfcdd;
+	--text-color-opacity: #fcfcdd60;
+	--border-days-week: #ff0000b3;
+	--bg-input: rgba(137, 170, 164, 0.226);
+
+	--font-title: 'Lobster', cursive;
+	--font-text: 'Varela Round', sans-serif;
+}
+body{
+	background-color: var(--bg-pageColor);
+	background-size: cover;
+	overflow-x: hidden;
+}
+.container{
+	width: 95vw;
+	margin: auto;
+	padding-top: 20px;
+	padding-bottom: 5px;
+	max-width: 900px;
+	display: flex;
+	justify-content: space-around;
+	color: var(--text-color);
+}
+header h1,h2,h3{
+	font-family: var(--font-title);
+}

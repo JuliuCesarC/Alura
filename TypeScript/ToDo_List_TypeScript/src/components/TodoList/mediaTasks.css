@@ -1,0 +1,35 @@
+@media (max-width: 820px){
+	#toDoList{
+		margin: auto;
+		margin-top: 10px;
+		width: 80%;
+		height: 94vh;
+		min-width: unset;
+	}
+
+	#menuBtn{
+		display: block;
+	}
+}
+@media (max-width: 450px){
+	#toDoList{
+		width: 95%;
+	}
+	#Form input{
+		width: 70%;
+	}
+	#Form button{
+		width: 25%;
+	}
+}
+@media (max-width: 305px){
+	#toDoList{
+		width: 100%;
+	}
+	#Form input{
+		width: 60%;
+	}
+	#Form button{
+		width: 30%;
+	}
+}

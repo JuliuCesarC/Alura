@@ -1,0 +1,84 @@
+#Table {
+	background-color: unset;
+	border: 2px solid var(--primary-color);
+	padding: 15px;
+	width: 260px;
+	height: 360px;
+	min-width: 260px;
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+#month {
+	text-transform: uppercase;
+	margin: 0px 7px 0px 7px;
+}
+#Header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: auto;
+	margin-bottom: 20px;
+}
+.btn-next,
+.btn-prev {
+	border: 2px solid var(--primary-color);
+	border-radius: 50%;
+	font-size: larger;
+	background-color: unset;
+	width: 45px;
+	height: 45px;
+	font-family: var(--font-text);
+	transition-property: background-color;
+	transition-duration: 0.1s;
+}
+.btn-next:hover,
+.btn-prev:hover {
+	background-color: var(--primary-color);
+	color: var(--text-color-white);
+}
+#Table table {
+	border-collapse: collapse;
+}
+#Table td {
+	border: 2px solid var(--primary-color);
+	font-family: var(--font-text);
+	text-align: center;
+	height: 35px;
+	width: 40px;
+	transition: outline 0.15s;
+}
+#days td:hover {
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+	outline: 2px solid var(--secondary-color);
+	outline-offset: -3px;
+}
+#daysOfWeek td {
+	border-bottom: 2px solid var(--border-days-week);
+}
+.prevNextMonth {
+	color: var(--text-color-opacity);
+}
+#currentDay {
+	background-color: var(--primary-color);
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+.task {
+	position: relative;
+}
+.task::after {
+	content: "";
+	width: 6px;
+	height: 6px;
+	left: 15px;
+	bottom: -3px;
+	margin: 5px 0px;
+	background-color: var(--primary-color);
+	display: block;
+	position: absolute;
+	border-radius: 50%;
+}
+.task#currentDay::after {
+	background-color: var(--text-color);
+}
