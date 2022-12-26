@@ -1,56 +1,51 @@
 import React, { ReactHTMLElement, useEffect, useState } from "react";
-import { IAllTasks } from "../interfaces/IAllTasks";
+import { IMonthsAndListOfTasks } from "../interfaces/IMonthsAndListOfTasks";
 import "./Days.css";
 import "./mediaDays.css";
-let once = true;
 let crrDay: string;
 
-interface DaysProps{
-	ls: () => IAllTasks[],
-	selectedDay: string,
-	upClass: IAllTasks[]
+interface DaysProps {
+	listOfAllTasks: IMonthsAndListOfTasks[];
+	Month: number;
+	Year: number;
+	selectedDay: () => void;
 }
 
-function Days({ls, selectedDay, upClass}: DaysProps) {
+interface ReactElements {
+	id: string;
+	key: string;
+	className: string;
+	onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+}
+
+function Days({ listOfAllTasks, Month, Year, selectedDay }: DaysProps) {
 	const [trState, setTrState] = useState([]);
 
-	let month = ls()[0];
-	let year = ls()[1];
-	let MONTHS = ls()[2];
-	let upClassTask = upClass;
-	let allTDs = [];
-	let allTRs = [];
+	let allTDs: React.DetailedReactHTMLElement<ReactElements, HTMLElement>[] = [];
+	let allTRs: React.DetailedReactHTMLElement<ReactElements, HTMLElement>[] = [];
 
-	function createDays() {
-		allTDs = [];
-		allTRs = [];
-		month = ls()[0];
-		year = ls()[1];
-		MONTHS = ls()[2];
+	function createCalendarDays() {
+		let fistDayOfWeek: number = new Date(Year, Month, 1).getDay() - 1;
+		let totalDaysInMonth: number = new Date(Year, Month + 1, 0).getDate();
+		let all42CalendarDays: number = -fistDayOfWeek;
 
-		let fistDayOfWeek = new Date(year, month, 1).getDay() - 1;
-		let totalDaysInMonth = new Date(year, month + 1, 0).getDate();
-		let fullMonth = -fistDayOfWeek;
+		for (let index = 1; index <= 42; index++, all42CalendarDays++) {
+			let indexDate: Date = new Date(Year, Month, all42CalendarDays);
+			let Now: Date = new Date();
 
-		for (let index = 1; index <= 42; index++, fullMonth++) {
-			let indexDate = new Date(year, month, fullMonth);
-			let Now = new Date();
+			let calendarDay: number = indexDate.getDate();
+			let tdID: string = "";
+			let tdClass: string = "";
 
-			let tdInnerHTML = indexDate.getDate();
-			let tdID = "";
-			let tdClass = "";
-
-			if (
+			const isTheIndexDayTheCurrentDay: boolean =
 				indexDate.getFullYear() == Now.getFullYear() &&
 				indexDate.getMonth() == Now.getMonth() &&
-				indexDate.getDate() == Now.getDate()
-			) {
-				//Checks if the day is the current day.
+				indexDate.getDate() == Now.getDate();
+
+			if (isTheIndexDayTheCurrentDay) {
 				tdID = "currentDay";
-				crrDay = indexDate.getDate().toString();
 			}
-			if (fullMonth < 1 || fullMonth > totalDaysInMonth) {
-				//Whether the day belongs to the last month or the next month
+			if (all42CalendarDays < 1 || all42CalendarDays > totalDaysInMonth) {
 				tdClass = "prevNextMonth";
 			}
 			if (
@@ -72,15 +67,15 @@ function Days({ls, selectedDay, upClass}: DaysProps) {
 						id: tdID,
 						key: index,
 						className: tdClass,
-						onClick: (e) => selectedDay(month, e.target.innerHTML),
+						onClick: (e) => selectedDay(e.target.innerHTML),
 					},
-					tdInnerHTML
+					calendarDay
 				);
 			} else {
 				TD = React.createElement(
 					"td",
 					{ id: tdID, key: index, className: tdClass },
-					tdInnerHTML
+					calendarDay
 				);
 			}
 			allTDs.push(TD);
@@ -95,7 +90,8 @@ function Days({ls, selectedDay, upClass}: DaysProps) {
 	}
 
 	useEffect(() => {
-		createDays();
+		allTRs = [];
+		createCalendarDays();
 		setTrState(allTRs);
 	}, [month, upClassTask]);
 

@@ -1,6 +1,6 @@
 export interface IListOfAllTasks{
-	 	year: string;
-		day: string;
+	 	year: number;
+		day: number;
 		tasks: IListOfTasks[];
 }
 

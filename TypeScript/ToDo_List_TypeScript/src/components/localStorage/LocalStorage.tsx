@@ -1,5 +1,5 @@
 import { IListOfAllTasks, IListOfTasks } from "../interfaces/IListOfAllTasks";
-import { ILocalS } from "../interfaces/ILocalS";
+import { IMonthsAndListOfTasks } from "../interfaces/IMonthsAndListOfTasks";
 
 const keyLS = "ToDoList";
 const keyCurrent = "currentMYD";
@@ -9,19 +9,19 @@ interface ICurrent {
 	year: number;
 	day: number;
 }
-
+// ------------------------- // -------------------------
 function GetLS(Key: string) {
 	return localStorage.getItem(Key);
 }
-function SetLS(Key: string, months: ILocalS[] | ICurrent) {
+function SetLS(Key: string, months: IMonthsAndListOfTasks[] | ICurrent) {
 	localStorage.setItem(Key, JSON.stringify(months));
 }
 function isThereContentSavedInLS(key: string): boolean {
 	return GetLS(key) ? true : false;
 }
-
-export function getListOfAllTasksFromLS(): ILocalS[] {
-	const months: ILocalS[] = [
+// ------------------------- // -------------------------
+export function getListOfAllTasksFromLS(): IMonthsAndListOfTasks[] {
+	const months: IMonthsAndListOfTasks[] = [
 		{ month: "janeiro" },
 		{ month: "fevereiro" },
 		{ month: "março" },
@@ -37,8 +37,8 @@ export function getListOfAllTasksFromLS(): ILocalS[] {
 			month: "dezembro",
 			listOfAllTasks: [
 				{
-					year: "2022",
-					day: "24",
+					year: 2022,
+					day: 24,
 					tasks: [{ id: "fe1tilc", cont: "cfhvbjcvbn", check: "working" }],
 				},
 			],
@@ -57,8 +57,8 @@ export function getListOfAllTasksFromLS(): ILocalS[] {
 	}
 	return months;
 }
-
-export function getCurrentMonthYearDay(): number[] {
+// ------------------------- // -------------------------
+export function getMonthYear(): number[] {
 	let currentMYD: ICurrent = {
 		month: new Date().getMonth(),
 		year: new Date().getFullYear(),
@@ -71,9 +71,25 @@ export function getCurrentMonthYearDay(): number[] {
 			currentMYD = JSON.parse(LSC);
 		}
 	}
-	return [currentMYD.month, currentMYD.year, currentMYD.day];
+	return [currentMYD.month, currentMYD.year];
 }
-
+// ------------------------- // -------------------------
+export function getDayMonthYearSelected(): number[] {
+	let currentMYD: ICurrent = {
+		month: new Date().getMonth(),
+		year: new Date().getFullYear(),
+		day: new Date().getDate(),
+	};
+	SetLS(keyCurrent, currentMYD);
+	if (isThereContentSavedInLS(keyCurrent)) {
+		let LSC = GetLS(keyCurrent);
+		if (LSC) {
+			currentMYD = JSON.parse(LSC);
+		}
+	}
+	return [currentMYD.day, currentMYD.month, currentMYD.year];
+}
+// ------------------------- // -------------------------
 export function prevNextMonth(
 	ePrevNext: React.MouseEvent<HTMLButtonElement, MouseEvent>
 ): void {
@@ -105,22 +121,23 @@ export function prevNextMonth(
 		SetLS(keyCurrent, crrMonthYear);
 	}
 }
-export function selectedDay(month: string, year: string, day: string): void {
+// ------------------------- // -------------------------
+export function selectedDay(month: number, year: number, day: number): void {
 	let LSC = GetLS(keyCurrent);
 	if (!LSC) {
 		return;
 	}
 	let crrMYD = JSON.parse(LSC);
 	crrMYD.month = month;
-	0;
 	crrMYD.year = year;
 	crrMYD.day = day;
 	SetLS(keyCurrent, crrMYD);
 }
+// ------------------------- // -------------------------
 export function addNewTaskLS(
-	month: string,
-	year: string,
-	day: string,
+	month: number,
+	year: number,
+	day: number,
 	TX: string
 ) {
 	let LS = GetLS(keyLS);
@@ -157,10 +174,11 @@ export function addNewTaskLS(
 	}
 	SetLS(keyLS, fullLS);
 }
+// ------------------------- // -------------------------
 export function updateTaskLS(
-	month: string,
-	year: string,
-	day: string,
+	month: number,
+	year: number,
+	day: number,
 	ID: string,
 	TX: string
 ) {
@@ -178,10 +196,11 @@ export function updateTaskLS(
 
 	SetLS(keyLS, fullLS);
 }
+// ------------------------- // -------------------------
 export function switchCheckLS(
-	month: string,
-	year: string,
-	day: string,
+	month: number,
+	year: number,
+	day: number,
 	ID: string
 ) {
 	let LS = GetLS(keyLS);
@@ -202,10 +221,11 @@ export function switchCheckLS(
 
 	SetLS(keyLS, fullLS);
 }
+// ------------------------- // -------------------------
 export function deleteTaskLS(
-	month: string,
-	year: string,
-	day: string,
+	month: number,
+	year: number,
+	day: number,
 	ID: string
 ) {
 	let LS = GetLS(keyLS);
@@ -234,6 +254,7 @@ export function deleteTaskLS(
 	}
 	localStorage.setItem("ToDoList", JSON.stringify(fullLS));
 }
+// ------------------------- // -------------------------
 function randomID() {
 	return Math.random().toString(36).substring(2, 12);
 }
