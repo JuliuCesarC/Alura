@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IMonthsAndListOfTasks } from "../interfaces/IMonthsAndListOfTasks";
+import { selectedDayLS } from "../localStorage/LocalStorage";
 import "./Days.css";
 import "./mediaDays.css";
+let once: boolean = true
 
 interface DaysProps {
 	listOfAllTasks: IMonthsAndListOfTasks[];
@@ -57,6 +59,12 @@ function CalendarDays({ listOfAllTasks, Month, Year, selectedDay }: DaysProps) {
 			if (dayBelongsToTheNextMonthOrThePreviousMonth) {
 				tdClass = "prevNextMonth";
 				TD = (
+					<td id={tdID} key={index} className={tdClass}>
+						{calendarDay}
+					</td>
+				);
+			} else {
+				TD = (
 					<td
 						id={tdID}
 						key={index}
@@ -65,12 +73,6 @@ function CalendarDays({ listOfAllTasks, Month, Year, selectedDay }: DaysProps) {
 							selectedDay(Number((e.target as HTMLElement).innerHTML))
 						}
 					>
-						{calendarDay}
-					</td>
-				);
-			} else {
-				TD = (
-					<td id={tdID} key={index} className={tdClass}>
 						{calendarDay}
 					</td>
 				);
@@ -90,7 +92,10 @@ function CalendarDays({ listOfAllTasks, Month, Year, selectedDay }: DaysProps) {
 		createCalendarDays();
 		setCalendarWeeks(allTRs);
 	}, [Month, listOfAllTasks]);
-
+if(once){
+	once = false
+	selectedDayLS(new Date().getMonth(), new Date().getFullYear(), new Date().getDate())
+}
 	return <tbody id="days">{calendarWeeks}</tbody>;
 }
 

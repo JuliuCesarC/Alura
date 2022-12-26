@@ -1,4 +1,4 @@
-#Table {
+#Calendar {
 	background-color: unset;
 	border: 2px solid var(--primary-color);
 	padding: 15px;
@@ -36,10 +36,10 @@
 	background-color: var(--primary-color);
 	color: var(--text-color-white);
 }
-#Table table {
+#Calendar table {
 	border-collapse: collapse;
 }
-#Table td {
+#Calendar td {
 	border: 2px solid var(--primary-color);
 	font-family: var(--font-text);
 	text-align: center;

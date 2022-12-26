@@ -33,16 +33,7 @@ export function getListOfAllTasksFromLS(): IMonthsAndListOfTasks[] {
 		{ month: "setembro" },
 		{ month: "outubro" },
 		{ month: "novembro" },
-		{
-			month: "dezembro",
-			listOfAllTasks: [
-				{
-					year: 2022,
-					day: 24,
-					tasks: [{ id: "fe1tilc", cont: "cfhvbjcvbn", check: "working" }],
-				},
-			],
-		},
+		{month: "dezembro",},
 	];
 
 	if (!isThereContentSavedInLS(keyLS)) {
@@ -64,13 +55,13 @@ export function getMonthYear(): number[] {
 		year: new Date().getFullYear(),
 		day: new Date().getDate(),
 	};
-	SetLS(keyCurrent, currentMYD);
 	if (isThereContentSavedInLS(keyCurrent)) {
 		let LSC = GetLS(keyCurrent);
 		if (LSC) {
 			currentMYD = JSON.parse(LSC);
 		}
 	}
+	SetLS(keyCurrent, currentMYD);
 	return [currentMYD.month, currentMYD.year];
 }
 // ------------------------- // -------------------------
@@ -80,13 +71,13 @@ export function getDayMonthYearSelected(): number[] {
 		year: new Date().getFullYear(),
 		day: new Date().getDate(),
 	};
-	SetLS(keyCurrent, currentMYD);
 	if (isThereContentSavedInLS(keyCurrent)) {
 		let LSC = GetLS(keyCurrent);
 		if (LSC) {
 			currentMYD = JSON.parse(LSC);
 		}
 	}
+	SetLS(keyCurrent, currentMYD);
 	return [currentMYD.day, currentMYD.month, currentMYD.year];
 }
 // ------------------------- // -------------------------
@@ -122,7 +113,7 @@ export function prevNextMonth(
 	}
 }
 // ------------------------- // -------------------------
-export function selectedDay(month: number, year: number, day: number): void {
+export function selectedDayLS(month: number, year: number, day: number): void {
 	let LSC = GetLS(keyCurrent);
 	if (!LSC) {
 		return;

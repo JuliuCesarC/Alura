@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Home.css";
 import "./mediaHome.css";
 import CalendarDays from "../../components/calendar/CalendarDays";
@@ -8,7 +8,7 @@ import {
 	getMonthYear,
 	getDayMonthYearSelected,
 	prevNextMonth,
-	selectedDay,
+	selectedDayLS,
 	addNewTaskLS,
 	updateTaskLS,
 	switchCheckLS,
@@ -23,31 +23,30 @@ function App() {
 	const [Day, setDay] = useState(getDayMonthYearSelected()[0]);
 	const [Month, setMonth] = useState<number>(getDayMonthYearSelected()[1]);
 	const [Year, setYear] = useState<number>(getDayMonthYearSelected()[2]);
+	const [MonthCalendar, setMonthCalendar] = useState<number>(getDayMonthYearSelected()[1]);
+	const [YearCalendar, setYearCalendar] = useState<number>(getDayMonthYearSelected()[2]);
 
 	function changeToNextOrPrevMonth(
 		ePrevNext: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	): void {
 		prevNextMonth(ePrevNext);
-		setMonth(getMonthYear()[0]);
-		setYear(getMonthYear()[1]);
+		setMonthCalendar(getMonthYear()[0]);
+		setYearCalendar(getMonthYear()[1]);
 	}
 
 	function selectedDayAndUpdateTaskList(eDay: number): void {
-		selectedDay(Month, Year, eDay);
+		selectedDayLS(MonthCalendar, YearCalendar, eDay);
 		setListOfAllTasks(getListOfAllTasksFromLS());
-		setDay(getDayMonthYearSelected()[0]);
-		setMonth(getDayMonthYearSelected()[1]);
-		setYear(getDayMonthYearSelected()[2]);
+		setDay(eDay);
+		setMonth(MonthCalendar);
+		setYear(YearCalendar);
 	}
 	function updateListOfAllTasks(): void {
 		setListOfAllTasks(getListOfAllTasksFromLS());
 	}
-	useEffect(()=>{
-		selectedDay(new Date().getMonth(), new Date().getFullYear(), new Date().getDate())
-	}, [])
 	return (
 		<div className="container">
-			<div id="Table">
+			<div id="Calendar">
 				<header id="Header">
 					<button
 						className="btn-prev"
@@ -56,7 +55,7 @@ function App() {
 					>
 						&lt;
 					</button>
-					<h2 id="month">{Month}</h2>
+					<h2 id="month">{listOfAllTasks[MonthCalendar].month}</h2>
 					<button
 						className="btn-next"
 						id="Btn-Next"
@@ -79,8 +78,8 @@ function App() {
 					</thead>
 					<CalendarDays
 						listOfAllTasks={listOfAllTasks}
-						Month={Month}
-						Year={Year}
+						Month={MonthCalendar}
+						Year={YearCalendar}
 						selectedDay={selectedDayAndUpdateTaskList}
 					/>
 					<tfoot>
@@ -95,14 +94,14 @@ function App() {
 			<div id="toDoList">
 				<Tasks
 					listOfAllTasks={listOfAllTasks}
+					updateListOfAllTasks={updateListOfAllTasks}
 					addNewTaskLS={addNewTaskLS}
 					switchCheckLS={switchCheckLS}
-					updateListOfAllTasks={updateListOfAllTasks}
 					updateTaskLS={updateTaskLS}
 					deleteTaskLS={deleteTaskLS}
-					DAY={Day}
 					MONTH={Month}
 					YEAR={Year}
+					day={Day}
 				/>
 			</div>
 			<div id="shadow"></div>
