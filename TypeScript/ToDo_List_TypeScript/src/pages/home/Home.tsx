@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Home.css";
 import "./mediaHome.css";
-import Days from "../../components/calendar/Days";
+import CalendarDays from "../../components/calendar/CalendarDays";
 import Tasks from "../../components/TodoList/Tasks";
 import {
 	getListOfAllTasksFromLS,
@@ -23,7 +23,6 @@ function App() {
 	const [Day, setDay] = useState(getDayMonthYearSelected()[0]);
 	const [Month, setMonth] = useState<number>(getDayMonthYearSelected()[1]);
 	const [Year, setYear] = useState<number>(getDayMonthYearSelected()[2]);
-	// const [updateTaskClass, setUpdateTaskClass] = useState([]);
 
 	function changeToNextOrPrevMonth(
 		ePrevNext: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -35,13 +34,17 @@ function App() {
 
 	function selectedDayAndUpdateTaskList(eDay: number): void {
 		selectedDay(Month, Year, eDay);
+		setListOfAllTasks(getListOfAllTasksFromLS());
 		setDay(getDayMonthYearSelected()[0]);
 		setMonth(getDayMonthYearSelected()[1]);
 		setYear(getDayMonthYearSelected()[2]);
 	}
-	function updateListOfAllTasks(eAdd: IMonthsAndListOfTasks[]): void {
-		setListOfAllTasks(eAdd);
+	function updateListOfAllTasks(): void {
+		setListOfAllTasks(getListOfAllTasksFromLS());
 	}
+	useEffect(()=>{
+		selectedDay(new Date().getMonth(), new Date().getFullYear(), new Date().getDate())
+	}, [])
 	return (
 		<div className="container">
 			<div id="Table">
@@ -74,7 +77,7 @@ function App() {
 							<td>S</td>
 						</tr>
 					</thead>
-					<Days
+					<CalendarDays
 						listOfAllTasks={listOfAllTasks}
 						Month={Month}
 						Year={Year}
@@ -91,13 +94,15 @@ function App() {
 			</div>
 			<div id="toDoList">
 				<Tasks
-					ls={LocalS}
-					taskDay={taskDay}
-					add={addNewTaskLS}
-					Switch={switchCheckLS}
-					tAdd={updateAdd}
-					update={updateTaskLS}
-					delete={deleteTaskLS}
+					listOfAllTasks={listOfAllTasks}
+					addNewTaskLS={addNewTaskLS}
+					switchCheckLS={switchCheckLS}
+					updateListOfAllTasks={updateListOfAllTasks}
+					updateTaskLS={updateTaskLS}
+					deleteTaskLS={deleteTaskLS}
+					DAY={Day}
+					MONTH={Month}
+					YEAR={Year}
 				/>
 			</div>
 			<div id="shadow"></div>
