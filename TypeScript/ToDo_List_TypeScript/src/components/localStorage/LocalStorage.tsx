@@ -33,7 +33,7 @@ export function getListOfAllTasksFromLS(): IMonthsAndListOfTasks[] {
 		{ month: "setembro" },
 		{ month: "outubro" },
 		{ month: "novembro" },
-		{month: "dezembro",},
+		{ month: "dezembro" },
 	];
 
 	if (!isThereContentSavedInLS(keyLS)) {
@@ -136,32 +136,31 @@ export function addNewTaskLS(
 		return;
 	}
 	let fullLS = JSON.parse(LS);
-	let LSMonth = fullLS[month];
+	let LSMonth: IMonthsAndListOfTasks = fullLS[month];
 	let newTask: IListOfAllTasks = {
 		year: year,
 		day: day,
 		tasks: [],
 	};
+
 	const isItTheFirstTaskOfTheMonth: boolean = !LSMonth.listOfAllTasks;
 
 	if (isItTheFirstTaskOfTheMonth) {
 		LSMonth.listOfAllTasks = [];
 	}
-
 	const areThereTasksOnTheSameDay: boolean =
-		LSMonth.listOfAllTasks.filter(
+		LSMonth.listOfAllTasks!.filter(
 			(e: IListOfAllTasks) => e.year == year && e.day == day
-		).length > 1;
+		).length > 0;
 
 	if (areThereTasksOnTheSameDay) {
-		newTask = LSMonth.listOfAllTasks.filter(
+		newTask = LSMonth.listOfAllTasks!.filter(
 			(e: IListOfAllTasks) => e.year == year && e.day == day
 		)[0];
 		newTask.tasks.push({ id: randomID(), cont: TX, check: "working" });
-	}
-	if (!areThereTasksOnTheSameDay) {
+	} else {
 		newTask.tasks.push({ id: randomID(), cont: TX, check: "working" });
-		LSMonth.listOfAllTasks.push(newTask);
+		LSMonth.listOfAllTasks!.push(newTask);
 	}
 	SetLS(keyLS, fullLS);
 }

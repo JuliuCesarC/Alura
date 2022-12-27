@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { IMonthsAndListOfTasks } from "../interfaces/IMonthsAndListOfTasks";
-import { selectedDayLS } from "../localStorage/LocalStorage";
-import "./Days.css";
-import "./mediaDays.css";
-let once: boolean = true
+import { IMonthsAndListOfTasks } from "../../interfaces/IMonthsAndListOfTasks";
+import { selectedDayLS } from "../../localStorage/LocalStorage";
+
+let once: boolean = true;
 
 interface DaysProps {
 	listOfAllTasks: IMonthsAndListOfTasks[];
 	Month: number;
 	Year: number;
 	selectedDay: (parameter: number) => void;
+	firstOpenCalendar: () => void
 }
 
-function CalendarDays({ listOfAllTasks, Month, Year, selectedDay }: DaysProps) {
+function CalendarDays({ listOfAllTasks, Month, Year, selectedDay, firstOpenCalendar }: DaysProps) {
 	const [calendarWeeks, setCalendarWeeks] = useState<JSX.Element[]>([]);
 
 	let allTDs: JSX.Element[] = [];
@@ -92,10 +92,18 @@ function CalendarDays({ listOfAllTasks, Month, Year, selectedDay }: DaysProps) {
 		createCalendarDays();
 		setCalendarWeeks(allTRs);
 	}, [Month, listOfAllTasks]);
-if(once){
-	once = false
-	selectedDayLS(new Date().getMonth(), new Date().getFullYear(), new Date().getDate())
-}
+
+	useEffect(()=>{
+		if (once) {
+			once = false;
+			selectedDayLS(
+				new Date().getMonth(),
+				new Date().getFullYear(),
+				new Date().getDate()
+			);
+			firstOpenCalendar()
+		}
+	},[])
 	return <tbody id="days">{calendarWeeks}</tbody>;
 }
 

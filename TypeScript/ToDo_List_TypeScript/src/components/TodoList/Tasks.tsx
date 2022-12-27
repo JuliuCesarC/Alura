@@ -17,38 +17,43 @@ interface TasksProps {
 		TX: string
 	) => void;
 	deleteTaskLS: (month: number, year: number, day: number, ID: string) => void;
-	MONTH: number;
-	YEAR: number;
+	month: number;
+	year: number;
 	day: number;
 }
 
 function Tasks({
 	listOfAllTasks,
+	updateListOfAllTasks,
 	addNewTaskLS,
 	switchCheckLS,
-	updateListOfAllTasks,
 	updateTaskLS,
 	deleteTaskLS,
-	MONTH,
-	YEAR,
+	month,
+	year,
 	day,
 }: TasksProps) {
 	const [listOfTasksToDisplay, setListOfTasksToDisplay] = useState<
 		JSX.Element[]
 	>([]);
 
-	let month = MONTH
-	let year = YEAR
 	let allElements: JSX.Element[] = [];
 
 	if(listOfAllTasks[month].listOfAllTasks){
-		showTasks(listOfAllTasks[month].listOfAllTasks!)
+		showTasks(listOfAllTasks[month].listOfAllTasks!);
 	}
-	// ----- // ------ //
+
+	// -------------------- // -------------------- //
 	function showTasks(LOfAT: IListOfAllTasks[]) {
+		if (!LOfAT) {
+			return;
+		}
 		let allTasksOfTheDay = LOfAT.filter(
 			(e) => e.year == year && e.day == day
 		)[0];
+		if (!allTasksOfTheDay) {
+			return;
+		}
 
 		for (let tasks of allTasksOfTheDay.tasks) {
 			const taskCompleted =
@@ -101,6 +106,22 @@ function Tasks({
 	useEffect(() => {
 		setListOfTasksToDisplay(allElements);
 	}, [day]);
+	// -------------------- // -------------------- //
+	function addNewTask(eAdd: Element | EventTarget) {
+		if (
+			listOfTasksToDisplay.length > 14 ||
+			(eAdd as HTMLInputElement).value.trim() == ""
+		) {
+			return;
+		}
+		addNewTaskLS(month, year, day, (eAdd as HTMLInputElement).value);
+		updateListOfAllTasks();
+		(eAdd as HTMLInputElement).value = "";
+		(eAdd as HTMLInputElement).focus();
+		allElements = [];
+		showTasks(listOfAllTasks[month].listOfAllTasks!);
+		setListOfTasksToDisplay(allElements);
+	}
 	// -------------------- // -------------------- //
 	function openEditMenu(tasks: IListOfTasks, eEdit: ParentNode, ID: string) {
 		let editTx: string = eEdit.children[1].innerHTML;
@@ -210,22 +231,6 @@ function Tasks({
 		setListOfTasksToDisplay(newAllElements);
 	}
 	// -------------------- // -------------------- //
-	function addNewTask(eAdd: Element | EventTarget) {
-		if (
-			listOfTasksToDisplay.length > 14 ||
-			(eAdd as HTMLInputElement).value.trim() == ""
-		) {
-			return;
-		}
-		addNewTaskLS(month, year, day, (eAdd as HTMLInputElement).value);
-		updateListOfAllTasks();
-		(eAdd as HTMLInputElement).value = "";
-		(eAdd as HTMLInputElement).focus();
-		allElements = [];
-		showTasks(listOfAllTasks[month].listOfAllTasks!);
-		setListOfTasksToDisplay(allElements);
-	}
-	// -------------------- // -------------------- //
 	function showMenu() {
 		let Table = document.getElementById("Calendar") as HTMLElement;
 		let Shadow = document.getElementById("shadow") as HTMLElement;
@@ -241,14 +246,14 @@ function Tasks({
 	}
 
 	return (
-		<>
+		<div id="toDoList">
 			<header>
 				<div id="divTop">
 					<div id="menuBtn">
 						<img src="img/menuBtn.png" alt="Botão Menu" onClick={showMenu} />
 					</div>
 					<h3 id="Day">
-						{day}/{month+1}/{year}
+						{day}/{month + 1}/{year}
 					</h3>
 					<h1>ToDo List</h1>
 				</div>
@@ -276,10 +281,8 @@ function Tasks({
 					</button>
 				</div>
 			</header>
-			<div id="tasksTable">
-				{listOfTasksToDisplay}
-			</div>
-		</>
+			<div id="tasksTable">{listOfTasksToDisplay}</div>
+		</div>
 	);
 }
 
