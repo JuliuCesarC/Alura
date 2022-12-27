@@ -3,6 +3,7 @@ import "./Tasks.css";
 import "./mediaTasks.css";
 import { IMonthsAndListOfTasks } from "../interfaces/IMonthsAndListOfTasks";
 import { IListOfAllTasks, IListOfTasks } from "../interfaces/IListOfAllTasks";
+import { getListOfAllTasksFromLS } from "../localStorage/LocalStorage";
 
 interface TasksProps {
 	listOfAllTasks: IMonthsAndListOfTasks[];
@@ -36,11 +37,14 @@ function Tasks({
 	const [listOfTasksToDisplay, setListOfTasksToDisplay] = useState<
 		JSX.Element[]
 	>([]);
+	const [listOfTasksEditMode, setListOfTasksEditMode] = useState<
+		JSX.Element[] | undefined
+	>(undefined);
 
 	let allElements: JSX.Element[] = [];
 
-	if(listOfAllTasks[month].listOfAllTasks){
-		showTasks(listOfAllTasks[month].listOfAllTasks!);
+	if (listOfAllTasks[month].listOfAllTasks) {
+		showTasks(getListOfAllTasksFromLS()[month].listOfAllTasks!);
 	}
 
 	// -------------------- // -------------------- //
@@ -56,16 +60,12 @@ function Tasks({
 		}
 
 		for (let tasks of allTasksOfTheDay.tasks) {
-			const taskCompleted =
-				allTasksOfTheDay.tasks.filter((e) => e.id == tasks.id)[0].check ==
-				"check";
-
 			let working: JSX.Element = React.createElement("div", {
 				className: `check ${tasks.check == "check" ? "checkPin" : ""}`,
 				key: randomID(),
 				onClick: (e: React.MouseEvent) => {
 					switchCheckLS(month, year, day, tasks.id);
-					if (taskCompleted) {
+					if ((e.target as HTMLElement).classList.length > 1) {
 						(e.target as HTMLElement).classList.remove("checkPin");
 					} else {
 						(e.target as HTMLElement).classList.add("checkPin");
@@ -119,7 +119,7 @@ function Tasks({
 		(eAdd as HTMLInputElement).value = "";
 		(eAdd as HTMLInputElement).focus();
 		allElements = [];
-		showTasks(listOfAllTasks[month].listOfAllTasks!);
+		showTasks(getListOfAllTasksFromLS()[month].listOfAllTasks!);
 		setListOfTasksToDisplay(allElements);
 	}
 	// -------------------- // -------------------- //
@@ -149,11 +149,7 @@ function Tasks({
 			{ className: "edit", key: randomID() },
 			React.createElement("img", {
 				onClick: (e: React.MouseEvent) =>
-					updateTask(
-						tasks,
-						(e.target as HTMLElement).parentNode!.parentNode!,
-						ID
-					),
+					updateTask((e.target as HTMLElement).parentNode!.parentNode!, ID),
 				src: "img/editBtn.png",
 			})
 		);
@@ -165,63 +161,18 @@ function Tasks({
 
 		let lineIndex = allElements.findIndex((e) => e.key == ID);
 		allElements[lineIndex] = editLine;
-		setListOfTasksToDisplay(allElements);
+		setListOfTasksEditMode(allElements);
 	}
 	// -------------------- // -------------------- //
-	function updateTask(tasks: IListOfTasks, eUpdate: ParentNode, ID: string) {
+	function updateTask(eUpdate: ParentNode, ID: string) {
 		let updateTx: string = (eUpdate.children[1].children[0] as HTMLInputElement)
 			.value;
-		let allTasksOfTheDay = listOfAllTasks[month].listOfAllTasks!.filter(
-			(e) => e.year == year && e.day == day
-		)[0];
-
-		let working: JSX.Element = React.createElement("div", {
-			className: `check ${tasks.check == "check" ? "checkPin" : ""}`,
-			key: randomID(),
-			onClick: (e: React.MouseEvent) => {
-				switchCheckLS(month, year, day, tasks.id);
-				if (
-					allTasksOfTheDay.tasks.filter((e) => e.id == tasks.id)[0].check ==
-					"check"
-				) {
-					(e.target as HTMLElement).classList.remove("checkPin");
-				} else {
-					(e.target as HTMLElement).classList.add("checkPin");
-				}
-			},
-		});
-
-		let contentTx: JSX.Element = React.createElement(
-			"div",
-			{
-				className: "content",
-				key: randomID(),
-			},
-			tasks.cont
-		);
-		let edit: JSX.Element = React.createElement(
-			"div",
-			{ className: "edit", key: randomID() },
-			React.createElement("img", {
-				src: "img/editBtn.png",
-				onClick: (e: React.MouseEvent) =>
-					openEditMenu(
-						tasks,
-						(e.target as HTMLElement).parentNode!.parentNode!,
-						tasks.id
-					),
-			})
-		);
-		let updateLine: JSX.Element = React.createElement(
-			"div",
-			{ key: tasks.id, className: "line" },
-			[working, contentTx, edit]
-		);
 
 		updateTaskLS(month, year, day, ID, updateTx);
-		let lineIndex: number = allElements.findIndex((e) => e.key == ID);
-		allElements[lineIndex] = updateLine;
+		allElements = [];
+		showTasks(getListOfAllTasksFromLS()[month].listOfAllTasks!);
 		setListOfTasksToDisplay(allElements);
+		setListOfTasksEditMode(undefined);
 	}
 	// -------------------- // -------------------- //
 	function deleteTask(ID: string) {
@@ -281,7 +232,9 @@ function Tasks({
 					</button>
 				</div>
 			</header>
-			<div id="tasksTable">{listOfTasksToDisplay}</div>
+			<div id="tasksTable">
+				{listOfTasksEditMode ? listOfTasksEditMode : listOfTasksToDisplay}
+			</div>
 		</div>
 	);
 }
