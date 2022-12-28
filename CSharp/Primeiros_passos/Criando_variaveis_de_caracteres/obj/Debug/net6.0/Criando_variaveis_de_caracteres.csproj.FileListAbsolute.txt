@@ -1,0 +1,15 @@
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\bin\Debug\net6.0\Criando_variaveis_de_caracteres.exe
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\bin\Debug\net6.0\Criando_variaveis_de_caracteres.deps.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\bin\Debug\net6.0\Criando_variaveis_de_caracteres.runtimeconfig.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\bin\Debug\net6.0\Criando_variaveis_de_caracteres.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\bin\Debug\net6.0\Criando_variaveis_de_caracteres.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.csproj.AssemblyReference.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.AssemblyInfoInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.AssemblyInfo.cs
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.csproj.CoreCompileInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\refint\Criando_variaveis_de_caracteres.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\Criando_variaveis_de_caracteres.genruntimeconfig.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis_de_caracteres\obj\Debug\net6.0\ref\Criando_variaveis_de_caracteres.dll
