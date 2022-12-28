@@ -1,0 +1,15 @@
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\bin\Debug\net6.0\Criando_variaveis.exe
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\bin\Debug\net6.0\Criando_variaveis.deps.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\bin\Debug\net6.0\Criando_variaveis.runtimeconfig.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\bin\Debug\net6.0\Criando_variaveis.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\bin\Debug\net6.0\Criando_variaveis.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.csproj.AssemblyReference.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.AssemblyInfoInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.AssemblyInfo.cs
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.csproj.CoreCompileInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\refint\Criando_variaveis.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\Criando_variaveis.genruntimeconfig.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Criando_variaveis\obj\Debug\net6.0\ref\Criando_variaveis.dll
