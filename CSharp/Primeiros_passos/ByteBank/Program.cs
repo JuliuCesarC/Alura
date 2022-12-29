@@ -1,36 +1,42 @@
-using ByteBank;
+using ByteBank.Contas;
+using ByteBank.Titular;
 
+// -------------------- ERRO DE REFERENCIA NULA --------------------
+// Quando temos uma classe, que um dos seus campos faz referencia a outra classe, somos obrigados a criar uma instancia para as 2 classes, e não apenas à classe "pai". Podemos criar uma instancia diretamente, atribuir valores a ela, e depois atribuir essa instancia à variável, como vemos abaixo:
+Cliente dadosJão = new Cliente();
+dadosJão.nome = "Jão Marques";
+dadosJão.cpf = "111.222.333-44";
+dadosJão.profissao = "Dev";
 ContaCorrente contaJão = new ContaCorrente();
-
-contaJão.titular = "Jão Marques";
-contaJão.numero_agencia = 15;
+// Apos criar os valores para a instancia 'Cliente', atribuímos ela para o campo 'titular'.
+contaJão.titular = dadosJão;
+contaJão.Numero_agencia = 15;
 contaJão.conta = "1010-X";
-contaJão.saldo = 100;
-
-ContaCorrente conta3 = contaJão;
-conta3.saldo = 1000;
-Console.WriteLine("saldo jão: "+ contaJão.saldo);
-Console.WriteLine("saldo 3: "+ conta3.saldo);
-
-Console.WriteLine("Saldo da conta de "+contaJão.titular+": "+contaJão.saldo);
-contaJão.Depositar(150);
-
-Console.WriteLine("Saldo apos o deposito: "+contaJão.saldo);
-
-
-Console.WriteLine("Sacando 70 reais: "+ contaJão.Sacar(70) + ", saldo= "+contaJão.saldo);
-
-Console.WriteLine("Sacando 200 reais: "+ contaJão.Sacar(200)+", saldo= " + contaJão.saldo);
-
+contaJão.setSaldo(100);
+// Outra maneira é criando uma instancia diretamente na declaração da variável, e fazer o encadeamento para atribuir os valores nos campos dessa classe, como foi feito abaixo:
 ContaCorrente contaMaria = new ContaCorrente();
-contaMaria.titular = "Maria Silva";
-contaMaria.numero_agencia = 17;
+contaMaria.titular = new Cliente();
+contaMaria.titular.nome = "Maria silva";
+// Para acessar a variável 'nome', fazemos o encadeamento 'contaMaria.titular.nome'.
+contaMaria.titular.cpf = "121.222.313-44";
+contaMaria.titular.profissao = "Design";
+contaMaria.Numero_agencia = 17;
 contaMaria.conta = "1310-5";
-contaMaria.saldo = 350;
+contaMaria.setSaldo(350);
 
-Console.WriteLine("Saldo da conta de "+contaMaria.titular +": "+contaMaria.saldo);
+Console.WriteLine("Numero da agencia Jão: "+ contaJão.Numero_agencia);
+//Console.WriteLine("Saldo da conta de "+contaJão.titular.nome+": "+contaJão.getSaldo());
+//contaJão.Depositar(150);
+//Console.WriteLine("Saldo apos o deposito: "+contaJão.getSaldo());
 
-contaJão.Transferir(80, contaMaria);
-Console.WriteLine("Saldo da conta de "+contaJão.titular +" apos transferência: "+contaJão.saldo);
-Console.WriteLine("Saldo da conta de "+contaMaria.titular +" apos deposito: "+contaMaria.saldo);
+
+//Console.WriteLine("Sacando 70 reais: "+ contaJão.Sacar(70) + ", saldo= "+contaJão.getSaldo());
+//Console.WriteLine("Sacando 200 reais: "+ contaJão.Sacar(200)+", saldo= " + contaJão.getSaldo());
+
+
+
+//Console.WriteLine("Saldo da conta de "+contaMaria.titular.nome + ": "+contaMaria.getSaldo());
+//contaJão.Transferir(80, contaMaria);
+//Console.WriteLine("Saldo da conta de "+contaJão.titular.nome + " apos transferência: "+contaJão.getSaldo());
+//Console.WriteLine("Saldo da conta de "+contaMaria.titular.nome + " apos deposito: "+contaMaria.getSaldo());
 
