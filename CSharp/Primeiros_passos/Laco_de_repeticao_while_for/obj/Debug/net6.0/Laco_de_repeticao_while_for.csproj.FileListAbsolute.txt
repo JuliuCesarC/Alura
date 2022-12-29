@@ -1,0 +1,15 @@
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\bin\Debug\net6.0\Laco_de_repeticao_while_for.exe
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\bin\Debug\net6.0\Laco_de_repeticao_while_for.deps.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\bin\Debug\net6.0\Laco_de_repeticao_while_for.runtimeconfig.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\bin\Debug\net6.0\Laco_de_repeticao_while_for.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\bin\Debug\net6.0\Laco_de_repeticao_while_for.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.csproj.AssemblyReference.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.AssemblyInfoInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.AssemblyInfo.cs
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.csproj.CoreCompileInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\refint\Laco_de_repeticao_while_for.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\Laco_de_repeticao_while_for.genruntimeconfig.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\Laco_de_repeticao_while_for\obj\Debug\net6.0\ref\Laco_de_repeticao_while_for.dll
