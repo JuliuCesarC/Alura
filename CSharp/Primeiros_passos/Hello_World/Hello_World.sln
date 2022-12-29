@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Criando_variaveis_numericas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Criando_variaveis_boolianas", "..\Criando_variaveis_boolianas\Criando_variaveis_boolianas.csproj", "{09D47406-C38A-41B2-AA15-2338B94AA6D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Laco_de_repeticao_while_for", "..\Laco_de_repeticao_while_for\Laco_de_repeticao_while_for.csproj", "{F44143AF-2A2D-4432-ADC7-FEC9C82EDAF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{09D47406-C38A-41B2-AA15-2338B94AA6D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09D47406-C38A-41B2-AA15-2338B94AA6D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09D47406-C38A-41B2-AA15-2338B94AA6D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44143AF-2A2D-4432-ADC7-FEC9C82EDAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F44143AF-2A2D-4432-ADC7-FEC9C82EDAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F44143AF-2A2D-4432-ADC7-FEC9C82EDAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F44143AF-2A2D-4432-ADC7-FEC9C82EDAF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

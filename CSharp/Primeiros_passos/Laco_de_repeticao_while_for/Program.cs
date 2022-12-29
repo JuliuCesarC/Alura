@@ -32,19 +32,21 @@ class Program
       Console.WriteLine("Segundo investimento no mês " + mes2 + " rendeu: " + investimento2.ToString("N2"));
     }
 
-    double fatorDeRendimento = 1.001;
+    double fatorDeRendimento = 1.005;
     double investimento3 = 10000;
 
     for( int anos = 1; anos <= 5; anos++ )
     {
       for( int mes3 = 1; mes3 <= 12; mes3++ )
       {
+        if(investimento3 > 12000)
+        break;
+        // O 'break' serve para quebrar um laço de loop de acordo com alguma condição.
         investimento3 *= fatorDeRendimento;
       }
       Console.WriteLine("Rendimento no ano " + anos + " ficou em: " + investimento3.ToString("N2"));
       fatorDeRendimento += 0.0005;
     }
-
     Console.WriteLine("Pressione qualquer tecla para sair...");
     Console.ReadLine();
   }
