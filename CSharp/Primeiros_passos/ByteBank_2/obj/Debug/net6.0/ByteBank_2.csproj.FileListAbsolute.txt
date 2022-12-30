@@ -1,0 +1,15 @@
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\bin\Debug\net6.0\ByteBank_2.exe
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\bin\Debug\net6.0\ByteBank_2.deps.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\bin\Debug\net6.0\ByteBank_2.runtimeconfig.json
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\bin\Debug\net6.0\ByteBank_2.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\bin\Debug\net6.0\ByteBank_2.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.csproj.AssemblyReference.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.AssemblyInfoInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.AssemblyInfo.cs
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.csproj.CoreCompileInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\refint\ByteBank_2.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ByteBank_2.genruntimeconfig.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\Primeiros_Passos\ByteBank_2\obj\Debug\net6.0\ref\ByteBank_2.dll

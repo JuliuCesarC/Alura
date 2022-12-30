@@ -10,6 +10,7 @@ class Program
     short mes = 1;
 
     while( mes <= meses )
+    // // snippet "while"
     {
       investimento += investimento * rendimento;
       Console.WriteLine("Rendimento no mês " + mes + " ficou em: " + investimento.ToString("N2"));
@@ -26,6 +27,7 @@ class Program
     float rendimentoSimplificado = 1.005f;
 
     for( int mes2 = 1; mes2 <= meses; mes2++ )
+    // // snippet "for"
     {
       // Diferente do while, as condições para o laço ficam na declaração do mesmo.
       investimento2 *= rendimentoSimplificado;
