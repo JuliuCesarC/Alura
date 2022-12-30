@@ -17,7 +17,8 @@ namespace ByteBank_2.Employees
       this.Name = name;
       this.CPF = cpf;
     }
-    public double getBonus()
+    public virtual double GetBonus()
+    // O modificador 'virtual' indica que esse método pode ser sobrescrito pela classe(Manager) que herdara esta Classe(Employee).
     {
       return this.Salary * 0.10;
     }
