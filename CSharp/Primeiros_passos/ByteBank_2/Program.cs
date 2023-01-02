@@ -1,24 +1,59 @@
 using ByteBank_2.Employees;
+using ByteBank_2.InternalSystem;
 using ByteBank_2.Utils;
 
-Employee Barbosa = new Employee("Barbosa", "111.222.333-44", 2990);
-Console.WriteLine("Salario de Barbosa: "+ Barbosa.Salary);
+#region Aula_01
+//Employee Barbosa = new Employee("Barbosa", "111.222.333-44", 2990);
+//Console.WriteLine("Salario de Barbosa: "+ Barbosa.Salary);
 
-Manager Sofia = new Manager("Sofia", "313.646.979-55", 8450);
-Console.WriteLine("Salario de Sofia: "+ Sofia.Salary);
+//Manager Sofia = new Manager("Sofia", "313.646.979-55");
+//Console.WriteLine("Salario de Sofia: "+ Sofia.Salary);
 
-Console.WriteLine("Bonificação de Natal: "+ Barbosa.GetBonus());
-Console.WriteLine("Bonificação de Natal para Gerente: " + Sofia.GetBonus());
+//Console.WriteLine("Bonificação de Natal: "+ Barbosa.GetBonus());
+//Console.WriteLine("Bonificação de Natal para Gerente: " + Sofia.GetBonus());
 
-BonusManagement management = new BonusManagement();
-management.Register(Barbosa);
-management.Register(Sofia);
+//BonusManagement management = new BonusManagement();
+//management.Register(Barbosa);
+//management.Register(Sofia);
 
-Console.WriteLine("Total de bonificação de Natal: " + management.TotalBonus);
-System.Console.WriteLine("Total de funcionários: " + Employee.TotalNumberEmployees);
+//Console.WriteLine("Total de bonificação de Natal: " + management.TotalBonus);
+//System.Console.WriteLine("Total de funcionários: " + Employee.TotalNumberEmployees);
 
-Barbosa.IncreaseSalary();
-Sofia.IncreaseSalary();
+//Barbosa.IncreaseSalary();
+//Sofia.IncreaseSalary();
 
-Console.WriteLine("Novo salario de Barbosa: "+ Barbosa.Salary);
-Console.WriteLine("Novo salario de Sofia: "+ Sofia.Salary);
+//Console.WriteLine("Novo salario de Barbosa: "+ Barbosa.Salary);
+//Console.WriteLine("Novo salario de Sofia: "+ Sofia.Salary);
+#endregion
+
+#region Aula_02
+
+// SalaryBonusCalculator();
+void SalaryBonusCalculator()
+{
+  BonusManagement management = new BonusManagement();
+
+  Designer Gabriel = new Designer("Gabriel", "689.561.988-75");
+  AccountManager Jennifer = new AccountManager("Jennifer", "468.532.597-15", "123456");
+  AccountAssistant Nacimento = new AccountAssistant("Nacimento", "651.234.787-56");
+  Director Felipe = new Director("Felipe", "216.489.863-44", "123456");
+
+  management.Register(Gabriel);
+  management.Register(Jennifer);
+  management.Register(Nacimento);
+  management.Register(Felipe);
+
+  System.Console.WriteLine("Total de bonificação: "+ management.TotalBonus);
+}
+LogIntoSystem();
+void LogIntoSystem()
+{
+  AccountManager Pedro = new AccountManager("Pedro", "354.891.654-78", "123456");
+  AccountManager Giovana = new AccountManager("Giovana", "987.546.168-49", "123456");
+  InternalSystem system = new InternalSystem();
+
+  system.Login(Pedro, "123456");
+  system.Login(Giovana, "12345");
+}
+
+#endregion
