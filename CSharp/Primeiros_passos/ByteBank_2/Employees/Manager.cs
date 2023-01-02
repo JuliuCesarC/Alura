@@ -12,8 +12,8 @@ namespace ByteBank_2.Employees
   internal class Manager: Employee
   {
     // Lembrando que o método construtor não é herdado, então precisamos sobrescrever o construtor. Abaixo temos uma maneira para resolver esse problema.
-    public Manager(string name, string cpf) : base(name, cpf)
-    // Mais abaixo explicaremos mais sobre o "base", mas para este contexto ele permite acessar os 2 campos que são exigidos pelo construtor da superClasse. Com isso não sendo obrigatório rescrever os códigos dentro do construtor.
+    public Manager(string name, string cpf, double salary) : base(name, cpf, salary)
+    // Mais abaixo explicaremos mais sobre o "base", mas para este contexto ele permite acessar os 2 campos que são exigidos pelo construtor na superClasse. Com isso enviamos para o construtor da classePai os 2 paramentos recebidos nesta classe.
     {
     }
     // Caso seja necessario que o método herdado seja diferente da classe base, precisamos sobrescrever o método, como foi feito abaixo:
@@ -30,7 +30,12 @@ namespace ByteBank_2.Employees
     {
       return this.Salary + base.GetBonus();
       // --------------- BASE
-      // A palavra reservada 'base' permite acessar os métodos, campos, propriedades da superClasse em uma classe derivada. Com isso podemos executar métodos da classePai dentro da classeFilha, e como vimos acima, podemos acessar os campos na declaração do método construtor.
+      // A palavra reservada 'base' permite acessar os métodos, campos, propriedades da superClasse em uma classe derivada. Com isso podemos executar métodos da classePai dentro da classeFilha, e como vimos acima, podemos acessar os campos e enviar pera eles os parâmetros exigidos na superClasse. 
+    }
+
+    public override void IncreaseSalary()
+    {
+      this.Salary *= 1.15;
     }
   }
 }
