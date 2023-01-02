@@ -1,3 +1,4 @@
+using ByteBank_2.InternalSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,16 +45,10 @@ namespace ByteBank_2.Employees
   #endregion
 
   #region Aula_02
-  public class Director: Employee
+  public class Director: SystemAccess
   {
-    private string Password { get; set; }
-    public Director(string name, string cpf, string password) : base(name, cpf, 5000)
+    public Director(string name, string cpf) : base(name, cpf, 5000)
     {
-      this.Password = password;
-    }
-    public bool Authenticate(string password)
-    {
-      return this.Password == password;
     }
     public override double GetBonus()
     {

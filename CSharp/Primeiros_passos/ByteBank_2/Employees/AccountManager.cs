@@ -1,3 +1,4 @@
+using ByteBank_2.InternalSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +7,10 @@ using System.Threading.Tasks;
 
 namespace ByteBank_2.Employees
 {
-  public class AccountManager: Employee
+  public class AccountManager: SystemAccess
   {
-    private string Password { get; set; }
-    public AccountManager(string name, string cpf, string password) : base(name, cpf, 4000)
+    public AccountManager(string name, string cpf) : base(name, cpf, 4000)
     {
-      Password = password;
-    }
-    public bool Authenticate(string password)
-    {
-      return this.Password == password;
     }
     public override double GetBonus()
     {

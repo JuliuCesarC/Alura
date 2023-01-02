@@ -1,3 +1,4 @@
+using ByteBank_2.CommercialPartners;
 using ByteBank_2.Employees;
 using ByteBank_2.InternalSystem;
 using ByteBank_2.Utils;
@@ -34,9 +35,9 @@ void SalaryBonusCalculator()
   BonusManagement management = new BonusManagement();
 
   Designer Gabriel = new Designer("Gabriel", "689.561.988-75");
-  AccountManager Jennifer = new AccountManager("Jennifer", "468.532.597-15", "123456");
+  AccountManager Jennifer = new AccountManager("Jennifer", "468.532.597-15");
   AccountAssistant Nacimento = new AccountAssistant("Nacimento", "651.234.787-56");
-  Director Felipe = new Director("Felipe", "216.489.863-44", "123456");
+  Director Felipe = new Director("Felipe", "216.489.863-44");
 
   management.Register(Gabriel);
   management.Register(Jennifer);
@@ -48,12 +49,20 @@ void SalaryBonusCalculator()
 LogIntoSystem();
 void LogIntoSystem()
 {
-  AccountManager Pedro = new AccountManager("Pedro", "354.891.654-78", "123456");
-  AccountManager Giovana = new AccountManager("Giovana", "987.546.168-49", "123456");
   InternalSystem system = new InternalSystem();
+
+  AccountManager Pedro = new AccountManager("Pedro", "354.891.654-78");
+  Pedro.Password = "123456";
+  AccountManager Giovana = new AccountManager("Giovana", "987.546.168-49");
+  Giovana.Password = "123456";
+
+  CommercialPartner Marcela = new CommercialPartner();
+  Marcela.Password = "456789";
+
 
   system.Login(Pedro, "123456");
   system.Login(Giovana, "12345");
+  system.Login(Marcela, "456789");
 }
 
 #endregion
