@@ -9,7 +9,8 @@ namespace ByteBank
     public Cliente Titular { get; set; }
     public static double TaxaOperacao { get; private set; }
     public static int TotalDeContasCriadas { get; private set; }
-
+    public int ContadorSaquesNaoPermitidos { get; private set; }
+    public int ContadorTransferenciaNaoPermitidas { get; private set; }
     private int _agencia;
     public ContaCorrente(int agencia, int numero)
     {
@@ -17,9 +18,11 @@ namespace ByteBank
       Numero = numero;
 
       // -------------------- THROW --------------------
+      // O 'throw' é responsável por indicar uma ocorrência de uma exceção, podemos informar uma mensagem para o erro, o nome da propriedade que ocorreu essa exceção, entre outros.
       if( agencia <= 0)
       {
         throw new ArgumentException("Agencia precisa ser maior que 0.", nameof(agencia));
+        // Primeiro informamos o tipo da exceção, e depois as informação dela.
       }
       if (numero <= 0)
       {
@@ -73,15 +76,16 @@ namespace ByteBank
         _saldo = value;
       }
     }
-    public bool Sacar(double valor)
+    public void Sacar(double valor)
     {
       if (_saldo < valor)
       {
-        return false;
+        ContadorSaquesNaoPermitidos++;
+        throw new SaldoInsuficienteException("Saldo insuficiente para saque de: "+ valor);
       }
 
       _saldo -= valor;
-      return true;
+
     }
 
     public void Depositar(double valor)
@@ -92,11 +96,12 @@ namespace ByteBank
 
     public bool Transferir(double valor, ContaCorrente contaDestino)
     {
-      if (_saldo < valor)
-      {
-        return false;
+      try{
+        Sacar(valor);
+      }catch (SaldoInsuficienteException err) {
+        ContadorTransferenciaNaoPermitidas++;
+        throw new OperacaoFinanceiraException("Operação não realizada.", err);
       }
-
       _saldo -= valor;
       contaDestino.Depositar(valor);
       return true;
