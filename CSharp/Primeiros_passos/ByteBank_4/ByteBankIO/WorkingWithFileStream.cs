@@ -11,7 +11,6 @@ partial class Program
     using( var fileStream = new FileStream(fileAddress, FileMode.Open) )
     {
       var numberOfBytes = -1;
-
       var buffer = new byte[1024];
 
       while( numberOfBytes != 0 )
@@ -19,7 +18,6 @@ partial class Program
         numberOfBytes = fileStream.Read(buffer, 0, 1024);
         WriteBuffer(buffer, numberOfBytes);
       }
-
       fileStream.Close();
       Console.ReadLine();
     }

@@ -1,7 +1,8 @@
+using ByteBankIO;
+using System;
+using System.Text;
+
 #region Aula_01
-//     using ByteBankIO;
-// using System;
-// using System.Text;
 
 // class Program
 // {
@@ -36,9 +37,6 @@
 #endregion
 
 #region Aula_02
-//     using ByteBankIO;
-// using System;
-// using System.Text;
 
 // class Program
 // {
@@ -83,9 +81,6 @@
 #endregion
 
 #region Using
-//     using ByteBankIO;
-// using System;
-// using System.Text;
 
 // class Program
 // {
@@ -128,9 +123,6 @@
 #endregion
 
 #region Aula_03
-//using ByteBankIO;
-//using System;
-//using System.Text;
 
 //class Program
 //{
@@ -171,43 +163,106 @@
 #endregion
 
 #region Aula_04
-using ByteBankIO;
-using System;
-using System.Text;
 
-// -------------------- ORGANIZANDO O CÓDIGO --------------------
-// Para melhorar a legibilidade, a manutenção, e/ou apenas organizar uma classe, podemos dividi-la em vários arquivos, apenas é necessario adicionar o modificador 'partial' antes de 'class', como foi feito abaixo.
+//// -------------------- ORGANIZANDO O CÓDIGO --------------------
+//// Para melhorar a legibilidade, a manutenção, e/ou apenas organizar uma classe, podemos dividi-la em vários arquivos, apenas é necessario adicionar o modificador 'partial' antes de 'class', como foi feito abaixo.
+//partial class Program
+//// Com isso o compilador do C# entendera todas as classes com 'partial' e de mesmo nome, como sendo uma única classe.
+//{
+//  static void Main(string[] args)
+//  {
+//    var fileAddress = "contas.txt";
+
+//    using( var fileStream = new FileStream(fileAddress, FileMode.Open) )
+//    {
+//      var reader = new StreamReader(fileStream);
+//      // O 'StreamReader' é uma classe intermediaria que faz a leitura dos bytes do fluxo de dados(fileStream), é possível ler só uma linha, um fragmento, ou até mesmo um arquivo inteiro com os métodos do 'StreamReader'.
+
+//      var first = reader.Read();
+//      // O 'Read' ira ler o primeiro byte do arquivo.
+
+//      var line = reader.ReadLine();
+//      // O 'ReadLine' como sugere, ira ler uma linha do arquivo.
+
+//      var allText = reader.ReadToEnd();
+//      // O 'ReadToEnd' ira ler o arquivo inteiro. Porem como vimos nas aulas anteriores, ler um arquivo por inteiro pode ser um problema se esse arquivo for muito grande. Se esse for o caso o 'StreamReader' possui outros métodos que serão melhores.
+
+//      while( !reader.EndOfStream )
+//      // O 'EndOfStream' significa o fim do fluxo de dados, então podemos utilizar ele como condição para um laço de loop, aliado com o 'ReadLine' abaixo.
+//      {
+//        var line2 = reader.ReadLine();
+//        // Dessa forma ele ira carregar e imprimir uma linha por vez no console, repetindo isso até o final do arquivo. Evitando assim ter que carregar um arquivo inteiro.
+//        Console.WriteLine(line2);
+//      }
+
+//    }
+
+//    Console.ReadLine();
+//  }
+//}
+#endregion
+
+#region Aula_05
+
+//partial class Program
+//{
+//  static void Main(string[] args)
+//  {
+//    var fileAddress = "contas.txt";
+
+//    using( var fileStream = new FileStream(fileAddress, FileMode.Open) )
+//    {
+//      var reader = new StreamReader(fileStream);
+
+//      while( !reader.EndOfStream )
+//      {
+//        var line = reader.ReadLine();
+//        var contaCorrente = StringToCheckingAccount(line);
+//        Console.WriteLine($"{contaCorrente.Titular.Nome}: num da conta {contaCorrente.Numero}, agencia {contaCorrente.Agencia}, saldo {contaCorrente.Saldo}");
+//      }
+//    }
+//    Console.ReadLine();
+//  }
+
+//  static ContaCorrente StringToCheckingAccount(string line)
+//  {
+//    // -------------------- ARQUIVO CSV
+//    // Arquivos csv(comma-separated values) ou na tradução "valores separados por virgula", é um tipo de arquivos muito utilizados, um exemplo muito conhecido é o editor de planilhas Excel que utiliza esse formato. Neste projeto temos as contas dos clientes do ByteBank também nesse formato, exemplo abaixo:
+//    // 353,3477,2345.84,Danilo
+
+//    var field = line.Split(',');
+//    // O método 'Split' ira separar a linha em partes onde ocorre o caractere virgula "," como mostra um exemplo de conta no comentário acima.
+
+//    // O arquivo sera separado em 4 partes, cada um sendo uma informação da conta.
+//    var bankBranchNumber = field[0];
+//    var accountNumber = field[1];
+//    var balance = field[2].Replace('.', ',');
+//    // Como o saldo da conta esta utilizando o ponto "." para separar os centavos, precisamos substituir ele por virgula ",", pois abaixo iremos converter o saldo para 'double'.
+//    var cardholderName = field[3];
+
+//    var bankBranchNumberToInt = int.Parse(bankBranchNumber);
+//    var accountNumberToInt = int.Parse(accountNumber);
+//    var balanceToDouble = double.Parse(balance);
+
+//    var cardholder = new Cliente();
+//    cardholder.Nome = cardholderName;
+
+//    var account = new ContaCorrente(bankBranchNumberToInt, accountNumberToInt);
+//    account.Depositar(balanceToDouble);
+//    account.Titular = cardholder;
+
+//    return account;
+//  }
+//}
+#endregion
+
+#region Aula_06
+
 partial class Program
-// Com isso o compilador do C# entendera todas as classes com 'partial' e de mesmo nome, como sendo uma única classe.
 {
   static void Main(string[] args)
   {
-    var fileAddress = "contas.txt";
-
-    using( var fileStream = new FileStream(fileAddress, FileMode.Open) )
-    {
-      var reader = new StreamReader(fileStream);
-      // O 'StreamReader' é uma classe intermediaria que faz a leitura dos bytes do fluxo de dados(fileStream), é possível ler só uma linha, um fragmento, ou até mesmo um arquivo inteiro com os métodos do 'StreamReader'.
-
-      var first = reader.Read();
-      // O 'Read' ira ler o primeiro byte do arquivo.
-
-      var line = reader.ReadLine();
-      // O 'ReadLine' como sugere, ira ler uma linha do arquivo.
-
-      var allText = reader.ReadToEnd();
-      // O 'ReadToEnd' ira ler o arquivo inteiro. Porem como vimos nas aulas anteriores, ler um arquivo por inteiro pode ser um problema se esse arquivo for muito grande. Se esse for o caso o 'StreamReader' possui outros métodos que serão melhores.
-
-      while( !reader.EndOfStream )
-      // O 'EndOfStream' significa o fim do fluxo de dados, então podemos utilizar ele como condição para um laço de loop, aliado com o 'ReadLine' abaixo.
-      {
-        var line2 = reader.ReadLine();
-        // Dessa forma ele ira carregar e imprimir uma linha por vez no console, repetindo isso até o final do arquivo. Evitando assim ter que carregar um arquivo inteiro.
-        Console.WriteLine(line2);
-      }
-
-    }
-
+    CreateFile();
     Console.ReadLine();
   }
 }
