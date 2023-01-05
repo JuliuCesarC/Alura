@@ -257,12 +257,28 @@ using System.Text;
 
 #region Aula_06
 
+//partial class Program
+//{
+//  static void Main(string[] args)
+//  {
+//  // -------------------- ESCREVENDO E LENDO EM BINÁRIO
+//    WritingInBinary();
+//    ReadingInBinary();
+
+//    Console.WriteLine("Aplicação finalizada.");
+//    Console.ReadLine();
+//  }
+//}
+#endregion
+
+#region Aula_07
+
 partial class Program
 {
   static void Main(string[] args)
   {
-    WritingInBinary();
-    ReadingInBinary();
+    // UsingStreamFromConsole01();
+    UsingStreamFromConsole02();
 
     Console.WriteLine("Aplicação finalizada.");
     Console.ReadLine();
