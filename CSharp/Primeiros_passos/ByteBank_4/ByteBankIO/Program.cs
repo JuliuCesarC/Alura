@@ -259,15 +259,19 @@ using System.Text;
 
 //partial class Program
 //{
-//  static void Main(string[] args)
-//  {
-//  // -------------------- ESCREVENDO E LENDO EM BINÁRIO
-//    WritingInBinary();
-//    ReadingInBinary();
+// static void Main(string[] args)
+// {
+// // -------------------- ESCREVENDO E LENDO EM BINÁRIO
+//  //  WritingInBinary();
+//  //  ReadingInBinary();
 
-//    Console.WriteLine("Aplicação finalizada.");
-//    Console.ReadLine();
-//  }
+// // -------------------- UTILIZANDO O STREAM DO CONSOLE
+//    // UsingStreamFromConsole01();
+//    UsingStreamFromConsole02();
+
+//   Console.WriteLine("Aplicação finalizada.");
+//   Console.ReadLine();
+// }
 //}
 #endregion
 
@@ -277,10 +281,30 @@ partial class Program
 {
   static void Main(string[] args)
   {
-    // UsingStreamFromConsole01();
-    UsingStreamFromConsole02();
+  var file = "contas.txt";
+    // -------------------- CLASSE FILE --------------------
+    // Nas aulas anteriores vinhamos trabalhando com varias formas de criar e ler arquivos, e a classe 'File' é mais uma delas, com seu bonus e onus. Como ja tínhamos visto, trabalhar com o arquivo inteiro pode ser um problema caso ele seja muito grande, pode isso utilizar a classe File pode ser uma problema.
 
-    Console.WriteLine("Aplicação finalizada.");
+    var lines = File.ReadAllLines(file);
+    // O método 'ReadAllLines' retorna um array com todas as linhas do arquivo que foi informado para ele.
+    Console.WriteLine(lines.Length);
+    // Podemos mostrar a quantidade de linhas totais com o 'Length', ou mostrar linha por linha como foi feito abaixo:
+    foreach (var line in lines)
+    {
+      // Console.WriteLine(line);
+    }
+
+    var allBytesOfTheFile = File.ReadAllBytes(file);
+    // O método 'ReadAllBytes' retorna um array com todos os bytes do arquivo, e assim como o 'ReadAllLines' podemos mostrar o tamanho do arquivo, e mostrar cada byte com um loop.
+    Console.WriteLine($"O arquivo possui {allBytesOfTheFile.Length} bytes.");
+    foreach (var bytes in allBytesOfTheFile)
+    {
+      // Console.Write(bytes+" ");
+    }
+
+    File.WriteAllText("EscrevendoComFile.txt", "Texto de teste para criação do arquivo");
+    // O método 'WriteAllText' serve para criar um arquivo ja com um texto predeterminado, o primeiro parâmetro é o caminho do arquivo e o formato, e o segundo argumento é o texto que sera escrito.
+
     Console.ReadLine();
   }
 }
