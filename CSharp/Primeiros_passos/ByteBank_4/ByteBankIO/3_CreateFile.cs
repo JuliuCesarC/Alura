@@ -39,4 +39,26 @@ partial class Program
       // Como é notável, utilizando o método 'Write' do 'StreamWriter' o programa se torna muito menos verboso.
     }
   }
+  static void TestWrite()
+  {
+    var pathNewFile = "teste.txt";
+
+    using( var fileStream = new FileStream(pathNewFile, FileMode.Create) )
+    using( var writer = new StreamWriter(fileStream) )
+    // -------------------- FLUSH
+    // O método 'flush' tem como função limpar os buffers do fluxo de dados e fazer com que esses dados sejam gravados no arquivo.
+    // Até então trabalhando com array, listas, buffers, estávamos utilizando a memoria ram, que é mais rápida, porem agora para gravar no HD ou SDD o tempo que o computador leva para informar a gravação e efetuar a gravação em si é mais demorado. 
+    {
+      for( int i = 0; i < 1000000; i++ )
+      {
+        // Quando utilizamos o 'WriteLine', o que realmente estamos fazendo, é enviar uma informação para o buffer do 'StreamWriter', com isso a informação não é despejada no FileStream e a gravação se torna um processo mais demorado.
+        writer.WriteLine($"Linha {i}");
+        // Caso essa demora possa ser um problema, podemos utilizar o 'Flush'.
+        writer.Flush();
+        Console.WriteLine($"Linha {i} foi escrita no arquivo, tecle enter");
+        Console.ReadLine();
+      }
+
+    }
+  }
 }

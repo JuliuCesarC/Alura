@@ -163,7 +163,6 @@ using System.Text;
 #endregion
 
 #region Aula_04
-
 //// -------------------- ORGANIZANDO O CÓDIGO --------------------
 //// Para melhorar a legibilidade, a manutenção, e/ou apenas organizar uma classe, podemos dividi-la em vários arquivos, apenas é necessario adicionar o modificador 'partial' antes de 'class', como foi feito abaixo.
 //partial class Program
@@ -262,7 +261,10 @@ partial class Program
 {
   static void Main(string[] args)
   {
-    CreateFile();
+    WritingInBinary();
+    ReadingInBinary();
+
+    Console.WriteLine("Aplicação finalizada.");
     Console.ReadLine();
   }
 }
