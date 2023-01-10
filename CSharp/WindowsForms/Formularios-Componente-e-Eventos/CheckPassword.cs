@@ -30,6 +30,34 @@ namespace Formularios_Componente_e_Eventos
 
       strong = Check.GetForcaDaSenha(txt_password.Text);
       lbl_grade.Text = strong.ToString();
+
+      if( lbl_grade.Text == "Inaceitavel" | lbl_grade.Text == "Fraca" )
+      {
+        lbl_grade.ForeColor = Color.Red;
+      }
+      if( lbl_grade.Text == "Aceitavel" )
+      {
+        lbl_grade.ForeColor = Color.Blue;
+      }
+      if( lbl_grade.Text == "Forte" | lbl_grade.Text == "Segura" )
+      {
+        lbl_grade.ForeColor = Color.Green;
+      }
+    }
+
+    private void btn_verSenha_Click(object sender, EventArgs e)
+    {
+      if( txt_password.PasswordChar != '\0' )
+      {
+        txt_password.PasswordChar = '\0';
+        // A propriedade 'PasswordChar' só aceita 1 caractere como argumento, por isso é preciso utilizar aspas simples, e para representar um caractere vazio utilizamos '\0'.
+        btn_showPassword.Text = "Esconder senha";
+      }
+      else
+      {
+        txt_password.PasswordChar = '*';
+        btn_showPassword.Text = "Mostrar senha";
+      }
     }
   }
 }
