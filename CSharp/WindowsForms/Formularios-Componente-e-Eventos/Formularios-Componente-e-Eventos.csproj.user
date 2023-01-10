@@ -13,5 +13,11 @@
     <Compile Update="Frm_Mask.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Frm_ValidateCPF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_ValidateCPF_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
