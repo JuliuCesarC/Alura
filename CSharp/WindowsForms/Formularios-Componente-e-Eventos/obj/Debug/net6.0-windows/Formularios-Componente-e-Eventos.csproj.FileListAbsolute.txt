@@ -17,3 +17,4 @@ C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Component
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_HelloWorld.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Aula02.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.CheckPassword.resources
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Mask.resources
