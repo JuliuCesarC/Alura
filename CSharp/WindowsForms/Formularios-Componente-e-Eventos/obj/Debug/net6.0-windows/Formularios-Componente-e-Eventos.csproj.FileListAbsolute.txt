@@ -21,3 +21,4 @@ C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Component
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_CheckPassword.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_keyDown.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Principal.resources
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Formularios-Componente-e-Eventos\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Properties.Resources.resources

@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_CheckPassword));
       this.lbl_grade = new System.Windows.Forms.Label();
       this.txt_password = new System.Windows.Forms.TextBox();
       this.btn_clear = new System.Windows.Forms.Button();
@@ -84,7 +85,7 @@
       this.btn_showPassword.UseVisualStyleBackColor = true;
       this.btn_showPassword.Click += new System.EventHandler(this.btn_verSenha_Click);
       // 
-      // CheckPassword
+      // Frm_CheckPassword
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -94,7 +95,9 @@
       this.Controls.Add(this.btn_clear);
       this.Controls.Add(this.txt_password);
       this.Controls.Add(this.lbl_grade);
-      this.Name = "CheckPassword";
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.Name = "Frm_CheckPassword";
+      this.ShowInTaskbar = false;
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Força da senha";
       this.ResumeLayout(false);

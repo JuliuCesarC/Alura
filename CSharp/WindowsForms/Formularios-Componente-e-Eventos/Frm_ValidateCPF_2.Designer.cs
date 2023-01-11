@@ -28,6 +28,7 @@ namespace Formularios_Componente_e_Eventos
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ValidateCPF_2));
       this.msk_textCPF = new System.Windows.Forms.MaskedTextBox();
       this.btn_clear = new System.Windows.Forms.Button();
       this.btn_validate = new System.Windows.Forms.Button();
@@ -69,6 +70,7 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.btn_validate);
       this.Controls.Add(this.btn_clear);
       this.Controls.Add(this.msk_textCPF);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "Frm_ValidateCPF_2";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Validação de CPF";

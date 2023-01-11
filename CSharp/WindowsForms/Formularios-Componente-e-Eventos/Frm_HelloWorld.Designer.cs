@@ -28,6 +28,7 @@ namespace Formularios_Componente_e_Eventos
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_HelloWorld));
       this.lbl_Titulo = new System.Windows.Forms.Label();
       this.btn_sair = new System.Windows.Forms.Button();
       this.txt_conteudoLabel = new System.Windows.Forms.TextBox();
@@ -81,6 +82,7 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.txt_conteudoLabel);
       this.Controls.Add(this.btn_sair);
       this.Controls.Add(this.lbl_Titulo);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "Frm_HelloWorld";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Form1";

@@ -40,3 +40,5 @@ Criamos um formulário com os botões de cada formulário criado nas aulas anter
 Frm_keyDown keyDown= new Frm_keyDown();
 keyDown.ShowDialog();
 ```
+
+Também foi adicionado ícones aos formulários através da propriedade 'icon', além de adicionar imagens aos botões utilizando a propriedade imagem.

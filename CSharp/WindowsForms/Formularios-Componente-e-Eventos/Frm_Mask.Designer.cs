@@ -28,6 +28,7 @@ namespace Formularios_Componente_e_Eventos
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Mask));
       this.msk_textBox = new System.Windows.Forms.MaskedTextBox();
       this.btn_hour = new System.Windows.Forms.Button();
       this.btn_currency = new System.Windows.Forms.Button();
@@ -149,6 +150,7 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.btn_currency);
       this.Controls.Add(this.btn_hour);
       this.Controls.Add(this.msk_textBox);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "Frm_Mask";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Frm_Mask";

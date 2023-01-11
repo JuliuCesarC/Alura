@@ -28,6 +28,7 @@ namespace Formularios_Componente_e_Eventos
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_keyDown));
       this.txt_input = new System.Windows.Forms.TextBox();
       this.txt_msg = new System.Windows.Forms.TextBox();
       this.btn_reset = new System.Windows.Forms.Button();
@@ -99,7 +100,7 @@ namespace Formularios_Componente_e_Eventos
       this.lbl_lower.Size = new System.Drawing.Size(94, 78);
       this.lbl_lower.TabIndex = 6;
       // 
-      // Frm_Aula02
+      // Frm_keyDown
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -111,7 +112,8 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.btn_reset);
       this.Controls.Add(this.txt_msg);
       this.Controls.Add(this.txt_input);
-      this.Name = "Frm_Aula02";
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.Name = "Frm_keyDown";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Evento Key";
       this.ResumeLayout(false);
