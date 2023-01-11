@@ -82,6 +82,7 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.btn_sair);
       this.Controls.Add(this.lbl_Titulo);
       this.Name = "Frm_HelloWorld";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Form1";
       this.ResumeLayout(false);
       this.PerformLayout();

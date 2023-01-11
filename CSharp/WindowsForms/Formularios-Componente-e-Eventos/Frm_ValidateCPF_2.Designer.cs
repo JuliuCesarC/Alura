@@ -70,6 +70,7 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.btn_clear);
       this.Controls.Add(this.msk_textCPF);
       this.Name = "Frm_ValidateCPF_2";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Validação de CPF";
       this.ResumeLayout(false);
       this.PerformLayout();

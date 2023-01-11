@@ -1,4 +1,4 @@
-﻿namespace Formularios_Componente_e_Eventos
+namespace Formularios_Componente_e_Eventos
 {
   partial class Frm_Mask
   {
@@ -46,7 +46,6 @@
       this.msk_textBox.Name = "msk_textBox";
       this.msk_textBox.Size = new System.Drawing.Size(750, 39);
       this.msk_textBox.TabIndex = 1;
-      this.msk_textBox.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
       // 
       // btn_hour
       // 

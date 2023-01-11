@@ -25,20 +25,39 @@ namespace Formularios_Componente_e_Eventos
 
     private void btn_validate_Click(object sender, EventArgs e)
     {
+      string vContent;
+      vContent = msk_textCPF.Text;
+      vContent = vContent.Replace(".", "").Replace("-", "");
+      vContent = vContent.Trim();
 
-      if( MessageBox.Show("Deseja validar CPF?", "Mensagem de validação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes )
+      if( vContent == "" )
       {
-        bool validateCPF = false;
-        validateCPF = Cls_Utils.Valida(msk_textCPF.Text);
-        if( validateCPF )
+        MessageBox.Show("É preciso informar um CPF", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
+      else
+      {
+        if( vContent.Length != 11 )
         {
-          MessageBox.Show("CPF Válido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          MessageBox.Show("Um CPF precisa conter 11 digitos", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         else
         {
-          MessageBox.Show("CPF Inválido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          if( MessageBox.Show("Deseja validar CPF?", "Mensagem de validação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes )
+          {
+            bool validateCPF = false;
+            validateCPF = Cls_Utils.Valida(msk_textCPF.Text);
+            if( validateCPF )
+            {
+              MessageBox.Show("CPF Válido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+              MessageBox.Show("CPF Inválido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+          }
         }
       }
+
 
     }
   }

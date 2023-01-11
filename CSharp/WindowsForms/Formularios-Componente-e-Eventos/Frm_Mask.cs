@@ -17,10 +17,6 @@ namespace Formularios_Componente_e_Eventos
       InitializeComponent();
     }
 
-    private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-    {
-
-    }
     private void btn_showPassword_Click(object sender, EventArgs e)
     {
       lbl_content.Text = msk_textBox.Text;

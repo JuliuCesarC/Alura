@@ -81,6 +81,7 @@
       this.Controls.Add(this.btn_clear);
       this.Controls.Add(this.msk_textCPF);
       this.Name = "Frm_ValidateCPF";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Validação de CPF";
       this.ResumeLayout(false);
       this.PerformLayout();
