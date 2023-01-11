@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Formularios_Componente_e_Eventos
 {
-  public partial class CheckPassword: Form
+  public partial class Frm_CheckPassword: Form
   {
-    public CheckPassword()
+    public Frm_CheckPassword()
     {
       InitializeComponent();
     }

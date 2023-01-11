@@ -1,6 +1,6 @@
-﻿namespace Formularios_Componente_e_Eventos
+namespace Formularios_Componente_e_Eventos
 {
-  partial class Frm_Aula02
+  partial class Frm_keyDown
   {
     /// <summary>
     /// Required designer variable.

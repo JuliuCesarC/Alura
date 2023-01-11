@@ -25,16 +25,21 @@ namespace Formularios_Componente_e_Eventos
 
     private void btn_validate_Click(object sender, EventArgs e)
     {
-      bool validateCPF = false;
-      validateCPF = Cls_Utils.Valida(msk_textCPF.Text);
-      if( validateCPF )
+
+      if( MessageBox.Show("Deseja validar CPF?", "Mensagem de validação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes )
       {
-        MessageBox.Show("CPF Válido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        bool validateCPF = false;
+        validateCPF = Cls_Utils.Valida(msk_textCPF.Text);
+        if( validateCPF )
+        {
+          MessageBox.Show("CPF Válido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        else
+        {
+          MessageBox.Show("CPF Inválido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
       }
-      else
-      {
-        MessageBox.Show("CPF Inválido", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
-      }
+
     }
   }
 }

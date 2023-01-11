@@ -1,6 +1,6 @@
 ﻿namespace Formularios_Componente_e_Eventos
 {
-  partial class CheckPassword
+  partial class Frm_CheckPassword
   {
     /// <summary>
     /// Required designer variable.

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Formularios_Componente_e_Eventos
 {
-  public partial class Frm_Aula02: Form
+  public partial class Frm_keyDown: Form
   {
-    public Frm_Aula02()
+    public Frm_keyDown()
     {
       InitializeComponent();
     }
