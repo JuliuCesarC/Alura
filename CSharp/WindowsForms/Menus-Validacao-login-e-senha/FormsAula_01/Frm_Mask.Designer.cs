@@ -150,7 +150,9 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.btn_currency);
       this.Controls.Add(this.btn_hour);
       this.Controls.Add(this.msk_textBox);
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.MaximizeBox = false;
       this.Name = "Frm_Mask";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Frm_Mask";

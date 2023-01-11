@@ -47,7 +47,8 @@ namespace Formularios_Componente_e_Eventos
       // 
       // btn_sair
       // 
-      this.btn_sair.Location = new System.Drawing.Point(805, 618);
+      this.btn_sair.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.btn_sair.Location = new System.Drawing.Point(762, 617);
       this.btn_sair.Name = "btn_sair";
       this.btn_sair.Size = new System.Drawing.Size(200, 50);
       this.btn_sair.TabIndex = 1;
@@ -57,17 +58,19 @@ namespace Formularios_Componente_e_Eventos
       // 
       // txt_conteudoLabel
       // 
+      this.txt_conteudoLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
       this.txt_conteudoLabel.Location = new System.Drawing.Point(30, 90);
       this.txt_conteudoLabel.Name = "txt_conteudoLabel";
       this.txt_conteudoLabel.PlaceholderText = "Digite um texto...";
-      this.txt_conteudoLabel.Size = new System.Drawing.Size(509, 39);
+      this.txt_conteudoLabel.Size = new System.Drawing.Size(771, 39);
       this.txt_conteudoLabel.TabIndex = 2;
       // 
       // btn_alteraTitulo
       // 
       this.btn_alteraTitulo.Location = new System.Drawing.Point(30, 157);
       this.btn_alteraTitulo.Name = "btn_alteraTitulo";
-      this.btn_alteraTitulo.Size = new System.Drawing.Size(294, 46);
+      this.btn_alteraTitulo.Size = new System.Drawing.Size(393, 46);
       this.btn_alteraTitulo.TabIndex = 3;
       this.btn_alteraTitulo.Text = "Alterar titulo";
       this.btn_alteraTitulo.UseVisualStyleBackColor = true;
@@ -77,7 +80,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1017, 680);
+      this.ClientSize = new System.Drawing.Size(974, 679);
       this.Controls.Add(this.btn_alteraTitulo);
       this.Controls.Add(this.txt_conteudoLabel);
       this.Controls.Add(this.btn_sair);
@@ -85,7 +88,7 @@ namespace Formularios_Componente_e_Eventos
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "Frm_HelloWorld";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-      this.Text = "Form1";
+      this.Text = "Hello World";
       this.ResumeLayout(false);
       this.PerformLayout();
 

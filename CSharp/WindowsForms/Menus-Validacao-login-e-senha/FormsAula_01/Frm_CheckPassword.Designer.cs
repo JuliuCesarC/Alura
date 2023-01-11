@@ -38,15 +38,18 @@
       // 
       // lbl_grade
       // 
+      this.lbl_grade.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.lbl_grade.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
       this.lbl_grade.Font = new System.Drawing.Font("Segoe UI Black", 16.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-      this.lbl_grade.Location = new System.Drawing.Point(35, 226);
+      this.lbl_grade.Location = new System.Drawing.Point(35, 260);
       this.lbl_grade.Name = "lbl_grade";
       this.lbl_grade.Size = new System.Drawing.Size(289, 67);
       this.lbl_grade.TabIndex = 0;
       // 
       // txt_password
       // 
+      this.txt_password.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
       this.txt_password.Location = new System.Drawing.Point(35, 150);
       this.txt_password.Name = "txt_password";
       this.txt_password.PasswordChar = '*';
@@ -57,6 +60,7 @@
       // 
       // btn_clear
       // 
+      this.btn_clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.btn_clear.Location = new System.Drawing.Point(673, 146);
       this.btn_clear.Name = "btn_clear";
       this.btn_clear.Size = new System.Drawing.Size(294, 46);
@@ -77,6 +81,7 @@
       // 
       // btn_showPassword
       // 
+      this.btn_showPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.btn_showPassword.Location = new System.Drawing.Point(673, 207);
       this.btn_showPassword.Name = "btn_showPassword";
       this.btn_showPassword.Size = new System.Drawing.Size(294, 46);
@@ -89,13 +94,14 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1002, 351);
+      this.ClientSize = new System.Drawing.Size(974, 379);
       this.Controls.Add(this.btn_showPassword);
       this.Controls.Add(this.lbl_title);
       this.Controls.Add(this.btn_clear);
       this.Controls.Add(this.txt_password);
       this.Controls.Add(this.lbl_grade);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.MinimumSize = new System.Drawing.Size(700, 400);
       this.Name = "Frm_CheckPassword";
       this.ShowInTaskbar = false;
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

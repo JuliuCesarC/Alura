@@ -37,6 +37,8 @@
       // 
       // msk_textCPF
       // 
+      this.msk_textCPF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
       this.msk_textCPF.Location = new System.Drawing.Point(50, 100);
       this.msk_textCPF.Mask = "000,000,000-00";
       this.msk_textCPF.Name = "msk_textCPF";
@@ -45,6 +47,7 @@
       // 
       // btn_clear
       // 
+      this.btn_clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.btn_clear.Location = new System.Drawing.Point(728, 94);
       this.btn_clear.Name = "btn_clear";
       this.btn_clear.Size = new System.Drawing.Size(215, 50);
@@ -55,6 +58,7 @@
       // 
       // btn_validate
       // 
+      this.btn_validate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.btn_validate.Location = new System.Drawing.Point(728, 180);
       this.btn_validate.Name = "btn_validate";
       this.btn_validate.Size = new System.Drawing.Size(215, 50);
@@ -65,6 +69,7 @@
       // 
       // lbl_result
       // 
+      this.lbl_result.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.lbl_result.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
       this.lbl_result.Font = new System.Drawing.Font("Segoe UI", 16.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
       this.lbl_result.Location = new System.Drawing.Point(61, 217);
@@ -82,6 +87,7 @@
       this.Controls.Add(this.btn_clear);
       this.Controls.Add(this.msk_textCPF);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.MinimumSize = new System.Drawing.Size(700, 400);
       this.Name = "Frm_ValidateCPF";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Validação de CPF";

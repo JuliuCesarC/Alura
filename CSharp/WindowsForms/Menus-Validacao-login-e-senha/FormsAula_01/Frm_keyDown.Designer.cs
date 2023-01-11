@@ -48,6 +48,9 @@ namespace Formularios_Componente_e_Eventos
       // 
       // txt_msg
       // 
+      this.txt_msg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
       this.txt_msg.Location = new System.Drawing.Point(12, 80);
       this.txt_msg.Multiline = true;
       this.txt_msg.Name = "txt_msg";
@@ -58,6 +61,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       // btn_reset
       // 
+      this.btn_reset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.btn_reset.Location = new System.Drawing.Point(794, 12);
       this.btn_reset.Name = "btn_reset";
       this.btn_reset.Size = new System.Drawing.Size(150, 46);
@@ -68,6 +72,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       // lbl_minus
       // 
+      this.lbl_minus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.lbl_minus.AutoSize = true;
       this.lbl_minus.Location = new System.Drawing.Point(700, 350);
       this.lbl_minus.Name = "lbl_minus";
@@ -77,6 +82,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       // lbl_maius
       // 
+      this.lbl_maius.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.lbl_maius.AutoSize = true;
       this.lbl_maius.Location = new System.Drawing.Point(700, 150);
       this.lbl_maius.Name = "lbl_maius";
@@ -86,6 +92,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       // lbl_upper
       // 
+      this.lbl_upper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.lbl_upper.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
       this.lbl_upper.Location = new System.Drawing.Point(820, 150);
       this.lbl_upper.Name = "lbl_upper";
@@ -94,6 +101,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       // lbl_lower
       // 
+      this.lbl_lower.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.lbl_lower.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
       this.lbl_lower.Location = new System.Drawing.Point(820, 350);
       this.lbl_lower.Name = "lbl_lower";
