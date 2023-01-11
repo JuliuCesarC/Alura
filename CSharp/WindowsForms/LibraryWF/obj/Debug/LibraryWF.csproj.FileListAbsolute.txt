@@ -1,0 +1,6 @@
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\bin\Debug\LibraryWF.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\bin\Debug\LibraryWF.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.csproj.AssemblyReference.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.csproj.CoreCompileInputs.cache
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.pdb
