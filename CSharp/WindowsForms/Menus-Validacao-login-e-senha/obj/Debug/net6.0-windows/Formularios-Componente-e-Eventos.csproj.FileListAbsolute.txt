@@ -59,3 +59,5 @@ C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.FormsUserControl.Frm_ValidateCPF_2_UC.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.FormsUserControl.Frm_ValidateCPF_UC.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Question.resources
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_ImageFile_US.resources
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Login.resources

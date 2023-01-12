@@ -9,6 +9,17 @@ namespace LibraryWF
 {
   public class Cls_Utils
   {
+    public static bool CheckPassword(string password)
+    {
+      if( password == "Curso" )
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
     public static bool Valida(string cpf)
     {
       int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };

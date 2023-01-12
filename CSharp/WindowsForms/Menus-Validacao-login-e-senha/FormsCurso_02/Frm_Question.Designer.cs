@@ -52,7 +52,7 @@ namespace Formularios_Componente_e_Eventos
       this.btn_run.Name = "btn_run";
       this.btn_run.Size = new System.Drawing.Size(199, 86);
       this.btn_run.TabIndex = 1;
-      this.btn_run.Text = "Validar";
+      this.btn_run.Text = "OK";
       this.btn_run.UseVisualStyleBackColor = true;
       this.btn_run.Click += new System.EventHandler(this.btn_run_Click);
       // 
@@ -62,7 +62,7 @@ namespace Formularios_Componente_e_Eventos
       this.btn_stop.Name = "btn_stop";
       this.btn_stop.Size = new System.Drawing.Size(199, 86);
       this.btn_stop.TabIndex = 2;
-      this.btn_stop.Text = "Parar";
+      this.btn_stop.Text = "Cancel";
       this.btn_stop.UseVisualStyleBackColor = true;
       this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
       // 

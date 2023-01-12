@@ -96,3 +96,36 @@ O comando acima se utilizado em um botão por exemplo, ira retornar o valor _Con
 - `OpenDialog`: abir algum arquivo ou pasta especifica.
 - `SaveDialog`: salvar algum arquivo em um diretório.
 - `ColorDialog`: escolher uma cor.
+- `FontDialog`: selecionar um fonte, estilo da fonte entre outros.
+- `PrintDialog`: utilizada para imprimir um documento.
+
+Para utilizar por exemplo a _OpenDialog_, é preciso criar uma instancia dele, onde podemos selecionar o nome da caixa, o filtro do tipo de arquivo, o diretório inicial e alguns outros parâmetros. Exemplo abaixo:
+
+```C#
+OpenFileDialog Db = new OpenFileDialog();
+Db.InitialDirectory = Application.StartupPath;
+Db.Filter = "PNG|*.PNG";
+Db.Title = "Escolha a Imagem";
+```
+
+- Aula 5: Login.
+
+Por ultimo no curso vimos como criar uma caixa de dialogo para efetuar login. Simulamos uma validação de senha para este exemplo. A utilização de caixa de dialogo é igual as demais, cria uma instancia da classe e exibe ela em tela, apos valida o que o usuário escolheu.
+
+```C#
+Frm_Login Login = new Frm_Login();
+Login.ShowDialog();
+```
+
+Também criamos algumas funcionalidades como desabilitar algumas opção caso o usuário não esteja logado, e para isso utilizamos a propriedade `Enabled` do elemento. Outro detalhe é que ao efetuar o Logout as abas que não deverias ser acessadas sem um usuário logado precisavam ser fechadas, e é preciso fechar de traz para frente.
+
+```C#
+for( int i = tbc_application.TabPages.Count - 1; i >= 0; i-- )
+// Primeiramente atribuímos a quantidade total de abas a variável 'i', e decrementados em 1 a cada loop.
+{
+tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+// Então removemos sempre a ultima pagina com o 'TabPages[i].
+}
+```
+
+> O que acontece é que quando começamos da primeira aba para a ultima, o _TabPages.Count_ ira reduzindo o valor, enquanto o valor da variável _i_ vai aumentando, assim as 2 se encontrando na metade e finalizando o loop. Caso tenha 4 abas abertas, sera fechado 2, caso tenha 10 abas abertas, sera fechado 5.

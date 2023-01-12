@@ -1,4 +1,5 @@
 using Formularios_Componente_e_Eventos.FormsUserControl;
+using LibraryWF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +17,11 @@ namespace Formularios_Componente_e_Eventos
     public Frm_Principal_Menu_UC()
     {
       InitializeComponent();
+
+      novoToolStripMenuItem.Enabled = false;
+      fecharAbaToolStripMenuItem.Enabled = false;
+      abrirImagemToolStripMenuItem.Enabled = false;
+      desconectarToolStripMenuItem.Enabled = false;
     }
 
     int NameControlHelloWorld = 0;
@@ -24,6 +30,7 @@ namespace Formularios_Componente_e_Eventos
     int NameControlMask = 0;
     int NameControlCPF_1 = 0;
     int NameControlCPF_2 = 0;
+    int NameControlImageFile = 0;
     private void KeyDownToolStripMenuItem_Click(object sender, EventArgs e)
     {
       Frm_KeyDown_UC keyDown = new Frm_KeyDown_UC();
@@ -106,6 +113,72 @@ namespace Formularios_Componente_e_Eventos
       if( !(tbc_application.SelectedTab == null) )
       {
         tbc_application.TabPages.Remove(tbc_application.SelectedTab);
+      }
+    }
+
+    private void abrirImagemToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      OpenFileDialog Db = new OpenFileDialog();
+      Db.InitialDirectory = "C:\\Users\\Cesar\\Desktop\\Curso_Dev\\Alura\\CSharp\\WindowsForms\\Menus-Validacao-login-e-senha\\Images";
+      Db.Filter = "PNG|*.PNG";
+      Db.Title = "Escolha a Imagem";
+
+      if( Db.ShowDialog() == DialogResult.OK )
+      {
+        string imageFileName = Db.FileName;
+
+        Frm_ImageFile_US image = new Frm_ImageFile_US(imageFileName);
+        image.Dock = DockStyle.Fill;
+        TabPage TB = new TabPage();
+        TB.Name = "Image_File_" + NameControlImageFile;
+        TB.Text = "Image_" + NameControlImageFile;
+        TB.ImageIndex = 6;
+        TB.Controls.Add(image);
+        tbc_application.TabPages.Add(TB);
+        NameControlImageFile++;
+      }
+    }
+
+    private void conectarToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      Frm_Login L = new Frm_Login();
+      L.ShowDialog();
+
+      if( L.DialogResult == DialogResult.OK && L.login.Trim() != "" )
+      {
+        string password = L.password;
+
+        if( Cls_Utils.CheckPassword(password) )
+        {
+          conectarToolStripMenuItem.Enabled = false;
+
+          novoToolStripMenuItem.Enabled = true;
+          fecharAbaToolStripMenuItem.Enabled = true;
+          abrirImagemToolStripMenuItem.Enabled = true;
+          desconectarToolStripMenuItem.Enabled = true;
+          MessageBox.Show("Usuário logado com sucesso");
+        }
+      }
+    }
+
+    private void desconectarToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      Frm_Question question = new Frm_Question("Deseja efetuar o Logout?", "Frm_Question");
+      question.ShowDialog();
+
+      if( question.DialogResult == DialogResult.Yes )
+      {
+        for( int i = tbc_application.TabPages.Count - 1; i >= 0; i-- )
+          // É preciso remover as abas de traz pra frente, ou seja, remove a ultima, depois a penúltima e assim sucessivamente até a de numero 0.
+        {
+          tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+        }
+        conectarToolStripMenuItem.Enabled = true;
+
+        novoToolStripMenuItem.Enabled = false;
+        fecharAbaToolStripMenuItem.Enabled = false;
+        abrirImagemToolStripMenuItem.Enabled = false;
+        desconectarToolStripMenuItem.Enabled = false;
       }
     }
   }
