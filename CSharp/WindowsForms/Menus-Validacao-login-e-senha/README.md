@@ -45,4 +45,38 @@ A propriedade __Anchor__ permite fixar os elementos dentro do formulário em 4 p
 
 > Selecionando _top_ e _right_ por exemplo, teremos um elemento que segue a borda direita da aba e não altera o próprio tamanho.
 
-Ao trabalhar com o __Anchor__ alguns problemas de sobreposição dos elementos pode acontecer, umas das formar de resulver esse problema e limitando o tamanho da aba no menor valor e/ou maior valor com as propriedades __MinimumSize__ e __MaximumSize__.
+Ao trabalhar com o __Anchor__ alguns problemas de sobreposição dos elementos pode acontecer, umas das formar de resolver esse problema e limitando o tamanho da aba no menor valor e/ou maior valor com as propriedades __MinimumSize__ e __MaximumSize__.
+
+- Aula 4: User Control e TabControl.
+
+Outra forma de abrir os formulários é utilizando o controle de usuário(User Control), que pode ser aberto dentro do elemento __TabControl__, ou outros elementos. O User Control é um  formulário que deve ser criado igual outro, porem ele não possui as bordas padrões do windows, onde estão os botões de minimizar, maximizar e de fechar. Mas podemos adicionar praticamento todos os elementos de um formulário normal.
+
+Para adicionar o formulário _User Control_ dentro do elemento __TabControl__ do formulário principal, precisamos dos comando abaixo.
+
+```C#
+Frm_HelloWorld_UC helloWorld_UC = new Frm_HelloWorld_UC();
+// Primeiro criamos uma instancia do User Control.
+TabPage TB = new TabPage();
+// Então criamos uma TabPage dinamicamente.
+TB.Name = "Hello_World_" + NameControlHelloWorld;
+TB.Text = "Hello_" + NameControlHelloWorld;
+// Concatenamos o nome da aba com um numero, para que cada aba tenha um nome diferente.
+TB.ImageIndex = 1;
+TB.Controls.Add(helloWorld_UC);
+// Adicionamos a instancia de User Control na TabPage.
+tbc_application.TabPages.Add( TB );
+// E por ultimos adicionamos a TabPage no TabControl.
+NameControlHelloWorld++;
+```
+
+> O 'tbc_application' é o nome que foi colocado no TabControl. Também adicionamos um ícone ao lado do nome da aba com o 'ImageIndex', para escolher essa imagem primeiramente é preciso adicionar o elemento __ImageList__ no formulário, e adicionar as imagens dentro desse elemento. Segundo é preciso associar o __ImageList__ no elemento __TabControl__ através da propriedade _ImageList_.
+
+### Removendo uma TabPage
+
+Até o momento foi visto como adicionar novas abas dentro do __TabControl__, agora veremos como fechar uma aba.
+
+```C#
+tbc_application.TabPages.Remove(tbc_application.SelectedTab);
+```
+
+> O 'tbc_application.SelectedTab' ira indicar qual a aba que esta selecionada no momento. É preciso criar uma validação antes de executar o comando, pois caso não tenha nenhuma aba aberta, e o comando for executado, ira acusar um erro.

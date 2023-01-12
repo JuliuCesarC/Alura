@@ -51,3 +51,5 @@ C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios-Componente-e-Eventos.csproj.CopyComplete
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Principal_Menu.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Principal_Menu_MDI.resources
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_HelloWorld_UC.resources
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Menus-Validacao-login-e-senha\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_Principal_Menu_UC.resources
