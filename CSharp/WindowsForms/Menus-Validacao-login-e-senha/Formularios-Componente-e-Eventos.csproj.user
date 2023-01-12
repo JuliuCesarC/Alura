@@ -13,7 +13,22 @@
     <Compile Update="FormsAula_01\Frm_Mask.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Frm_HelloWorld_UC.cs">
+    <Compile Update="FormsUserControl\Frm_CheckPassword_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_HelloWorld_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_KeyDown_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_Mask_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_ValidateCPF_2_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_ValidateCPF_UC.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Frm_Principal.cs">

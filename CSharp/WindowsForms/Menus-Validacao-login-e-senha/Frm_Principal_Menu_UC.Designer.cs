@@ -36,14 +36,14 @@ namespace Formularios_Componente_e_Eventos
       this.demonstraçãoKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.helloWorldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.mascaraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.vaídaCpfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.valídaCpfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.valídaCPF2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.checaSenhaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.fecharAbaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.sairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.tbc_application = new System.Windows.Forms.TabControl();
       this.iml_image = new System.Windows.Forms.ImageList(this.components);
-      this.fecharAbaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.mnu_principal.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -55,10 +55,9 @@ namespace Formularios_Componente_e_Eventos
             this.windowsToolStripMenuItem});
       this.mnu_principal.Location = new System.Drawing.Point(0, 0);
       this.mnu_principal.Name = "mnu_principal";
-      this.mnu_principal.Size = new System.Drawing.Size(1074, 42);
+      this.mnu_principal.Size = new System.Drawing.Size(1074, 40);
       this.mnu_principal.TabIndex = 0;
       this.mnu_principal.Text = "menuStrip1";
-      this.mnu_principal.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.mnu_principal_ItemClicked);
       // 
       // arquivoToolStripMenuItem
       // 
@@ -67,7 +66,7 @@ namespace Formularios_Componente_e_Eventos
             this.fecharAbaToolStripMenuItem,
             this.sairToolStripMenuItem});
       this.arquivoToolStripMenuItem.Name = "arquivoToolStripMenuItem";
-      this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(117, 38);
+      this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(117, 36);
       this.arquivoToolStripMenuItem.Text = "Arquivo";
       // 
       // novoToolStripMenuItem
@@ -76,7 +75,7 @@ namespace Formularios_Componente_e_Eventos
             this.demonstraçãoKeyToolStripMenuItem,
             this.helloWorldToolStripMenuItem,
             this.mascaraToolStripMenuItem,
-            this.vaídaCpfToolStripMenuItem,
+            this.valídaCpfToolStripMenuItem,
             this.valídaCPF2ToolStripMenuItem,
             this.checaSenhaToolStripMenuItem});
       this.novoToolStripMenuItem.Name = "novoToolStripMenuItem";
@@ -91,7 +90,7 @@ namespace Formularios_Componente_e_Eventos
             | System.Windows.Forms.Keys.K)));
       this.demonstraçãoKeyToolStripMenuItem.Size = new System.Drawing.Size(493, 44);
       this.demonstraçãoKeyToolStripMenuItem.Text = "Demonstração &Key";
-      this.demonstraçãoKeyToolStripMenuItem.Click += new System.EventHandler(this.demonstraçãoKeyToolStripMenuItem_Click);
+      this.demonstraçãoKeyToolStripMenuItem.Click += new System.EventHandler(this.KeyDownToolStripMenuItem_Click);
       // 
       // helloWorldToolStripMenuItem
       // 
@@ -113,15 +112,15 @@ namespace Formularios_Componente_e_Eventos
       this.mascaraToolStripMenuItem.Text = "&Mascara";
       this.mascaraToolStripMenuItem.Click += new System.EventHandler(this.mascaraToolStripMenuItem_Click);
       // 
-      // vaídaCpfToolStripMenuItem
+      // valídaCpfToolStripMenuItem
       // 
-      this.vaídaCpfToolStripMenuItem.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.Frm_ValidaCPF;
-      this.vaídaCpfToolStripMenuItem.Name = "vaídaCpfToolStripMenuItem";
-      this.vaídaCpfToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+      this.valídaCpfToolStripMenuItem.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.Frm_ValidaCPF;
+      this.valídaCpfToolStripMenuItem.Name = "valídaCpfToolStripMenuItem";
+      this.valídaCpfToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.C)));
-      this.vaídaCpfToolStripMenuItem.Size = new System.Drawing.Size(493, 44);
-      this.vaídaCpfToolStripMenuItem.Text = "Valída &CPF";
-      this.vaídaCpfToolStripMenuItem.Click += new System.EventHandler(this.vaídaCpfToolStripMenuItem_Click);
+      this.valídaCpfToolStripMenuItem.Size = new System.Drawing.Size(493, 44);
+      this.valídaCpfToolStripMenuItem.Text = "Valída &CPF";
+      this.valídaCpfToolStripMenuItem.Click += new System.EventHandler(this.validaCpfToolStripMenuItem_Click);
       // 
       // valídaCPF2ToolStripMenuItem
       // 
@@ -131,7 +130,7 @@ namespace Formularios_Componente_e_Eventos
             | System.Windows.Forms.Keys.C)));
       this.valídaCPF2ToolStripMenuItem.Size = new System.Drawing.Size(493, 44);
       this.valídaCPF2ToolStripMenuItem.Text = "Valída &CPF 2";
-      this.valídaCPF2ToolStripMenuItem.Click += new System.EventHandler(this.valídaCPF2ToolStripMenuItem_Click);
+      this.valídaCPF2ToolStripMenuItem.Click += new System.EventHandler(this.validaCPF2ToolStripMenuItem_Click);
       // 
       // checaSenhaToolStripMenuItem
       // 
@@ -143,6 +142,15 @@ namespace Formularios_Componente_e_Eventos
       this.checaSenhaToolStripMenuItem.Text = "Valída &Senha";
       this.checaSenhaToolStripMenuItem.Click += new System.EventHandler(this.checaSenhaToolStripMenuItem_Click);
       // 
+      // fecharAbaToolStripMenuItem
+      // 
+      this.fecharAbaToolStripMenuItem.Name = "fecharAbaToolStripMenuItem";
+      this.fecharAbaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.X)));
+      this.fecharAbaToolStripMenuItem.Size = new System.Drawing.Size(408, 44);
+      this.fecharAbaToolStripMenuItem.Text = "Fechar aba";
+      this.fecharAbaToolStripMenuItem.Click += new System.EventHandler(this.fecharAbaToolStripMenuItem_Click);
+      // 
       // sairToolStripMenuItem
       // 
       this.sairToolStripMenuItem.Name = "sairToolStripMenuItem";
@@ -153,17 +161,17 @@ namespace Formularios_Componente_e_Eventos
       // windowsToolStripMenuItem
       // 
       this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
-      this.windowsToolStripMenuItem.Size = new System.Drawing.Size(131, 38);
+      this.windowsToolStripMenuItem.Size = new System.Drawing.Size(131, 36);
       this.windowsToolStripMenuItem.Text = "Windows";
       // 
       // tbc_application
       // 
       this.tbc_application.Dock = System.Windows.Forms.DockStyle.Fill;
       this.tbc_application.ImageList = this.iml_image;
-      this.tbc_application.Location = new System.Drawing.Point(0, 42);
+      this.tbc_application.Location = new System.Drawing.Point(0, 40);
       this.tbc_application.Name = "tbc_application";
       this.tbc_application.SelectedIndex = 0;
-      this.tbc_application.Size = new System.Drawing.Size(1074, 787);
+      this.tbc_application.Size = new System.Drawing.Size(1074, 789);
       this.tbc_application.TabIndex = 1;
       // 
       // iml_image
@@ -177,15 +185,6 @@ namespace Formularios_Componente_e_Eventos
       this.iml_image.Images.SetKeyName(3, "Frm_ValidaCPF.png");
       this.iml_image.Images.SetKeyName(4, "Frm_ValidaCPF2.png");
       this.iml_image.Images.SetKeyName(5, "Frm_ValidaSenha.png");
-      // 
-      // fecharAbaToolStripMenuItem
-      // 
-      this.fecharAbaToolStripMenuItem.Name = "fecharAbaToolStripMenuItem";
-      this.fecharAbaToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.X)));
-      this.fecharAbaToolStripMenuItem.Size = new System.Drawing.Size(408, 44);
-      this.fecharAbaToolStripMenuItem.Text = "Fechar aba";
-      this.fecharAbaToolStripMenuItem.Click += new System.EventHandler(this.fecharAbaToolStripMenuItem_Click);
       // 
       // Frm_Principal_Menu_UC
       // 
@@ -213,7 +212,7 @@ namespace Formularios_Componente_e_Eventos
     private ToolStripMenuItem demonstraçãoKeyToolStripMenuItem;
     private ToolStripMenuItem helloWorldToolStripMenuItem;
     private ToolStripMenuItem mascaraToolStripMenuItem;
-    private ToolStripMenuItem vaídaCpfToolStripMenuItem;
+    private ToolStripMenuItem valídaCpfToolStripMenuItem;
     private ToolStripMenuItem valídaCPF2ToolStripMenuItem;
     private ToolStripMenuItem checaSenhaToolStripMenuItem;
     private ToolStripMenuItem sairToolStripMenuItem;

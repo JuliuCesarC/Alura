@@ -1,16 +1,16 @@
-namespace Formularios_Componente_e_Eventos
+namespace Formularios_Componente_e_Eventos.FormsUserControl
 {
-  partial class Frm_Mask
+  partial class Frm_Mask_UC
   {
-    /// <summary>
-    /// Required designer variable.
+    /// <summary> 
+    /// Variável de designer necessária.
     /// </summary>
     private System.ComponentModel.IContainer components = null;
 
-    /// <summary>
-    /// Clean up any resources being used.
+    /// <summary> 
+    /// Limpar os recursos que estão sendo usados.
     /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+    /// <param name="disposing">true se for necessário descartar os recursos gerenciados; caso contrário, false.</param>
     protected override void Dispose(bool disposing)
     {
       if( disposing && (components != null) )
@@ -20,11 +20,11 @@ namespace Formularios_Componente_e_Eventos
       base.Dispose(disposing);
     }
 
-    #region Windows Form Designer generated code
+    #region Código gerado pelo Designer de Componentes
 
-    /// <summary>
-    /// Required method for Designer support - do not modify
-    /// the contents of this method with the code editor.
+    /// <summary> 
+    /// Método necessário para suporte ao Designer - não modifique 
+    /// o conteúdo deste método com o editor de código.
     /// </summary>
     private void InitializeComponent()
     {
@@ -150,11 +150,7 @@ namespace Formularios_Componente_e_Eventos
       this.Controls.Add(this.btn_currency);
       this.Controls.Add(this.btn_hour);
       this.Controls.Add(this.msk_textBox);
-      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-      this.MaximizeBox = false;
       this.Name = "Frm_Mask";
-      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Frm_Mask";
       this.ResumeLayout(false);
       this.PerformLayout();
