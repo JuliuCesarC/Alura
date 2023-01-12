@@ -38,11 +38,15 @@ namespace Formularios_Componente_e_Eventos.FormsUserControl
       {
         if( vContent.Length != 11 )
         {
-          MessageBox.Show("Um CPF precisa conter 11 digitos", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          MessageBox.Show("Um CPF precisa conter 11 dígitos", "Mensagem Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         else
         {
-          if( MessageBox.Show("Deseja validar CPF?", "Mensagem de validação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes )
+
+          Frm_Question question = new Frm_Question("Você gostaria de prosseguir?", "Frm_Question");
+          question.ShowDialog();
+
+          if( question.DialogResult == DialogResult.Yes )
           {
             bool validateCPF = false;
             validateCPF = Cls_Utils.Valida(msk_textCPF.Text);

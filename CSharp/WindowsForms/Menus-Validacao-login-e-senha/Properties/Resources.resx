@@ -139,6 +139,12 @@
   <data name="Frm_Principal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\frm_principal.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Frm_Question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\frm_question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Frm_Question_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\frm_question_icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Frm_ValidaCPF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\frm_validacpf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

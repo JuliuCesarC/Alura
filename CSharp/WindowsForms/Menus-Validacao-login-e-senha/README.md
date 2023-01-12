@@ -80,3 +80,19 @@ tbc_application.TabPages.Remove(tbc_application.SelectedTab);
 ```
 
 > O 'tbc_application.SelectedTab' ira indicar qual a aba que esta selecionada no momento. É preciso criar uma validação antes de executar o comando, pois caso não tenha nenhuma aba aberta, e o comando for executado, ira acusar um erro.
+
+- Aula 5: DialogBox.
+
+Criamos o arquivo Frm_Question, que é um formulário normal, porem utilizamos ele como um __DialogBox__, transformando ele com algo parecido a  __MessageBox__, porem mais personalizado. Por exemplo, podemos criar uma caixa de pergunta com múltiplas escolhas, e cada uma podendo retornar um valor diferente.
+
+```C#
+DialogResult = DialogResult.Continue;
+```
+
+O comando acima se utilizado em um botão por exemplo, ira retornar o valor _Continue_ quando verificarmos ele com o `.DialogResult`.
+
+### DialogBoxes padrões do windows
+
+- `OpenDialog`: abir algum arquivo ou pasta especifica.
+- `SaveDialog`: salvar algum arquivo em um diretório.
+- `ColorDialog`: escolher uma cor.

@@ -133,6 +133,26 @@ namespace Formularios_Componente_e_Eventos.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Frm_Question {
+            get {
+                object obj = ResourceManager.GetObject("Frm_Question", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Icon semelhante a (Ícone).
+        /// </summary>
+        internal static System.Drawing.Icon Frm_Question_icon {
+            get {
+                object obj = ResourceManager.GetObject("Frm_Question_icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Frm_ValidaCPF {
             get {
                 object obj = ResourceManager.GetObject("Frm_ValidaCPF", resourceCulture);
