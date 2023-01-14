@@ -181,5 +181,78 @@ namespace Formularios_Componente_e_Eventos
         desconectarToolStripMenuItem.Enabled = false;
       }
     }
+
+    private void tbc_application_MouseDown(object sender, MouseEventArgs e)
+    {
+      if( e.Button == MouseButtons.Right )
+      {
+        var ContextMenu = new ContextMenuStrip();
+
+        var vToolTip01 = assembleItem("Apagar aba", "DeleteTab");
+        var vToolTip02 = assembleItem("Apagar todas a esqueda", "DeleteLeft");
+        var vToolTip03 = assembleItem("Apagar todas a direita", "DeleteRight");
+        var vToolTip04 = assembleItem("Apagar todas menos a aba selecionada", "DeleteAll");
+
+        ContextMenu.Items.Add(vToolTip01);
+        ContextMenu.Items.Add(vToolTip02);
+        ContextMenu.Items.Add(vToolTip03);
+        ContextMenu.Items.Add(vToolTip04);
+        ContextMenu.Show(this, new Point(e.X, e.Y));
+
+        vToolTip01.Click += new System.EventHandler(vToolTip01_Click);
+        vToolTip02.Click += new System.EventHandler(vToolTip02_Click);
+        vToolTip03.Click += new System.EventHandler(vToolTip03_Click);
+        vToolTip04.Click += new System.EventHandler(vToolTip04_Click);
+      }
+    }
+    void vToolTip01_Click(object sender, EventArgs e)
+    {
+      if( !(tbc_application.SelectedTab == null) )
+      {
+        tbc_application.TabPages.Remove(tbc_application.SelectedTab);
+      }
+    }
+    void vToolTip02_Click(object sender, EventArgs e)
+    {
+      if( !(tbc_application.SelectedTab == null) )
+      {
+        ClearLeft(tbc_application.SelectedIndex);
+      }
+    }
+    void vToolTip03_Click(object sender, EventArgs e)
+    {      
+      if( !(tbc_application.SelectedTab == null) )
+      {
+        ClearRight(tbc_application.SelectedIndex);
+      }
+    }
+    void vToolTip04_Click(object sender, EventArgs e)
+    {
+      ClearLeft(tbc_application.SelectedIndex);
+      ClearRight(tbc_application.SelectedIndex);
+    }
+    ToolStripMenuItem assembleItem(string text, string imageName)
+    {
+      var item = new ToolStripMenuItem();
+      item.Text = text;
+      Image MyImage = (Image)Properties.Resources.ResourceManager.GetObject(imageName);
+      item.Image = MyImage;
+
+      return item;
+    }
+    void ClearLeft(int SelectedItem)
+    {
+      for( int i = SelectedItem - 1; i >= 0; i-- )
+      {
+        tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+      }
+    }
+    void ClearRight(int SelectedItem)
+    {
+      for( int i = tbc_application.TabPages.Count - 1; i > SelectedItem; i-- )
+      {
+        tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+      }
+    }
   }
 }

@@ -90,3 +90,41 @@ vToolTip01.Click += new System.EventHandler(vToolTip01_Click);
 > Lembrando que é preciso utilizar o *"+="* para adicionar o evento.
 
 O **Click** é uma evento padrão que a instancia do item também tem, e adicionamos a ele um evento de click que quando ativado ira executar o método que criamos, que neste exercício foi o *vToolTip01_Click*.
+
+- Aula 3: Adicionando um menu flutuante no arquivo *Frm_Principal_Menu_UC*.
+
+Nesta aula adicionamos um menu com a funcionalidade de gerenciar as abas abertas, que é mostrado na tela quando clicado com o botão direito do mouse sobre as abas. As funcionalidades são *Apagar aba*, *Apagar todas a esquerda*, *Apagar todas a direita* e *Apagar todas menos a aba selecionada*.
+
+A primeira opção *Apagar aba* ja tinha sido implementada no curso anterior, e possui o comando bem simples. Utilizando o método *Remove* do *TabPages*, podemos remover a aba selecionada.
+
+```C#
+tbc_application.TabPages.Remove(tbc_application.SelectedTab);
+```
+
+> O *tbc_application* é o nome do elemento **TabControl**.
+
+A ultima opção é a junção da segunda e da terceira. Então veremos a ultima opção abaixo. Como foi visto no curso anterior, para remover uma aba a maneira correta é começando da ultima aba para a primeira. Por exemplo a opção *Apagar todas a esquerda*, começa da aba logo a esquerda da selecionada, em direção a primeira aba da lista.
+
+```C#
+int SelectedItem = tbc_application.SelectedIndex;
+// Removendo a esquerda:
+for( int i = SelectedItem - 1; i >= 0; i-- )
+{
+  tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+}
+```
+
+Para remover as abas a esquerda, atribuiremos a aba selecionada menos 1 à variável *"i"*, e iremos varrer até a primeira aba.
+
+> O menos 1 é para garantir que a aba selecionada não seja removida.
+
+```C#
+int SelectedItem = tbc_application.SelectedIndex;
+// Removendo a direita:
+for( int i = tbc_application.TabPages.Count - 1; i > SelectedItem; i-- )
+{
+  tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+}
+```
+
+Já para remover as abas a direita, iremos atribuir o total de abas menos 1 à variável *"i"*, e o loop sera do total de abas até a aba selecionada.

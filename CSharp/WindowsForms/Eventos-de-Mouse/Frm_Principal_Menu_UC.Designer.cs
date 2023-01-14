@@ -209,6 +209,7 @@ namespace Formularios_Componente_e_Eventos
       this.tbc_application.SelectedIndex = 0;
       this.tbc_application.Size = new System.Drawing.Size(1074, 789);
       this.tbc_application.TabIndex = 1;
+      this.tbc_application.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tbc_application_MouseDown);
       // 
       // iml_image
       // 
@@ -234,7 +235,7 @@ namespace Formularios_Componente_e_Eventos
       this.MainMenuStrip = this.mnu_principal;
       this.Name = "Frm_Principal_Menu_UC";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-      this.Text = "r";
+      this.Text = "Principal";
       this.mnu_principal.ResumeLayout(false);
       this.mnu_principal.PerformLayout();
       this.ResumeLayout(false);

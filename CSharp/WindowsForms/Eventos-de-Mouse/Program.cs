@@ -11,7 +11,7 @@ namespace Formularios_Componente_e_Eventos
       // To customize application configuration such as set high DPI settings or default font,
       // see https://aka.ms/applicationconfiguration.
       ApplicationConfiguration.Initialize();
-      Application.Run(new Frm_FloatingMenu());
+      Application.Run(new Frm_Principal_Menu_UC());
     }
   }
 }

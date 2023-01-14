@@ -67,7 +67,7 @@
     <Compile Update="FormsCurso_02\Frm_Principal_Menu_MDI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormsCurso_02\Frm_Principal_Menu_UC.cs">
+    <Compile Update="Frm_Principal_Menu_UC.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
