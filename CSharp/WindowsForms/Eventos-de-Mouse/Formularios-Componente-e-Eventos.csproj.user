@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="FormsCurso_01\Frm_CheckPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_01\Frm_HelloWorld.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_01\Frm_KeyDown.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_01\Frm_Mask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_01\Frm_ValidateCPF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_01\Frm_ValidateCPF_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_02\Frm_ImageFile_US.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_02\Frm_Question.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_CheckPassword_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_HelloWorld_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_KeyDown_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_Mask_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_ValidateCPF_2_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsUserControl\Frm_ValidateCPF_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="FormsCurso_02\Frm_Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_MouseEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_Principal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_Principal_Menu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_Principal_Menu_MDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_Principal_Menu_UC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
