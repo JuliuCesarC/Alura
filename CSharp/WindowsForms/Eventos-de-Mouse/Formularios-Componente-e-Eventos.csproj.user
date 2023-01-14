@@ -46,19 +46,28 @@
     <Compile Update="FormsCurso_02\Frm_Login.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Frm_FloatingMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_MouseCapture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Frm_MouseCursor.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Frm_MouseEvent.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Frm_Principal.cs">
+    <Compile Update="FormsCurso_02\Frm_Principal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Frm_Principal_Menu.cs">
+    <Compile Update="FormsCurso_02\Frm_Principal_Menu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Frm_Principal_Menu_MDI.cs">
+    <Compile Update="FormsCurso_02\Frm_Principal_Menu_MDI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Frm_Principal_Menu_UC.cs">
+    <Compile Update="FormsCurso_02\Frm_Principal_Menu_UC.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
