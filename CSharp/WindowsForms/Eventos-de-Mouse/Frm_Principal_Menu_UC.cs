@@ -22,6 +22,7 @@ namespace Formularios_Componente_e_Eventos
       fecharAbaToolStripMenuItem.Enabled = false;
       abrirImagemToolStripMenuItem.Enabled = false;
       desconectarToolStripMenuItem.Enabled = false;
+      cadastrosToolStripMenuItem.Enabled = false;
     }
 
     int NameControlHelloWorld = 0;
@@ -31,6 +32,7 @@ namespace Formularios_Componente_e_Eventos
     int NameControlCPF_1 = 0;
     int NameControlCPF_2 = 0;
     int NameControlImageFile = 0;
+    int NameControlClient = 0;
     private void KeyDownToolStripMenuItem_Click(object sender, EventArgs e)
     {
       Frm_KeyDown_UC keyDown = new Frm_KeyDown_UC();
@@ -112,7 +114,7 @@ namespace Formularios_Componente_e_Eventos
     {
       if( !(tbc_application.SelectedTab == null) )
       {
-        tbc_application.TabPages.Remove(tbc_application.SelectedTab);
+        deleteTab(tbc_application.SelectedTab);
       }
     }
 
@@ -156,6 +158,7 @@ namespace Formularios_Componente_e_Eventos
           fecharAbaToolStripMenuItem.Enabled = true;
           abrirImagemToolStripMenuItem.Enabled = true;
           desconectarToolStripMenuItem.Enabled = true;
+          cadastrosToolStripMenuItem.Enabled = true;
           MessageBox.Show("Usuário logado com sucesso");
         }
       }
@@ -171,7 +174,7 @@ namespace Formularios_Componente_e_Eventos
         for( int i = tbc_application.TabPages.Count - 1; i >= 0; i-- )
           // É preciso remover as abas de traz pra frente, ou seja, remove a ultima, depois a penúltima e assim sucessivamente até a de numero 0.
         {
-          tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+          deleteTab(tbc_application.TabPages[i]);
         }
         conectarToolStripMenuItem.Enabled = true;
 
@@ -179,6 +182,7 @@ namespace Formularios_Componente_e_Eventos
         fecharAbaToolStripMenuItem.Enabled = false;
         abrirImagemToolStripMenuItem.Enabled = false;
         desconectarToolStripMenuItem.Enabled = false;
+        cadastrosToolStripMenuItem.Enabled = false;
       }
     }
 
@@ -209,7 +213,7 @@ namespace Formularios_Componente_e_Eventos
     {
       if( !(tbc_application.SelectedTab == null) )
       {
-        tbc_application.TabPages.Remove(tbc_application.SelectedTab);
+        deleteTab(tbc_application.SelectedTab);
       }
     }
     void vToolTip02_Click(object sender, EventArgs e)
@@ -244,15 +248,43 @@ namespace Formularios_Componente_e_Eventos
     {
       for( int i = SelectedItem - 1; i >= 0; i-- )
       {
-        tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+        deleteTab(tbc_application.TabPages[i]);
       }
     }
     void ClearRight(int SelectedItem)
     {
       for( int i = tbc_application.TabPages.Count - 1; i > SelectedItem; i-- )
       {
-        tbc_application.TabPages.Remove(tbc_application.TabPages[i]);
+        deleteTab(tbc_application.TabPages[i]);
       }
+    }
+
+    private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      if( NameControlClient == 0 )
+      {
+      Frm_RegisterClient_UC client = new Frm_RegisterClient_UC();
+      client.Dock = DockStyle.Fill;
+      TabPage TB = new TabPage();
+      TB.Name = "Cadastro_de_Cliente";
+      TB.Text = "Cadastro_de_Cliente";
+      TB.ImageIndex = 7;
+      TB.Controls.Add(client);
+      tbc_application.TabPages.Add(TB);
+      NameControlClient++;
+      }
+      else
+      {
+        MessageBox.Show("Só é possivel abrir uma aba de cadastro.", "Banco ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      }
+    }
+    void deleteTab(TabPage TB)
+    {
+      if( TB.Name == "Cadastro_de_Cliente" )
+      {
+        NameControlClient = 0;
+      }
+      tbc_application.TabPages.Remove(TB);
     }
   }
 }

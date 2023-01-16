@@ -16,6 +16,7 @@ namespace Formularios_Componente_e_Eventos
     {
       InitializeComponent();
 
+      grb_clientCode.Text = "Código do Cliente";
       lbl_district.Text = "Bairro";
       lbl_CEP.Text = "CEP";
       lbl_complement.Text = "Complemento";

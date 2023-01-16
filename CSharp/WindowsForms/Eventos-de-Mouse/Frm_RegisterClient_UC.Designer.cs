@@ -54,12 +54,15 @@
       this.lbl_familyIncome = new System.Windows.Forms.Label();
       this.txt_profession = new System.Windows.Forms.TextBox();
       this.lbl_profession = new System.Windows.Forms.Label();
+      this.grb_clientCode = new System.Windows.Forms.GroupBox();
+      this.txt_clientCode = new System.Windows.Forms.TextBox();
+      this.grb_clientCode.SuspendLayout();
       this.SuspendLayout();
       // 
       // lbl_CPF
       // 
       this.lbl_CPF.AutoSize = true;
-      this.lbl_CPF.Location = new System.Drawing.Point(20, 20);
+      this.lbl_CPF.Location = new System.Drawing.Point(20, 340);
       this.lbl_CPF.Name = "lbl_CPF";
       this.lbl_CPF.Size = new System.Drawing.Size(78, 32);
       this.lbl_CPF.TabIndex = 0;
@@ -67,7 +70,7 @@
       // 
       // txt_CPF
       // 
-      this.txt_CPF.Location = new System.Drawing.Point(20, 55);
+      this.txt_CPF.Location = new System.Drawing.Point(20, 375);
       this.txt_CPF.Name = "txt_CPF";
       this.txt_CPF.Size = new System.Drawing.Size(480, 39);
       this.txt_CPF.TabIndex = 1;
@@ -138,7 +141,7 @@
       // 
       // txt_gender
       // 
-      this.txt_gender.Location = new System.Drawing.Point(20, 375);
+      this.txt_gender.Location = new System.Drawing.Point(520, 375);
       this.txt_gender.Name = "txt_gender";
       this.txt_gender.Size = new System.Drawing.Size(480, 39);
       this.txt_gender.TabIndex = 11;
@@ -146,7 +149,7 @@
       // lbl_gender
       // 
       this.lbl_gender.AutoSize = true;
-      this.lbl_gender.Location = new System.Drawing.Point(20, 340);
+      this.lbl_gender.Location = new System.Drawing.Point(520, 340);
       this.lbl_gender.Name = "lbl_gender";
       this.lbl_gender.Size = new System.Drawing.Size(78, 32);
       this.lbl_gender.TabIndex = 10;
@@ -264,10 +267,28 @@
       this.lbl_profession.TabIndex = 24;
       this.lbl_profession.Text = "label13";
       // 
+      // grb_clientCode
+      // 
+      this.grb_clientCode.Controls.Add(this.txt_clientCode);
+      this.grb_clientCode.Location = new System.Drawing.Point(20, 12);
+      this.grb_clientCode.Name = "grb_clientCode";
+      this.grb_clientCode.Size = new System.Drawing.Size(500, 85);
+      this.grb_clientCode.TabIndex = 26;
+      this.grb_clientCode.TabStop = false;
+      this.grb_clientCode.Text = "groupBox1";
+      // 
+      // txt_clientCode
+      // 
+      this.txt_clientCode.Location = new System.Drawing.Point(6, 38);
+      this.txt_clientCode.Name = "txt_clientCode";
+      this.txt_clientCode.Size = new System.Drawing.Size(474, 39);
+      this.txt_clientCode.TabIndex = 27;
+      // 
       // Frm_RegisterClient_UC
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.Controls.Add(this.grb_clientCode);
       this.Controls.Add(this.txt_profession);
       this.Controls.Add(this.lbl_profession);
       this.Controls.Add(this.txt_familyIncome);
@@ -296,6 +317,8 @@
       this.Controls.Add(this.lbl_CPF);
       this.Name = "Frm_RegisterClient_UC";
       this.Size = new System.Drawing.Size(1500, 880);
+      this.grb_clientCode.ResumeLayout(false);
+      this.grb_clientCode.PerformLayout();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -329,5 +352,7 @@
     private Label lbl_familyIncome;
     private TextBox txt_profession;
     private Label lbl_profession;
+    private GroupBox grb_clientCode;
+    private TextBox txt_clientCode;
   }
 }
