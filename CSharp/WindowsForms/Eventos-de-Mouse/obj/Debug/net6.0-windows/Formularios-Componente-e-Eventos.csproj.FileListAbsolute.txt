@@ -104,3 +104,4 @@ C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Eventos-de-Mouse\obj\
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Eventos-de-Mouse\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_MouseCapture.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Eventos-de-Mouse\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_MouseCursor.resources
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Eventos-de-Mouse\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_FloatingMenu.resources
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\Eventos-de-Mouse\obj\Debug\net6.0-windows\Formularios_Componente_e_Eventos.Frm_RegisterClient_UC.resources

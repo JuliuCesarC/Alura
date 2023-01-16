@@ -48,6 +48,9 @@ namespace Formularios_Componente_e_Eventos
       this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.tbc_application = new System.Windows.Forms.TabControl();
       this.iml_image = new System.Windows.Forms.ImageList(this.components);
+      this.byteBankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.cadastrosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.clientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.mnu_principal.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -56,6 +59,7 @@ namespace Formularios_Componente_e_Eventos
       this.mnu_principal.ImageScalingSize = new System.Drawing.Size(32, 32);
       this.mnu_principal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.arquivoToolStripMenuItem,
+            this.byteBankToolStripMenuItem,
             this.açõesToolStripMenuItem,
             this.windowsToolStripMenuItem});
       this.mnu_principal.Location = new System.Drawing.Point(0, 0);
@@ -73,7 +77,7 @@ namespace Formularios_Componente_e_Eventos
             this.fecharAbaToolStripMenuItem,
             this.sairToolStripMenuItem});
       this.arquivoToolStripMenuItem.Name = "arquivoToolStripMenuItem";
-      this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(117, 36);
+      this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(117, 38);
       this.arquivoToolStripMenuItem.Text = "Arquivo";
       // 
       // conectarToolStripMenuItem
@@ -184,7 +188,7 @@ namespace Formularios_Componente_e_Eventos
       this.açõesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.abrirImagemToolStripMenuItem});
       this.açõesToolStripMenuItem.Name = "açõesToolStripMenuItem";
-      this.açõesToolStripMenuItem.Size = new System.Drawing.Size(97, 36);
+      this.açõesToolStripMenuItem.Size = new System.Drawing.Size(97, 38);
       this.açõesToolStripMenuItem.Text = "Ações";
       // 
       // abrirImagemToolStripMenuItem
@@ -197,7 +201,7 @@ namespace Formularios_Componente_e_Eventos
       // windowsToolStripMenuItem
       // 
       this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
-      this.windowsToolStripMenuItem.Size = new System.Drawing.Size(131, 36);
+      this.windowsToolStripMenuItem.Size = new System.Drawing.Size(131, 38);
       this.windowsToolStripMenuItem.Text = "Windows";
       // 
       // tbc_application
@@ -223,6 +227,31 @@ namespace Formularios_Componente_e_Eventos
       this.iml_image.Images.SetKeyName(4, "Frm_ValidaCPF2.png");
       this.iml_image.Images.SetKeyName(5, "Frm_ValidaSenha.png");
       this.iml_image.Images.SetKeyName(6, "Frm_Question.png");
+      // 
+      // byteBankToolStripMenuItem
+      // 
+      this.byteBankToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cadastrosToolStripMenuItem});
+      this.byteBankToolStripMenuItem.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.money;
+      this.byteBankToolStripMenuItem.Name = "byteBankToolStripMenuItem";
+      this.byteBankToolStripMenuItem.Size = new System.Drawing.Size(165, 38);
+      this.byteBankToolStripMenuItem.Text = "ByteBank";
+      // 
+      // cadastrosToolStripMenuItem
+      // 
+      this.cadastrosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clientesToolStripMenuItem});
+      this.cadastrosToolStripMenuItem.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.Cadastros;
+      this.cadastrosToolStripMenuItem.Name = "cadastrosToolStripMenuItem";
+      this.cadastrosToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.cadastrosToolStripMenuItem.Text = "Cadastros";
+      // 
+      // clientesToolStripMenuItem
+      // 
+      this.clientesToolStripMenuItem.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.user;
+      this.clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
+      this.clientesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.clientesToolStripMenuItem.Text = "Clientes";
       // 
       // Frm_Principal_Menu_UC
       // 
@@ -263,5 +292,8 @@ namespace Formularios_Componente_e_Eventos
     private ToolStripMenuItem abrirImagemToolStripMenuItem;
     private ToolStripMenuItem conectarToolStripMenuItem;
     private ToolStripMenuItem desconectarToolStripMenuItem;
+    private ToolStripMenuItem byteBankToolStripMenuItem;
+    private ToolStripMenuItem cadastrosToolStripMenuItem;
+    private ToolStripMenuItem clientesToolStripMenuItem;
   }
 }
