@@ -64,7 +64,7 @@ namespace Formularios_Componente_e_Eventos
             this.windowsToolStripMenuItem});
       this.mnu_principal.Location = new System.Drawing.Point(0, 0);
       this.mnu_principal.Name = "mnu_principal";
-      this.mnu_principal.Size = new System.Drawing.Size(1074, 40);
+      this.mnu_principal.Size = new System.Drawing.Size(1574, 40);
       this.mnu_principal.TabIndex = 0;
       this.mnu_principal.Text = "menuStrip1";
       // 
@@ -198,14 +198,14 @@ namespace Formularios_Componente_e_Eventos
             this.clientesToolStripMenuItem});
       this.cadastrosToolStripMenuItem.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.Cadastros;
       this.cadastrosToolStripMenuItem.Name = "cadastrosToolStripMenuItem";
-      this.cadastrosToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.cadastrosToolStripMenuItem.Size = new System.Drawing.Size(250, 44);
       this.cadastrosToolStripMenuItem.Text = "Cadastros";
       // 
       // clientesToolStripMenuItem
       // 
       this.clientesToolStripMenuItem.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.user;
       this.clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
-      this.clientesToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.clientesToolStripMenuItem.Size = new System.Drawing.Size(232, 44);
       this.clientesToolStripMenuItem.Text = "Clientes";
       this.clientesToolStripMenuItem.Click += new System.EventHandler(this.clientesToolStripMenuItem_Click);
       // 
@@ -237,7 +237,7 @@ namespace Formularios_Componente_e_Eventos
       this.tbc_application.Location = new System.Drawing.Point(0, 40);
       this.tbc_application.Name = "tbc_application";
       this.tbc_application.SelectedIndex = 0;
-      this.tbc_application.Size = new System.Drawing.Size(1074, 789);
+      this.tbc_application.Size = new System.Drawing.Size(1574, 1089);
       this.tbc_application.TabIndex = 1;
       this.tbc_application.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tbc_application_MouseDown);
       // 
@@ -259,7 +259,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1074, 829);
+      this.ClientSize = new System.Drawing.Size(1574, 1129);
       this.Controls.Add(this.tbc_application);
       this.Controls.Add(this.mnu_principal);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
