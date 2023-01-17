@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Formularios-Componente-e-Eventos/1.0.0": {
+        "dependencies": {
+          "LibraryWF": "1.0.0"
+        },
+        "runtime": {
+          "Formularios-Componente-e-Eventos.dll": {}
+        }
+      },
+      "LibraryWF/1.0.0": {
+        "runtime": {
+          "LibraryWF.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Formularios-Componente-e-Eventos/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LibraryWF/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

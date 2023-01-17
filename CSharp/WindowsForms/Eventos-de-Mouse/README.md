@@ -137,7 +137,7 @@ O primeiro novo elemento foi o **CheckBox** que é uma caixa que pode ser marcad
 
 O segundo é o **RadioButton** que é parecido com o **CheckBox**, porem só tem utilidade se for usado em conjunto com outros **RadioButton**. O funcionamento dele depende do contexto que ele esta, por exemplo ao marcar o componente, o anterior é desmarcado, assim somente uma opção pode ser marcada por vez, porem caso esteja dentro de um **GroupBox**, os únicos **RadioButton** que serão afetados são os de dentro do **GroupBox**. Ou seja, cada **RadioButton** só interfira nos outros **RadioButton** que estão no mesmo nível.
 
-O ultimo é o **ComboBox**, que é um campo que quando clicado abre uma caixa com varias opções que podem ser escolhidas, muito semelhante ao **Select** do *JavaScrip*. Utilizamos no formulário para escolher o estado onde mora. Utilizamos a classe **File** que vimos nos cursos anteriores para ler um arquivo *txt* que possuía todos os estados do Brasil, utilizamos o comando abaixo para adicionar ele no **ComboBox**.
+O ultimo é o **ComboBox**, que é um campo que quando clicado abre uma caixa com varias opções que podem ser escolhidas, muito semelhante ao **Select** do *JavaScrip*. Utilizamos no formulário para escolher o estado onde mora. Utilizamos a classe **File** que vimos nos cursos anteriores para ler um arquivo *txt* que possuí todos os estados do Brasil. Para adicionar o item, o **ComboBox** possui o comando `Items.Add` que ira adicionar o item na caixa de opções.
 
 ```C#
 foreach( var line in lines )
