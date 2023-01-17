@@ -439,6 +439,7 @@ namespace Formularios_Componente_e_Eventos
       this.novaToolStripButton.Size = new System.Drawing.Size(46, 36);
       this.novaToolStripButton.Text = "&Nova";
       this.novaToolStripButton.ToolTipText = "Novo";
+      this.novaToolStripButton.Click += new System.EventHandler(this.novaToolStripButton_Click);
       // 
       // abrirToolStripButton
       // 

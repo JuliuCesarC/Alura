@@ -64,5 +64,10 @@ namespace Formularios_Componente_e_Eventos
         txt_fathersName.Enabled = true;
       }
     }
+
+    private void novaToolStripButton_Click(object sender, EventArgs e)
+    {
+
+    }
   }
 }
