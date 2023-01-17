@@ -128,3 +128,24 @@ for( int i = tbc_application.TabPages.Count - 1; i > SelectedItem; i-- )
 ```
 
 Já para remover as abas a direita, iremos atribuir o total de abas menos 1 à variável *"i"*, e o loop sera do total de abas até a aba selecionada.
+
+- Aula 4: Criando um formulário de cadastro de cliente.
+
+Nesta aula criamos um formulário do tipo *Controle de usuário*, onde adicionamos diversos campos e novos componentes para simular um cadastro de cliente.
+
+O primeiro novo elemento foi o **CheckBox** que é uma caixa que pode ser marcada e desmarcada. Foi utilizada para ativar ou desativar o campo do *nome do pai*. O evento padrão é o *CheckedChanged*, que como sugere o nome é ativado quando alterna entre marcado e desmarcado.
+
+O segundo é o **RadioButton** que é parecido com o **CheckBox**, porem só tem utilidade se for usado em conjunto com outros **RadioButton**. O funcionamento dele depende do contexto que ele esta, por exemplo ao marcar o componente, o anterior é desmarcado, assim somente uma opção pode ser marcada por vez, porem caso esteja dentro de um **GroupBox**, os únicos **RadioButton** que serão afetados são os de dentro do **GroupBox**. Ou seja, cada **RadioButton** só interfira nos outros **RadioButton** que estão no mesmo nível.
+
+O ultimo é o **ComboBox**, que é um campo que quando clicado abre uma caixa com varias opções que podem ser escolhidas, muito semelhante ao **Select** do *JavaScrip*. Utilizamos no formulário para escolher o estado onde mora. Utilizamos a classe **File** que vimos nos cursos anteriores para ler um arquivo *txt* que possuía todos os estados do Brasil, utilizamos o comando abaixo para adicionar ele no **ComboBox**.
+
+```C#
+foreach( var line in lines )
+{
+  cmb_state.Items.Add(line);
+}
+```
+
+> *cmb_state* é o nome do elemento **ComboBox**.
+
+Como cada linha do arquivo é um item da lista *"lines"*, podemos fazer um *foreach* para varrer essa lista e adicionar cada item dela no **ComboBox**. Dessa forma evitamos ter que digitar 27 linhas de comando só para adicionar os estados.

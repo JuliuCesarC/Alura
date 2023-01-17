@@ -25,7 +25,6 @@ namespace Formularios_Componente_e_Eventos
       lbl_complement.Text = "Complemento";
       lbl_CPF.Text = "CPF";
       lbl_state.Text = "Estado";
-      lbl_gender.Text = "Genero";
       lbl_streetAddress.Text = "Logradouro";
       lbl_clientName.Text = "Nome";
       lbl_mothersName.Text = "Nome da Mãe";
@@ -34,13 +33,25 @@ namespace Formularios_Componente_e_Eventos
       lbl_familyIncome.Text = "Renda Familiar";
       lbl_phoneNumber.Text = "Telefone";
       lbl_city.Text = "Cidade";
-      grb_father.Text = "Pai";
       chk_fathersName.Text = "Nome do pai";
+      rdb_male.Text = "Masculino";
+      rdb_female.Text = "Feminino";
+      rdb_undefinedGender.Text = "Indefinido";
+
+      var file = "lista_de_estados.txt";
+      var lines = File.ReadAllLines(file);
+      // Utilizando a classe 'File' para ler o arquivo 'txt' que possui todos os estados do Brasil, e fazendo um 'foreach' para adicionar todos os estados no 'ComboBox'.
+
+      cmb_state.Items.Clear();
+      foreach( var line in lines )
+      {
+        cmb_state.Items.Add(line);
+      }
     }
 
     private void chk_fathersName_CheckedChanged(object sender, EventArgs e)
     {
-      if( chk_fathersName.Checked )
+      if( !chk_fathersName.Checked )
       {
         txt_fathersName.Enabled = false;
       }

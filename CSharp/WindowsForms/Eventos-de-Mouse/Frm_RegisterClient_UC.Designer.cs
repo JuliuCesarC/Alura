@@ -38,16 +38,12 @@ namespace Formularios_Componente_e_Eventos
       this.lbl_fathersName = new System.Windows.Forms.Label();
       this.txt_streetAddress = new System.Windows.Forms.TextBox();
       this.lbl_streetAddress = new System.Windows.Forms.Label();
-      this.txt_gender = new System.Windows.Forms.TextBox();
-      this.lbl_gender = new System.Windows.Forms.Label();
       this.txt_CEP = new System.Windows.Forms.TextBox();
       this.lbl_CEP = new System.Windows.Forms.Label();
       this.txt_complement = new System.Windows.Forms.TextBox();
       this.lbl_complement = new System.Windows.Forms.Label();
       this.txt_district = new System.Windows.Forms.TextBox();
       this.lbl_district = new System.Windows.Forms.Label();
-      this.txt_state = new System.Windows.Forms.TextBox();
-      this.lbl_state = new System.Windows.Forms.Label();
       this.txt_phoneNumber = new System.Windows.Forms.TextBox();
       this.lbl_phoneNumber = new System.Windows.Forms.Label();
       this.txt_familyIncome = new System.Windows.Forms.TextBox();
@@ -57,15 +53,20 @@ namespace Formularios_Componente_e_Eventos
       this.grb_clientCode = new System.Windows.Forms.GroupBox();
       this.txt_clientCode = new System.Windows.Forms.TextBox();
       this.grb_personalData = new System.Windows.Forms.GroupBox();
-      this.grb_father = new System.Windows.Forms.GroupBox();
       this.chk_fathersName = new System.Windows.Forms.CheckBox();
+      this.grb_gender = new System.Windows.Forms.GroupBox();
+      this.rdb_undefinedGender = new System.Windows.Forms.RadioButton();
+      this.rdb_female = new System.Windows.Forms.RadioButton();
+      this.rdb_male = new System.Windows.Forms.RadioButton();
       this.grb_income = new System.Windows.Forms.GroupBox();
       this.grb_address = new System.Windows.Forms.GroupBox();
       this.lbl_city = new System.Windows.Forms.Label();
       this.txt_city = new System.Windows.Forms.TextBox();
+      this.lbl_state = new System.Windows.Forms.Label();
+      this.cmb_state = new System.Windows.Forms.ComboBox();
       this.grb_clientCode.SuspendLayout();
       this.grb_personalData.SuspendLayout();
-      this.grb_father.SuspendLayout();
+      this.grb_gender.SuspendLayout();
       this.grb_income.SuspendLayout();
       this.grb_address.SuspendLayout();
       this.SuspendLayout();
@@ -73,7 +74,7 @@ namespace Formularios_Componente_e_Eventos
       // lbl_CPF
       // 
       this.lbl_CPF.AutoSize = true;
-      this.lbl_CPF.Location = new System.Drawing.Point(15, 280);
+      this.lbl_CPF.Location = new System.Drawing.Point(930, 120);
       this.lbl_CPF.Name = "lbl_CPF";
       this.lbl_CPF.Size = new System.Drawing.Size(78, 32);
       this.lbl_CPF.TabIndex = 0;
@@ -81,10 +82,10 @@ namespace Formularios_Componente_e_Eventos
       // 
       // txt_CPF
       // 
-      this.txt_CPF.Location = new System.Drawing.Point(15, 315);
+      this.txt_CPF.Location = new System.Drawing.Point(930, 155);
       this.txt_CPF.Name = "txt_CPF";
-      this.txt_CPF.Size = new System.Drawing.Size(480, 39);
-      this.txt_CPF.TabIndex = 5;
+      this.txt_CPF.Size = new System.Drawing.Size(550, 39);
+      this.txt_CPF.TabIndex = 4;
       // 
       // txt_clientName
       // 
@@ -123,7 +124,7 @@ namespace Formularios_Componente_e_Eventos
       this.txt_fathersName.Location = new System.Drawing.Point(15, 235);
       this.txt_fathersName.Name = "txt_fathersName";
       this.txt_fathersName.Size = new System.Drawing.Size(892, 39);
-      this.txt_fathersName.TabIndex = 4;
+      this.txt_fathersName.TabIndex = 5;
       // 
       // lbl_fathersName
       // 
@@ -139,7 +140,7 @@ namespace Formularios_Componente_e_Eventos
       this.txt_streetAddress.Location = new System.Drawing.Point(585, 77);
       this.txt_streetAddress.Name = "txt_streetAddress";
       this.txt_streetAddress.Size = new System.Drawing.Size(890, 39);
-      this.txt_streetAddress.TabIndex = 9;
+      this.txt_streetAddress.TabIndex = 7;
       // 
       // lbl_streetAddress
       // 
@@ -150,28 +151,12 @@ namespace Formularios_Componente_e_Eventos
       this.lbl_streetAddress.TabIndex = 8;
       this.lbl_streetAddress.Text = "label5";
       // 
-      // txt_gender
-      // 
-      this.txt_gender.Location = new System.Drawing.Point(512, 315);
-      this.txt_gender.Name = "txt_gender";
-      this.txt_gender.Size = new System.Drawing.Size(395, 39);
-      this.txt_gender.TabIndex = 6;
-      // 
-      // lbl_gender
-      // 
-      this.lbl_gender.AutoSize = true;
-      this.lbl_gender.Location = new System.Drawing.Point(512, 280);
-      this.lbl_gender.Name = "lbl_gender";
-      this.lbl_gender.Size = new System.Drawing.Size(78, 32);
-      this.lbl_gender.TabIndex = 10;
-      this.lbl_gender.Text = "label6";
-      // 
       // txt_CEP
       // 
       this.txt_CEP.Location = new System.Drawing.Point(15, 77);
       this.txt_CEP.Name = "txt_CEP";
       this.txt_CEP.Size = new System.Drawing.Size(550, 39);
-      this.txt_CEP.TabIndex = 8;
+      this.txt_CEP.TabIndex = 6;
       // 
       // lbl_CEP
       // 
@@ -187,7 +172,7 @@ namespace Formularios_Componente_e_Eventos
       this.txt_complement.Location = new System.Drawing.Point(15, 155);
       this.txt_complement.Name = "txt_complement";
       this.txt_complement.Size = new System.Drawing.Size(550, 39);
-      this.txt_complement.TabIndex = 10;
+      this.txt_complement.TabIndex = 8;
       // 
       // lbl_complement
       // 
@@ -202,8 +187,8 @@ namespace Formularios_Componente_e_Eventos
       // 
       this.txt_district.Location = new System.Drawing.Point(15, 235);
       this.txt_district.Name = "txt_district";
-      this.txt_district.Size = new System.Drawing.Size(550, 39);
-      this.txt_district.TabIndex = 12;
+      this.txt_district.Size = new System.Drawing.Size(892, 39);
+      this.txt_district.TabIndex = 10;
       // 
       // lbl_district
       // 
@@ -214,33 +199,17 @@ namespace Formularios_Componente_e_Eventos
       this.lbl_district.TabIndex = 16;
       this.lbl_district.Text = "label9";
       // 
-      // txt_state
-      // 
-      this.txt_state.Location = new System.Drawing.Point(585, 235);
-      this.txt_state.Name = "txt_state";
-      this.txt_state.Size = new System.Drawing.Size(890, 39);
-      this.txt_state.TabIndex = 13;
-      // 
-      // lbl_state
-      // 
-      this.lbl_state.AutoSize = true;
-      this.lbl_state.Location = new System.Drawing.Point(585, 200);
-      this.lbl_state.Name = "lbl_state";
-      this.lbl_state.Size = new System.Drawing.Size(91, 32);
-      this.lbl_state.TabIndex = 18;
-      this.lbl_state.Text = "label10";
-      // 
       // txt_phoneNumber
       // 
-      this.txt_phoneNumber.Location = new System.Drawing.Point(925, 315);
+      this.txt_phoneNumber.Location = new System.Drawing.Point(585, 155);
       this.txt_phoneNumber.Name = "txt_phoneNumber";
-      this.txt_phoneNumber.Size = new System.Drawing.Size(550, 39);
-      this.txt_phoneNumber.TabIndex = 7;
+      this.txt_phoneNumber.Size = new System.Drawing.Size(890, 39);
+      this.txt_phoneNumber.TabIndex = 14;
       // 
       // lbl_phoneNumber
       // 
       this.lbl_phoneNumber.AutoSize = true;
-      this.lbl_phoneNumber.Location = new System.Drawing.Point(925, 280);
+      this.lbl_phoneNumber.Location = new System.Drawing.Point(585, 120);
       this.lbl_phoneNumber.Name = "lbl_phoneNumber";
       this.lbl_phoneNumber.Size = new System.Drawing.Size(91, 32);
       this.lbl_phoneNumber.TabIndex = 20;
@@ -250,8 +219,8 @@ namespace Formularios_Componente_e_Eventos
       // 
       this.txt_familyIncome.Location = new System.Drawing.Point(15, 155);
       this.txt_familyIncome.Name = "txt_familyIncome";
-      this.txt_familyIncome.Size = new System.Drawing.Size(1460, 39);
-      this.txt_familyIncome.TabIndex = 15;
+      this.txt_familyIncome.Size = new System.Drawing.Size(550, 39);
+      this.txt_familyIncome.TabIndex = 13;
       // 
       // lbl_familyIncome
       // 
@@ -267,7 +236,7 @@ namespace Formularios_Componente_e_Eventos
       this.txt_profession.Location = new System.Drawing.Point(15, 75);
       this.txt_profession.Name = "txt_profession";
       this.txt_profession.Size = new System.Drawing.Size(1460, 39);
-      this.txt_profession.TabIndex = 14;
+      this.txt_profession.TabIndex = 12;
       // 
       // lbl_profession
       // 
@@ -297,7 +266,8 @@ namespace Formularios_Componente_e_Eventos
       // 
       // grb_personalData
       // 
-      this.grb_personalData.Controls.Add(this.grb_father);
+      this.grb_personalData.Controls.Add(this.chk_fathersName);
+      this.grb_personalData.Controls.Add(this.grb_gender);
       this.grb_personalData.Controls.Add(this.lbl_clientName);
       this.grb_personalData.Controls.Add(this.lbl_CPF);
       this.grb_personalData.Controls.Add(this.txt_CPF);
@@ -305,11 +275,7 @@ namespace Formularios_Componente_e_Eventos
       this.grb_personalData.Controls.Add(this.lbl_mothersName);
       this.grb_personalData.Controls.Add(this.txt_mothersName);
       this.grb_personalData.Controls.Add(this.lbl_fathersName);
-      this.grb_personalData.Controls.Add(this.txt_phoneNumber);
       this.grb_personalData.Controls.Add(this.txt_fathersName);
-      this.grb_personalData.Controls.Add(this.lbl_phoneNumber);
-      this.grb_personalData.Controls.Add(this.lbl_gender);
-      this.grb_personalData.Controls.Add(this.txt_gender);
       this.grb_personalData.Location = new System.Drawing.Point(20, 110);
       this.grb_personalData.Name = "grb_personalData";
       this.grb_personalData.Size = new System.Drawing.Size(1500, 370);
@@ -317,26 +283,60 @@ namespace Formularios_Componente_e_Eventos
       this.grb_personalData.TabStop = false;
       this.grb_personalData.Text = "groupBox1";
       // 
-      // grb_father
-      // 
-      this.grb_father.Controls.Add(this.chk_fathersName);
-      this.grb_father.Location = new System.Drawing.Point(925, 154);
-      this.grb_father.Name = "grb_father";
-      this.grb_father.Size = new System.Drawing.Size(550, 120);
-      this.grb_father.TabIndex = 21;
-      this.grb_father.TabStop = false;
-      this.grb_father.Text = "groupBox1";
-      // 
       // chk_fathersName
       // 
       this.chk_fathersName.AutoSize = true;
-      this.chk_fathersName.Location = new System.Drawing.Point(20, 55);
+      this.chk_fathersName.Checked = true;
+      this.chk_fathersName.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.chk_fathersName.Location = new System.Drawing.Point(15, 307);
       this.chk_fathersName.Name = "chk_fathersName";
       this.chk_fathersName.Size = new System.Drawing.Size(159, 36);
       this.chk_fathersName.TabIndex = 0;
+      this.chk_fathersName.TabStop = false;
       this.chk_fathersName.Text = "checkBox1";
       this.chk_fathersName.UseVisualStyleBackColor = true;
       this.chk_fathersName.CheckedChanged += new System.EventHandler(this.chk_fathersName_CheckedChanged);
+      // 
+      // grb_gender
+      // 
+      this.grb_gender.Controls.Add(this.rdb_undefinedGender);
+      this.grb_gender.Controls.Add(this.rdb_female);
+      this.grb_gender.Controls.Add(this.rdb_male);
+      this.grb_gender.Location = new System.Drawing.Point(930, 200);
+      this.grb_gender.Name = "grb_gender";
+      this.grb_gender.Size = new System.Drawing.Size(545, 154);
+      this.grb_gender.TabIndex = 22;
+      this.grb_gender.TabStop = false;
+      // 
+      // rdb_undefinedGender
+      // 
+      this.rdb_undefinedGender.AutoSize = true;
+      this.rdb_undefinedGender.Location = new System.Drawing.Point(178, 110);
+      this.rdb_undefinedGender.Name = "rdb_undefinedGender";
+      this.rdb_undefinedGender.Size = new System.Drawing.Size(184, 36);
+      this.rdb_undefinedGender.TabIndex = 2;
+      this.rdb_undefinedGender.Text = "radioButton3";
+      this.rdb_undefinedGender.UseVisualStyleBackColor = true;
+      // 
+      // rdb_female
+      // 
+      this.rdb_female.AutoSize = true;
+      this.rdb_female.Location = new System.Drawing.Point(178, 68);
+      this.rdb_female.Name = "rdb_female";
+      this.rdb_female.Size = new System.Drawing.Size(184, 36);
+      this.rdb_female.TabIndex = 1;
+      this.rdb_female.Text = "radioButton2";
+      this.rdb_female.UseVisualStyleBackColor = true;
+      // 
+      // rdb_male
+      // 
+      this.rdb_male.AutoSize = true;
+      this.rdb_male.Location = new System.Drawing.Point(178, 26);
+      this.rdb_male.Name = "rdb_male";
+      this.rdb_male.Size = new System.Drawing.Size(184, 36);
+      this.rdb_male.TabIndex = 0;
+      this.rdb_male.Text = "radioButton1";
+      this.rdb_male.UseVisualStyleBackColor = true;
       // 
       // grb_income
       // 
@@ -344,6 +344,8 @@ namespace Formularios_Componente_e_Eventos
       this.grb_income.Controls.Add(this.txt_profession);
       this.grb_income.Controls.Add(this.txt_familyIncome);
       this.grb_income.Controls.Add(this.lbl_profession);
+      this.grb_income.Controls.Add(this.lbl_phoneNumber);
+      this.grb_income.Controls.Add(this.txt_phoneNumber);
       this.grb_income.Location = new System.Drawing.Point(20, 800);
       this.grb_income.Name = "grb_income";
       this.grb_income.Size = new System.Drawing.Size(1500, 220);
@@ -353,6 +355,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       // grb_address
       // 
+      this.grb_address.Controls.Add(this.cmb_state);
       this.grb_address.Controls.Add(this.lbl_city);
       this.grb_address.Controls.Add(this.txt_city);
       this.grb_address.Controls.Add(this.lbl_streetAddress);
@@ -361,7 +364,6 @@ namespace Formularios_Componente_e_Eventos
       this.grb_address.Controls.Add(this.txt_streetAddress);
       this.grb_address.Controls.Add(this.lbl_complement);
       this.grb_address.Controls.Add(this.txt_complement);
-      this.grb_address.Controls.Add(this.txt_state);
       this.grb_address.Controls.Add(this.lbl_district);
       this.grb_address.Controls.Add(this.lbl_state);
       this.grb_address.Controls.Add(this.txt_district);
@@ -386,7 +388,24 @@ namespace Formularios_Componente_e_Eventos
       this.txt_city.Location = new System.Drawing.Point(585, 155);
       this.txt_city.Name = "txt_city";
       this.txt_city.Size = new System.Drawing.Size(890, 39);
-      this.txt_city.TabIndex = 11;
+      this.txt_city.TabIndex = 9;
+      // 
+      // lbl_state
+      // 
+      this.lbl_state.AutoSize = true;
+      this.lbl_state.Location = new System.Drawing.Point(930, 200);
+      this.lbl_state.Name = "lbl_state";
+      this.lbl_state.Size = new System.Drawing.Size(91, 32);
+      this.lbl_state.TabIndex = 18;
+      this.lbl_state.Text = "label10";
+      // 
+      // cmb_state
+      // 
+      this.cmb_state.FormattingEnabled = true;
+      this.cmb_state.Location = new System.Drawing.Point(930, 235);
+      this.cmb_state.Name = "cmb_state";
+      this.cmb_state.Size = new System.Drawing.Size(545, 40);
+      this.cmb_state.TabIndex = 20;
       // 
       // Frm_RegisterClient_UC
       // 
@@ -403,8 +422,8 @@ namespace Formularios_Componente_e_Eventos
       this.grb_clientCode.PerformLayout();
       this.grb_personalData.ResumeLayout(false);
       this.grb_personalData.PerformLayout();
-      this.grb_father.ResumeLayout(false);
-      this.grb_father.PerformLayout();
+      this.grb_gender.ResumeLayout(false);
+      this.grb_gender.PerformLayout();
       this.grb_income.ResumeLayout(false);
       this.grb_income.PerformLayout();
       this.grb_address.ResumeLayout(false);
@@ -425,16 +444,12 @@ namespace Formularios_Componente_e_Eventos
     private Label lbl_fathersName;
     private TextBox txt_streetAddress;
     private Label lbl_streetAddress;
-    private TextBox txt_gender;
-    private Label lbl_gender;
     private TextBox txt_CEP;
     private Label lbl_CEP;
     private TextBox txt_complement;
     private Label lbl_complement;
     private TextBox txt_district;
     private Label lbl_district;
-    private TextBox txt_state;
-    private Label lbl_state;
     private TextBox txt_phoneNumber;
     private Label lbl_phoneNumber;
     private TextBox txt_familyIncome;
@@ -448,7 +463,12 @@ namespace Formularios_Componente_e_Eventos
     private GroupBox grb_address;
     private Label lbl_city;
     private TextBox txt_city;
-    private GroupBox grb_father;
     private CheckBox chk_fathersName;
+    private GroupBox grb_gender;
+    private RadioButton rdb_undefinedGender;
+    private RadioButton rdb_female;
+    private RadioButton rdb_male;
+    private Label lbl_state;
+    private ComboBox cmb_state;
   }
 }

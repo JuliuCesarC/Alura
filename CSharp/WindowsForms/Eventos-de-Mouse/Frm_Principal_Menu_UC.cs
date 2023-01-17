@@ -22,7 +22,7 @@ namespace Formularios_Componente_e_Eventos
       fecharAbaToolStripMenuItem.Enabled = false;
       abrirImagemToolStripMenuItem.Enabled = false;
       desconectarToolStripMenuItem.Enabled = false;
-      cadastrosToolStripMenuItem.Enabled = false;
+      //cadastrosToolStripMenuItem.Enabled = false;
     }
 
     int NameControlHelloWorld = 0;
@@ -275,7 +275,7 @@ namespace Formularios_Componente_e_Eventos
       }
       else
       {
-        MessageBox.Show("Só é possivel abrir uma aba de cadastro.", "Banco ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageBox.Show("Só é possível abrir uma aba de cadastro.", "Banco ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
     }
     void deleteTab(TabPage TB)
