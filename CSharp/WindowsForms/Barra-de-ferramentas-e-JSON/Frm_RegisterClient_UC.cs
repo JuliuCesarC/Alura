@@ -106,6 +106,7 @@ namespace Formularios_Componente_e_Eventos
       {
         C.HaveFather = false;
       }
+
       if( rdb_male.Checked )
       {
         C.Gender = 0;
@@ -127,9 +128,6 @@ namespace Formularios_Componente_e_Eventos
       {
       C.State = cmb_state.Items[cmb_state.SelectedIndex].ToString();
       }
-
-
-      MessageBox.Show("Retordo do numerico: "+ Information.IsNumeric(txt_familyIncome.Text));
 
       if( Information.IsNumeric(txt_familyIncome.Text) )
       {

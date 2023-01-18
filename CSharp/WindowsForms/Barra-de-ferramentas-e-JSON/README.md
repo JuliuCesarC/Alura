@@ -2,7 +2,7 @@
 
 ## Sequencia das aulas e os conteúdos apresentados
 
-## **Aula 1**: Barra de ferramentas.
+## **Aula 1**: Barra de ferramentas
 
 O componente que adiciona uma barra de ferramente é o **ToolStrip**. No canto superior direito do elemento tem uma opção que mostra as principais propriedades do componente, e com isso utiliza a opção *Inserir itens Padrão*. Com isso diversos itens que são comumente utilizados em editor de texto iram aparecer, dentre eles iremos utilizar apenas o *Novo documento*, *Abrir documente existente* e *Salvar*.
 
@@ -14,7 +14,7 @@ tls_principal.Items[0].ToolTipText = "Incluir cliente";
 
 > O *"[0]"* seleciona o botão que iremos trabalhar.
 
-## **Aula 2**: Classe do Formulário.
+## **Aula 2**: Classe do Formulário
 
 Criamos uma classe dentro do arquivo *LibraryWF* que sera responsável pelos campos do formulário. Dentro dela criamos outras 2 classes, a primeira é referente a unidade, ou seja um cliente em especifico, ja a segunda é referente a lista dessas unidades, todos os cliente cadastrados.
 
@@ -32,7 +32,7 @@ public List<Unit> listUnit { get; set; }
 
 > *Unit* é o nome da classe da unidade.
 
-## **Aula 3**: DataAnnotations e Validação.
+## **Aula 3**: DataAnnotations e Validação
 
 O Windows Forms possui uma biblioteca que podemos utilizar para validação dos campos do formulário, que é a **ComponentModel.DataAnnotations**. Porem não é uma biblioteca que ja vem ativa no projeto, precisamos ativa-la indo em *Dependências* e clicando na opção *Adicionar referência*, isso ira abrir uma janela onde iremos procurar na opção *Assemblies>Framework* a biblioteca *referência*.
 
@@ -65,7 +65,7 @@ O primeiro parâmetro é o valor mínimo, e o segundo o valor máximo, que no ca
 
 A biblioteca não valida se o campo do formulário foi preenchido, ela valida se a propriedade da classe esta vazia. Isso ira funcionar corretamente pois iremos atrelar o campo do formulário a propriedade da classe.
 
-## **Aula 4**: Trabalhando com as exceções.
+## **Aula 4**: Trabalhando com as exceções
 
 Para que as validações implementadas na aula anterior funcionem corretamente, é preciso capturar todas as exceções e exibi-las na tela, para que o usuário corrija o erro. Abaixo temos um trecho do código responsável por essa tarefa:
 
@@ -96,7 +96,7 @@ Como existe a possibilidade de haver diversos erros de uma vez, implementamos um
 
 Por fim, forçamos o erro com o `throw` e a exceção **ValidationException**. Lembrando que essa exceção sera utilizada no Formulário *Frm_RegisterClient_UC* como veremos a seguir.
 
-## **Aula 5**: Implementando a função na barra de ferramenta.
+## **Aula 5**: Implementando a função na barra de ferramenta
 
 Agora que ja criamos uma classe com as propriedades referente aos campos do formulário, e também validações para esses campos, podemos adicionar a primeira funcionalidade para a barra de ferramentas, que é o item de adicionar um novo usuário. Abaixo temos o código:
 
@@ -121,6 +121,8 @@ Para que seja exibido as mensagens de erro, utilizaremos o *Try/Catch*. Dentro d
 Caso ocorra alguma erro, o **catch** ira capturar uma exceção do tipo *ValidationException*, e sera exibido todas as mensagens de erro que aconteceram. Essas mensagens são as definidas na validação das propriedade da classe *Client*.
 
 ### Método FormDataToClass
+
+___
 
 Como a função de atribuir os valores dos campos do formulário nas propriedades da classe *Client* podem ser utilizado diversas vezes, é interessante criar um método com essas funcionalidades. Por isso criamos o método *FormDataToClass*.
 
@@ -151,3 +153,43 @@ else
 > O *chk_fathersName* é o nome do elemento *CheckBox*. O *C.HaveFather* é a propriedade booliana referente ao *Nome do pai* ser ou não ser informado.
 
 No formulário temos um componente **CheckBox**, a validação sera feita com ele utilizando o *chk_fathersName.Checked*.
+
+O campo do *Gênero* também é muito semelhante e foio método *Checked* para verificar qual opção foi selecionada.
+
+Para o campo do *Estado* temos algumas diferenças. Temos o código abaixo:
+
+```C#
+if (cmb_state.SelectedIndex < 0)
+{
+  C.State = "";
+}
+else
+{
+  C.State = cmb_state.Items[cmb_state.SelectedIndex].ToString();
+}
+```
+
+Primeiro verificamos se o usuário selecionou alguma opção do **ComboBox**, caso não tenha selecionado, atribuímos a propriedade *State* um valor vazio, dessa forma gerando um erro. Caso tenha selecionado, atribuímos o valor do campo utilizando o *Items* e o *SelectedIndex* à propriedade.
+
+No campo de *Renda familiar* utilizaremos uma classe do **VisualBasic** para auxiliar a tarefa.
+
+```C#
+if (Information.IsNumeric(txt_familyIncome.Text))
+{
+  double income = Convert.ToDouble(txt_familyIncome.Text);
+  if (income < 0)
+  {
+    C.familyIncome = 0;
+  }
+  else
+  {
+    C.familyIncome = income;
+  }
+}
+```
+
+> Para utilizar o *Information* precisamos adicionar a referencia **VisualBasic** na biblioteca *LibraryWF*.
+
+A classe *Information* possui diversos métodos como *IsDate*, *IsArray*, *IsError*, entre outros, mas para este projeto iremos utilizar o *IsNumeric* que como o nome sugere verifica se o conteúdo digitado no campo é um numero valido.
+
+Em seguida converte o texto para *double* e verifica se esse valor é menor que 0, caso seja então atribuímos 0 a propriedade, caso não atribuímos o valor do campo na propriedade.

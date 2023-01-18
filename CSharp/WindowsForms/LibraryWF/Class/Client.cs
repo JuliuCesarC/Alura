@@ -78,6 +78,17 @@ namespace LibraryWF.Class
           // Com isso iremos forçar um erro com o 'throw', exibindo todas as mensagem que escolhemos no 'Required'.
         }
       }
+      public void CheckComplement()
+      {
+        if( this.FathersName == this.MothersName )
+        {
+          throw new Exception("Nome da mãe não pode ser igual a do pai");
+        }
+        if( this.HaveFather == true )
+        {
+          throw new Exception("Nome do pai deve ser informado caso a opção esteja marcada");
+        }
+      }
 
     }
     public class List
