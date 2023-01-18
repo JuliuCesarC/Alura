@@ -2,7 +2,7 @@
 
 ## Sequencia das aulas e os conteúdos apresentados
 
-- Aula 1: Barra de ferramentas.
+## **Aula 1**: Barra de ferramentas.
 
 O componente que adiciona uma barra de ferramente é o **ToolStrip**. No canto superior direito do elemento tem uma opção que mostra as principais propriedades do componente, e com isso utiliza a opção *Inserir itens Padrão*. Com isso diversos itens que são comumente utilizados em editor de texto iram aparecer, dentre eles iremos utilizar apenas o *Novo documento*, *Abrir documente existente* e *Salvar*.
 
@@ -14,7 +14,7 @@ tls_principal.Items[0].ToolTipText = "Incluir cliente";
 
 > O *"[0]"* seleciona o botão que iremos trabalhar.
 
-- Aula 2: Formulário.
+## **Aula 2**: Classe do Formulário.
 
 Criamos uma classe dentro do arquivo *LibraryWF* que sera responsável pelos campos do formulário. Dentro dela criamos outras 2 classes, a primeira é referente a unidade, ou seja um cliente em especifico, ja a segunda é referente a lista dessas unidades, todos os cliente cadastrados.
 
@@ -32,7 +32,7 @@ public List<Unit> listUnit { get; set; }
 
 > *Unit* é o nome da classe da unidade.
 
-- Aula 3: DataAnnotations e Validação.
+## **Aula 3**: DataAnnotations e Validação.
 
 O Windows Forms possui uma biblioteca que podemos utilizar para validação dos campos do formulário, que é a **ComponentModel.DataAnnotations**. Porem não é uma biblioteca que ja vem ativa no projeto, precisamos ativa-la indo em *Dependências* e clicando na opção *Adicionar referência*, isso ira abrir uma janela onde iremos procurar na opção *Assemblies>Framework* a biblioteca *referência*.
 
@@ -65,7 +65,7 @@ O primeiro parâmetro é o valor mínimo, e o segundo o valor máximo, que no ca
 
 A biblioteca não valida se o campo do formulário foi preenchido, ela valida se a propriedade da classe esta vazia. Isso ira funcionar corretamente pois iremos atrelar o campo do formulário a propriedade da classe.
 
-- Aula 4: Trabalhando com as exceções.
+## **Aula 4**: Trabalhando com as exceções.
 
 Para que as validações implementadas na aula anterior funcionem corretamente, é preciso capturar todas as exceções e exibi-las na tela, para que o usuário corrija o erro. Abaixo temos um trecho do código responsável por essa tarefa:
 
@@ -95,3 +95,59 @@ A variável `StringBuilder` sera utilizada para construir o texto que sera exibi
 Como existe a possibilidade de haver diversos erros de uma vez, implementamos um `foreach` para varrer a variável **results** e montar o texto com todos os erros utilizando o **AppendLine**.
 
 Por fim, forçamos o erro com o `throw` e a exceção **ValidationException**. Lembrando que essa exceção sera utilizada no Formulário *Frm_RegisterClient_UC* como veremos a seguir.
+
+## **Aula 5**: Implementando a função na barra de ferramenta.
+
+Agora que ja criamos uma classe com as propriedades referente aos campos do formulário, e também validações para esses campos, podemos adicionar a primeira funcionalidade para a barra de ferramentas, que é o item de adicionar um novo usuário. Abaixo temos o código:
+
+```C#
+try
+{
+  Client.Unit C = new Client.Unit();
+  C = FormDataToClass();
+  C.CheckClass();
+  MessageBox.Show("Usuário adicionado com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+}
+catch (ValidationException Ex)
+{
+  MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+}
+```
+
+> O método `FormDataToClass();` é um método que atribui os valores digitados no campo do formulário nas propriedades da classe *Client*. Sera tratado desse método posteriormente. O método `CheckClass();` foi o que criamos na **Aula 4**.
+
+Para que seja exibido as mensagens de erro, utilizaremos o *Try/Catch*. Dentro do *try* criamos primeiramente uma instancia da unidade da classe *Client* e então atribuímos o retorno do método *FormDataToClass* nela. Apos isso verificamos se não houve nenhuma exceção com o método *CheckClass*.
+
+Caso ocorra alguma erro, o **catch** ira capturar uma exceção do tipo *ValidationException*, e sera exibido todas as mensagens de erro que aconteceram. Essas mensagens são as definidas na validação das propriedade da classe *Client*.
+
+### Método FormDataToClass
+
+Como a função de atribuir os valores dos campos do formulário nas propriedades da classe *Client* podem ser utilizado diversas vezes, é interessante criar um método com essas funcionalidades. Por isso criamos o método *FormDataToClass*.
+
+A maioria dos campos possuem a atribuição bem simples, porem alguns deles tem certas peculiaridades.
+
+```C#
+Client.Unit C = new Client.Unit();
+  C.ID = txt_clientID.Text;
+  C.Name = txt_clientName.Text;
+```
+
+Primeiramente criamos uma instancia da classe *Client*, o que nos permite acessar as propriedades refentes aos campos. Por exemplo, `C.ID` é a propriedade da classe, e `txt_clientID` é o campo do formulário.
+
+O campo do *Nome do pai* possui uma diferença, ele pode ou não estar ativo, para isso precisamos criar uma verificação.
+
+```C#
+if (chk_fathersName.Checked)
+{
+  C.FathersName = txt_fathersName.Text;
+  C.HaveFather = true;
+}
+else
+{
+  C.HaveFather = false;
+}
+```
+
+> O *chk_fathersName* é o nome do elemento *CheckBox*. O *C.HaveFather* é a propriedade booliana referente ao *Nome do pai* ser ou não ser informado.
+
+No formulário temos um componente **CheckBox**, a validação sera feita com ele utilizando o *chk_fathersName.Checked*.

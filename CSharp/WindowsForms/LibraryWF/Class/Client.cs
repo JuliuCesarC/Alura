@@ -13,7 +13,7 @@ namespace LibraryWF.Class
     {
       [Required(ErrorMessage = "Código do cliente obrigatório.")]
       [RegularExpression("([0-9]+)", ErrorMessage = "Código do cliente deve conter apenas números.")]
-      [StringLength(6, MinimumLength =6, ErrorMessage = "Código do cliente deve conter 6 dígitos.")]
+      [StringLength(6, MinimumLength = 6, ErrorMessage = "Código do cliente deve conter 6 dígitos.")]
       public string ID { get; set; }
       [Required(ErrorMessage = "Nome do cliente obrigatório.")]
       [StringLength(50, ErrorMessage = "Nome do cliente pode conter no máximo 50 caracteres.")]
@@ -65,10 +65,10 @@ namespace LibraryWF.Class
         bool isValid = Validator.TryValidateObject(this, context, results, true);
         // O 'TryValidateObject' valida os testes, e caso alguns dos testes tenha um problema, ira retornar false.  
 
-        if( isValid == false )
+        if (isValid == false)
         {
           StringBuilder sbrErrors = new StringBuilder();
-          foreach( var validationResult in results )
+          foreach (var validationResult in results)
           // O 'foreach' é para mostrar na tela todos os erros, e não apenas o primeiro erro.
           {
             sbrErrors.AppendLine(validationResult.ErrorMessage);

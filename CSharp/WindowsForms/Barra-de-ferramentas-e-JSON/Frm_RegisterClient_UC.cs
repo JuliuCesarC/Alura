@@ -75,7 +75,7 @@ namespace Formularios_Componente_e_Eventos
         Client.Unit C = new Client.Unit();
         C = FormDataToClass();
         C.CheckClass();
-        MessageBox.Show("Classe inicializada com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show("Usuário adicionado com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
       catch( ValidationException Ex )
       {
