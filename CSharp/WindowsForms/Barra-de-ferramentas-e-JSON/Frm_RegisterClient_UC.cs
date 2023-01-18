@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibraryWF.Class;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.VisualBasic;
 
 namespace Formularios_Componente_e_Eventos
 {
@@ -71,15 +72,79 @@ namespace Formularios_Componente_e_Eventos
     {
       try
       {
-      Client.Unit C = new Client.Unit();
-      C.ID = txt_clientID.Text;
-      C.CheckClass();
-      MessageBox.Show("Classe inicializada com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        Client.Unit C = new Client.Unit();
+        C = FormDataToClass();
+        C.CheckClass();
+        MessageBox.Show("Classe inicializada com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
-      catch(ValidationException Ex)
+      catch( ValidationException Ex )
       {
         MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
+    }
+    Client.Unit FormDataToClass()
+    {
+      Client.Unit C = new Client.Unit();
+      C.ID = txt_clientID.Text;
+      C.Name = txt_clientName.Text;
+      C.MothersName = txt_mothersName.Text;
+      C.CPF = txt_CPF.Text;
+      C.CEP = txt_CEP.Text;
+      C.streetAddress = txt_streetAddress.Text;
+      C.complement = txt_complement.Text;
+      C.city = txt_city.Text;
+      C.district = txt_district.Text;
+      C.profession = txt_profession.Text;
+      C.phoneNumber = txt_phoneNumber.Text;
+
+      if( chk_fathersName.Checked )
+      {
+        C.FathersName = txt_fathersName.Text;
+        C.HaveFather = true;
+      }
+      else
+      {
+        C.HaveFather = false;
+      }
+      if( rdb_male.Checked )
+      {
+        C.Gender = 0;
+      }
+      if( rdb_female.Checked )
+      {
+        C.Gender = 1;
+      }
+      if( rdb_undefinedGender.Checked )
+      {
+        C.Gender = 2;
+      }
+
+      if( cmb_state.SelectedIndex < 0 )
+      {
+        C.State = "";
+      }
+      else
+      {
+      C.State = cmb_state.Items[cmb_state.SelectedIndex].ToString();
+      }
+
+
+      MessageBox.Show("Retordo do numerico: "+ Information.IsNumeric(txt_familyIncome.Text));
+
+      if( Information.IsNumeric(txt_familyIncome.Text) )
+      {
+        double income = Convert.ToDouble(txt_familyIncome.Text);
+        if( income < 0 )
+        {
+          C.familyIncome = 0;
+        }
+        else
+        {
+          C.familyIncome = income;
+        }
+      }
+      
+      return C;
     }
   }
 }

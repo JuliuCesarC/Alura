@@ -36,20 +36,38 @@ public List<Unit> listUnit { get; set; }
 
 O Windows Forms possui uma biblioteca que podemos utilizar para validação dos campos do formulário, que é a **ComponentModel.DataAnnotations**. Porem não é uma biblioteca que ja vem ativa no projeto, precisamos ativa-la indo em *Dependências* e clicando na opção *Adicionar referência*, isso ira abrir uma janela onde iremos procurar na opção *Assemblies>Framework* a biblioteca *referência*.
 
-Com essa biblioteca podemos por exemplo definir que uma propriedade é obrigatória, forçando o usuário a colocar um valor para prosseguir. Para fazer isso temos que adicionar a classe *Required* acima da propriedade. Exemplo abaixo:
+Com essa biblioteca podemos por exemplo definir que uma propriedade é obrigatória, o tamanho mínimo ou máximo, filtrar o conteúdo com uma expressão regular, entre outros. Abaixo temos alguns exemplos.
 
 ```C#
-[Required(ErrorMessage = "Código do cliente obrigatório")]
-public string ID { get; set; }
+[Required(ErrorMessage = "CEP do cliente obrigatório.")]
+[RegularExpression("([0-9]+)", ErrorMessage = "CEP do cliente deve conter apenas números.")]
+[StringLength(8, MinimumLength = 8, ErrorMessage = "CEP do cliente deve conter 8 dígitos.")]
+public string CEP { get; set; }
 ```
 
-> A classe *Required* precisa estar entre os colchetes *[ ]*.
+> As classes de validação precisam estar entre os colchetes *[ ]*.
 
-Podemos definir a mensagem de erro que ira aparecer caso a logica não seja satisfeita.
+O `[Required]` torna obrigatório que a propriedade possua um valor.
 
-A biblioteca não valida se o campo foi preenchido, ela valida se a propriedade da classe esta vazia. Isso ira funcionar corretamente pois iremos atrelar o campo do formulário a propriedade da classe.
+O `[RegularExpression]` valida o conteúdo de acordo com o filtro *regex* utilizado. Por exemplo o *"([0-9]+)"* verifica se o texto possui apenas números.
 
-Porem somente os comandos acima não são suficiente, é preciso formar um erro caso a validação retorne *false*. Abaixo temos um conjunto de códigos responsáveis por capturar todas as exceções e jogar o erro.
+O `[StringLength]` define o tamanho que a string deve ter. Por exemplo *"(8, MinimumLength = 8, ...)"* define o valor máximo de caracteres em 8, e o *MinimumLength* define o mínimo em 8, com isso o texto deve conter especificamente 8 caracteres.
+
+Além desses também temos o `[Range]` que só pode ser utilizado em propriedades numéricas.
+
+```C#
+[Range(0, double.MaxValue, ErrorMessage = "...")]
+```
+
+O primeiro parâmetro é o valor mínimo, e o segundo o valor máximo, que no caso acima é o valor máximo do *double*.
+
+É indicado sempre ao final da classe de validação, definir uma mensagem de erro que ira aparecer no caso da logica não ser satisfeita.
+
+A biblioteca não valida se o campo do formulário foi preenchido, ela valida se a propriedade da classe esta vazia. Isso ira funcionar corretamente pois iremos atrelar o campo do formulário a propriedade da classe.
+
+- Aula 4: Trabalhando com as exceções.
+
+Para que as validações implementadas na aula anterior funcionem corretamente, é preciso capturar todas as exceções e exibi-las na tela, para que o usuário corrija o erro. Abaixo temos um trecho do código responsável por essa tarefa:
 
 ```C#
 ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
