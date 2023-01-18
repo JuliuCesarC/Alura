@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LibraryWF.Class;
+using System.ComponentModel.DataAnnotations;
 
 namespace Formularios_Componente_e_Eventos
 {
@@ -67,7 +69,17 @@ namespace Formularios_Componente_e_Eventos
 
     private void novaToolStripButton_Click(object sender, EventArgs e)
     {
-
+      try
+      {
+      Client.Unit C = new Client.Unit();
+      C.ID = txt_clientID.Text;
+      C.CheckClass();
+      MessageBox.Show("Classe inicializada com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      }
+      catch(ValidationException Ex)
+      {
+        MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
     }
   }
 }

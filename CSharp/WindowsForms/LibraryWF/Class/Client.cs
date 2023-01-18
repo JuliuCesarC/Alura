@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibraryWF.Class
 {
-  internal class Client
+  public class Client
   {
     public class Unit
     {
@@ -33,7 +33,7 @@ namespace LibraryWF.Class
       {
         ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
         List<ValidationResult> results = new List<ValidationResult>();
-        // As primeiras 2 linhas esta capturando das diretivas o resultado dos testes. Pois accionamos o 'Required' em alguns campos.
+        // As primeiras 2 linhas esta capturando das diretivas o resultado dos testes. Pois acionamos o 'Required' em alguns campos.
 
         bool isValid = Validator.TryValidateObject(this, context, results, true);
         // O 'TryValidateObject' valida os testes, e caso alguns dos testes tenha um problema, ira retornar false.  

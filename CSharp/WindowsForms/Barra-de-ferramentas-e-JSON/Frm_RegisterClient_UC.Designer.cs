@@ -52,7 +52,7 @@ namespace Formularios_Componente_e_Eventos
       this.txt_profession = new System.Windows.Forms.TextBox();
       this.lbl_profession = new System.Windows.Forms.Label();
       this.grb_clientCode = new System.Windows.Forms.GroupBox();
-      this.txt_clientCode = new System.Windows.Forms.TextBox();
+      this.txt_clientID = new System.Windows.Forms.TextBox();
       this.grb_personalData = new System.Windows.Forms.GroupBox();
       this.chk_fathersName = new System.Windows.Forms.CheckBox();
       this.grb_gender = new System.Windows.Forms.GroupBox();
@@ -257,7 +257,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       // grb_clientCode
       // 
-      this.grb_clientCode.Controls.Add(this.txt_clientCode);
+      this.grb_clientCode.Controls.Add(this.txt_clientID);
       this.grb_clientCode.Location = new System.Drawing.Point(20, 79);
       this.grb_clientCode.Name = "grb_clientCode";
       this.grb_clientCode.Size = new System.Drawing.Size(505, 85);
@@ -265,12 +265,12 @@ namespace Formularios_Componente_e_Eventos
       this.grb_clientCode.TabStop = false;
       this.grb_clientCode.Text = "groupBox1";
       // 
-      // txt_clientCode
+      // txt_clientID
       // 
-      this.txt_clientCode.Location = new System.Drawing.Point(15, 40);
-      this.txt_clientCode.Name = "txt_clientCode";
-      this.txt_clientCode.Size = new System.Drawing.Size(474, 39);
-      this.txt_clientCode.TabIndex = 1;
+      this.txt_clientID.Location = new System.Drawing.Point(15, 40);
+      this.txt_clientID.Name = "txt_clientID";
+      this.txt_clientID.Size = new System.Drawing.Size(474, 39);
+      this.txt_clientID.TabIndex = 1;
       // 
       // grb_personalData
       // 
@@ -533,7 +533,7 @@ namespace Formularios_Componente_e_Eventos
     private TextBox txt_profession;
     private Label lbl_profession;
     private GroupBox grb_clientCode;
-    private TextBox txt_clientCode;
+    private TextBox txt_clientID;
     private GroupBox grb_personalData;
     private GroupBox grb_income;
     private GroupBox grb_address;
