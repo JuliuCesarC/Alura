@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QHVD9bp6IvOImJVsJBUuTP2k3hZOWt8Q+j7xZAKUwBaFGliygdnHzQCZgZzRsGa9X1NzGUWfrVfg7eAuZ4b6YQ==",
+  "dgSpecHash": "75bWm6oVvgi95eriimnB3TOulvqw6eefn7rZv2Y0IvpMqX3kUlQgj1oEOcL9tut0dl0ThcnNlD3WyHtllPVOeg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Cesar\\Desktop\\Curso_Dev\\Alura\\CSharp\\WindowsForms\\Barra-de-ferramentas-e-JSON\\Formularios-Componente-e-Eventos.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Cesar\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512"
+  ],
   "logs": []
 }

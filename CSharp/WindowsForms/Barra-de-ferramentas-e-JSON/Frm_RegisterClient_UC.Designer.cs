@@ -165,6 +165,7 @@ namespace Formularios_Componente_e_Eventos
       this.txt_CEP.Name = "txt_CEP";
       this.txt_CEP.Size = new System.Drawing.Size(550, 39);
       this.txt_CEP.TabIndex = 6;
+      this.txt_CEP.Leave += new System.EventHandler(this.txt_CEP_Leave);
       // 
       // lbl_CEP
       // 

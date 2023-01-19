@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using LibraryWF.Class;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualBasic;
+using LibraryWF;
+using Newtonsoft.Json;
 
 namespace Formularios_Componente_e_Eventos
 {
@@ -82,7 +84,7 @@ namespace Formularios_Componente_e_Eventos
       {
         MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
-      catch (Exception Ex )
+      catch( Exception Ex )
       {
         MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
@@ -131,7 +133,7 @@ namespace Formularios_Componente_e_Eventos
       }
       else
       {
-      C.State = cmb_state.Items[cmb_state.SelectedIndex].ToString();
+        C.State = cmb_state.Items[cmb_state.SelectedIndex].ToString();
       }
 
       if( Information.IsNumeric(txt_familyIncome.Text) )
@@ -146,8 +148,30 @@ namespace Formularios_Componente_e_Eventos
           C.familyIncome = income;
         }
       }
-      
+
       return C;
+    }
+
+    private void txt_CEP_Leave(object sender, EventArgs e)
+    {
+      string vCEP = txt_CEP.Text;
+      if( vCEP != "" )
+      {
+        if( vCEP.Length == 8 )
+        {
+          if( Information.IsNumeric(vCEP) )
+          {
+
+            var vJSON = Cls_Utils.GeraJSONCEP(vCEP);
+
+            CEP.Unit Cep = new CEP.Unit();
+            Cep = CEP.DesSerializedClassUnit(vJSON);
+            txt_streetAddress.Text = Cep.logradouro;
+            txt_district.Text = Cep.bairro;
+            txt_city.Text = Cep.localidade;
+          }
+        }
+      }
     }
   }
 }

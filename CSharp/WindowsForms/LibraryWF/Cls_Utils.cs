@@ -42,7 +42,7 @@ namespace LibraryWF
       {
         // Um resumo do funcionamento do loop. Primeiramente utilizamos o 'stream.Read' para ler o fluxo de dados e armazenar uma parte dele no 'buffer' e também serve para atribuir a variável 'cont' a quantidade de bytes lidos. Usando o 'Encoding.Default', armazenamos na variável "temp" a conversão da resposta para 'string'. Como ja vimos anteriormente, juntamos os dados na variável 'sb', formando o texto.
         cont = stream.Read(buffer, 0, buffer.Length);
-        temp = Encoding.Default.GetString(buffer, 0, cont).Trim();
+        temp = Encoding.UTF8.GetString(buffer, 0, cont).Trim();
         sb.Append(temp);
       } while( cont > 0 );
       // O loop continua até não ter mais dados para ler, então abaixo retornamos os dados em forma de 'string'.

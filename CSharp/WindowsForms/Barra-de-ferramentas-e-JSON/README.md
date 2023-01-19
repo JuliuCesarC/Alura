@@ -197,3 +197,7 @@ Em seguida converte o texto para *double* e verifica se esse valor é menor que 
 Ainda nessa aula validamos algumas informações que não dizem respeito ao formulário, mas sim ao conteúdo digitado. Na classe *Client* temos o método `CheckComplement` onde adicionamos essas validações.
 
 ## Aula 6: JSON
+
+Uma funcionalidade que iremos implementar no formulário é que na hora que o usuário digitar um CEP, os outros campos de endereço sejam preenchidos automaticamente. Para isso utilizaremos uma *API* chamada **viacep**. Através da URL iremos informar o CEP digitado e ela ira retornar um **JSON** com as informações da rua, Bairro, estado, entre outros.
+
+Levando em consideração que um JSON pode ser transformado em uma classe, e uma classe em um JSON, temos uma ideia de como iremos capturar esses dados e inseri-los no formulário.

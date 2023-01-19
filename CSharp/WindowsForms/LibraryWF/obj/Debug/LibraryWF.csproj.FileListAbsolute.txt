@@ -4,3 +4,6 @@ C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\L
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.csproj.CoreCompileInputs.cache
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.dll
 C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.pdb
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Cesar\Desktop\Curso_Dev\Alura\CSharp\WindowsForms\LibraryWF\obj\Debug\LibraryWF.csproj.CopyComplete

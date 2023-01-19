@@ -8,10 +8,19 @@
     ".NETCoreApp,Version=v6.0": {
       "Formularios-Componente-e-Eventos/1.0.0": {
         "dependencies": {
-          "LibraryWF": "1.0.0"
+          "LibraryWF": "1.0.0",
+          "Newtonsoft.Json": "13.0.2"
         },
         "runtime": {
           "Formularios-Componente-e-Eventos.dll": {}
+        }
+      },
+      "Newtonsoft.Json/13.0.2": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.2.27524"
+          }
         }
       },
       "LibraryWF/1.0.0": {
@@ -26,6 +35,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Newtonsoft.Json/13.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "path": "newtonsoft.json/13.0.2",
+      "hashPath": "newtonsoft.json.13.0.2.nupkg.sha512"
     },
     "LibraryWF/1.0.0": {
       "type": "project",
