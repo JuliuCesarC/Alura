@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "V+WPTSFQ+o7j3tfSVJ995TRW1nFyZbS7x8Md2LOKYTzwAqQXVufX6svDhQU8C1awyVE9mJWav3XQ61fM3QID8Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Cesar\\Desktop\\Curso_Dev\\Alura\\CSharp\\WindowsForms\\Manipulando-dados-do-cliente\\Formularios-Componente-e-Eventos.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Cesar\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

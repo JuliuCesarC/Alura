@@ -34,7 +34,7 @@ public List<Unit> listUnit { get; set; }
 
 ## **Aula 3**: DataAnnotations e Validação
 
-O Windows Forms possui uma biblioteca que podemos utilizar para validação dos campos do formulário, que é a **ComponentModel.DataAnnotations**. Porem não é uma biblioteca que ja vem ativa no projeto, precisamos ativa-la indo em *Dependências* e clicando na opção *Adicionar referência*, isso ira abrir uma janela onde iremos procurar na opção *Assemblies>Framework* a biblioteca *referência*.
+O Windows Forms possui uma biblioteca que podemos utilizar para validação dos campos do formulário, que é a **ComponentModel.DataAnnotations**. Porem esta não é uma biblioteca que ja vem ativa no projeto, precisamos ativa-la na biblioteca que criamos *LibraryWF*, indo em *Referências* > *Adicionar referência* > *Assemblies* > *Framework* e procurando por *ComponentModel.DataAnnotations*.
 
 Com essa biblioteca podemos por exemplo definir que uma propriedade é obrigatória, o tamanho mínimo ou máximo, filtrar o conteúdo com uma expressão regular, entre outros. Abaixo temos alguns exemplos.
 
@@ -196,7 +196,7 @@ Em seguida converte o texto para *double* e verifica se esse valor é menor que 
 
 Ainda nessa aula validamos algumas informações que não dizem respeito ao formulário, mas sim ao conteúdo digitado. Na classe *Client* temos o método `CheckComplement` onde adicionamos essas validações.
 
-## Aula 6: JSON
+## **Aula 6**: JSON
 
 Uma funcionalidade que iremos implementar no formulário é que na hora que o usuário digitar um CEP, os outros campos de endereço sejam preenchidos automaticamente. Para isso utilizaremos uma *API* chamada **viacep**. Através da URL iremos informar o CEP digitado e ela ira retornar um **JSON** com as informações da rua, Bairro, estado, entre outros.
 
