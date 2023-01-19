@@ -13,7 +13,7 @@ namespace LibraryWF
   {
     public static bool CheckPassword(string password)
     {
-      if( password == "Curso" )
+      if (password == "Curso")
       {
         return true;
       }
@@ -44,7 +44,7 @@ namespace LibraryWF
         cont = stream.Read(buffer, 0, buffer.Length);
         temp = Encoding.UTF8.GetString(buffer, 0, cont).Trim();
         sb.Append(temp);
-      } while( cont > 0 );
+      } while (cont > 0);
       // O loop continua até não ter mais dados para ler, então abaixo retornamos os dados em forma de 'string'.
       return sb.ToString();
     }
@@ -58,24 +58,24 @@ namespace LibraryWF
       int resto;
       cpf = cpf.Trim();
       cpf = cpf.Replace(".", "").Replace("-", "");
-      if( cpf.Length != 11 )
+      if (cpf.Length != 11)
         return false;
       tempCpf = cpf.Substring(0, 9);
       soma = 0;
-      for( int i = 0; i < 9; i++ )
+      for (int i = 0; i < 9; i++)
         soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
       resto = soma % 11;
-      if( resto < 2 )
+      if (resto < 2)
         resto = 0;
       else
         resto = 11 - resto;
       digito = resto.ToString();
       tempCpf = tempCpf + digito;
       soma = 0;
-      for( int i = 0; i < 10; i++ )
+      for (int i = 0; i < 10; i++)
         soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
       resto = soma % 11;
-      if( resto < 2 )
+      if (resto < 2)
         resto = 0;
       else
         resto = 11 - resto;
@@ -96,7 +96,7 @@ namespace LibraryWF
     }
     public int geraPontosSenha(string senha)
     {
-      if( senha == null ) return 0;
+      if (senha == null) return 0;
       int pontosPorTamanho = GetPontoPorTamanho(senha);
       int pontosPorMinusculas = GetPontoPorMinusculas(senha);
       int pontosPorMaiusculas = GetPontoPorMaiusculas(senha);
@@ -136,7 +136,7 @@ namespace LibraryWF
     {
       System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"(\w)*.*\1");
       bool repete = regex.IsMatch(senha);
-      if( repete )
+      if (repete)
       {
         return 30;
       }
@@ -149,13 +149,13 @@ namespace LibraryWF
     {
       int placar = geraPontosSenha(senha);
 
-      if( placar < 50 )
+      if (placar < 50)
         return ForcaDaSenha.Inaceitavel;
-      else if( placar < 60 )
+      else if (placar < 60)
         return ForcaDaSenha.Fraca;
-      else if( placar < 80 )
+      else if (placar < 80)
         return ForcaDaSenha.Aceitavel;
-      else if( placar < 100 )
+      else if (placar < 100)
         return ForcaDaSenha.Forte;
       else
         return ForcaDaSenha.Segura;

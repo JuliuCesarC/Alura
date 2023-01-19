@@ -201,3 +201,116 @@ Ainda nessa aula validamos algumas informações que não dizem respeito ao form
 Uma funcionalidade que iremos implementar no formulário é que na hora que o usuário digitar um CEP, os outros campos de endereço sejam preenchidos automaticamente. Para isso utilizaremos uma *API* chamada **viacep**. Através da URL iremos informar o CEP digitado e ela ira retornar um **JSON** com as informações da rua, Bairro, estado, entre outros.
 
 Levando em consideração que um JSON pode ser transformado em uma classe, e uma classe em um JSON, temos uma ideia de como iremos capturar esses dados e inseri-los no formulário.
+
+O primeiro passo é criar uma requisição para esta *API* e transformar os dados recebidos em algo que possa ser interpretado pelo programa no processo que veremos depois, que é a **Desserialização**.
+
+```C#
+HttpWebRequest requisicao = (HttpWebRequest)WebRequest.Create("https://viacep.com.br/ws/" + CEP + "/json/");
+// A 'HttpWebRequest' serve para criar uma requisição HTTP.
+HttpWebResponse resposta = (HttpWebResponse)requisicao.GetResponse();
+// E a 'HttpWebResponse' serve para obter a resposta.
+
+int cont;
+byte[] buffer = new byte[1000];
+// Criamos uma variável 'buffer' para armazenar os dados.
+StringBuilder sb = new StringBuilder();
+// O 'StringBuilder' sera utilizado para acumular a resposta e gerar um texto.
+string temp;
+// 'O temp' sera utilizado para armazenar temporariamente os dados durante o loop.
+Stream stream = resposta.GetResponseStream();
+// Com o 'Stream' obtemos o fluxo de dados da resposta HTTP.
+do
+{
+  cont = stream.Read(buffer, 0, buffer.Length);
+  temp = Encoding.UTF8.GetString(buffer, 0, cont).Trim();
+  sb.Append(temp);
+} while (cont > 0);
+return sb.ToString();
+```
+
+Um resumo do funcionamento do loop. O primeiro comando é o `stream.Read`, que serve para ler o fluxo de dados e armazenar uma parte dele no *buffer*, além disso o retorno dele informa a quantidade de bytes lidos, que será atribuídos à variável *cont*. Usando o `Encoding.Default`, armazenamos na variável *temp* a conversão da resposta para *string*. No terceiro comando juntamos os dados na variável *sb*.
+
+Por fim retornamos os dados de *sb* no formato *string*. Lembrando que este código esta dentro do método *GeraJSONCEP* na classe *Cls_Utils*.
+
+O segundo passo é criar um classe que sera a responsável por **Desserializar**  o JSON e atribuir os valores nas propriedades. Dentro da biblioteca *LibraryWF* criamos a classe CEP, e dentro dela criamos outra classe *Unit* e um método *DesSerializedClassUnit*.
+
+A classe *Unit* é responsável pelas propriedades que receberam os valores da *API*, lembrando que os nomes das propriedades tem que ser o mesmo nome que vem no *JSON*.
+
+```C#
+public class Unit
+{
+  public string cep { get; set; }
+  public string logradouro { get; set; }
+  // ...
+}
+```
+
+Ja para o método, precisamos instalar a o pacote NuGet chamado **Newtonsoft.Json**, que atualmente é o mais baixado. Para instalar esse pacote, seguiremos os passos *Ferramentas* > *Gerenciado de Pacotes do NuGet* > *Gerenciar pacotes do NuGet para a solução* > *Procurar*, provavelmente a primeira opção sera o pacote desejado.
+
+```C#
+public static Unit DesSerializedClassUnit(string vJson)
+{
+  return JsonConvert.DeserializeObject<Unit>(vJson);
+}
+```
+
+> O tipo que ele precisa retornar é a classe *Unit*, por isso tipamos ele com o *\<Unit\>*
+
+### Adicionando os dados no formulário automaticamente
+
+___
+
+Para adicionar as informações no formulário, precisamos de um gatilho para isso, e o mais recomendado para esse exemplo é o evento *Leave*, que quando o usuário sai do campo de texto ele é ativado. Abaixo temos o código adicionado no evento.
+
+```C#
+string vCEP = txt_CEP.Text.Trim();
+if (vCEP != "")
+// Primeiro verificamos se ele não esta vazio.
+{
+  if (vCEP.Length == 8)
+  // Então verificamos se possui 8 digitos.
+  {
+    if (Information.IsNumeric(vCEP))
+    // Então utilizamos a classe 'Information' do VisualBasic para validar se o texto é numérico.
+    {
+      var vJSON = Cls_Utils.GeraJSONCEP(vCEP);
+
+      CEP.Unit Cep = new CEP.Unit();
+      Cep = CEP.DesSerializedClassUnit(vJSON);
+
+      txt_streetAddress.Text = Cep.logradouro;
+      txt_district.Text = Cep.bairro;
+      txt_city.Text = Cep.localidade;
+
+      // 
+      // ComboBox
+      // 
+    }
+  }
+}
+```
+
+Apos o encadeamento de *Ifs* temos os comandos, o primeiro é o que vimos no começo da aula, que foi o método que gera um texto a partir da busca na *API*.
+
+Logo então criamos uma instancia da classe *Unit* e executamos o método *DesSerializedClassUnit*, com isso teremos todas as informações recebidas pela *API* em propriedades separadas na classe *Unit*. Basta agora atribuir essas valores nos campos desejados como vimos em `txt_district.Text = Cep.bairro;`.
+
+Porem para o componente **ComboBox** é um pouco diferente. O nome do estado que vem da *API* esta no formato de siglas *SP*, e as opções dentro do ComboBox são o nome com a sigla *São Paulo (SP)*. Com isso podemos buscar dentre esses itens o que possui a sigla do estado selecionado. Vejamos o código abaixo.
+
+```C#
+for (int i = 0; i < cmb_state.Items.Count - 1; i++)
+{
+  var vPos = Strings.InStr(cmb_state.Items[i].ToString(), "(" + Cep.uf + ")");
+  if (vPos > 0)
+  {
+    cmb_state.SelectedIndex = i;
+  }
+}
+```
+
+Primeiramente criamos um loop para varrer todas as opções do ComboBox, e em cada item devemos procurar se a sigla do estado existe dentro do texto do item. Para fazer essa busca utilizamos o método **InStr** da classe *Strings*.
+
+O método *InStr* possui como primeiro parâmetro o ponto inicial da string que ele deve começar a busca, o segundo parâmetro é em que string devemos buscar `Items[i]`, e o terceiro parâmetro é o que devemos buscar `"(" + Cep.uf + ")"`.
+
+> Ao omitir o primeiro parâmetro no método *InStr*, o programa assume que a busca deve começar no primeiro caractere.
+
+Para selecionar o item quando encontrado, utilizamos o **SelectedIndex**.

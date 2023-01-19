@@ -154,14 +154,13 @@ namespace Formularios_Componente_e_Eventos
 
     private void txt_CEP_Leave(object sender, EventArgs e)
     {
-      string vCEP = txt_CEP.Text;
+      string vCEP = txt_CEP.Text.Trim();
       if( vCEP != "" )
       {
         if( vCEP.Length == 8 )
         {
           if( Information.IsNumeric(vCEP) )
           {
-
             var vJSON = Cls_Utils.GeraJSONCEP(vCEP);
 
             CEP.Unit Cep = new CEP.Unit();
@@ -169,6 +168,15 @@ namespace Formularios_Componente_e_Eventos
             txt_streetAddress.Text = Cep.logradouro;
             txt_district.Text = Cep.bairro;
             txt_city.Text = Cep.localidade;
+
+            for( int i = 0; i < cmb_state.Items.Count - 1; i++ )
+            {
+              var vPos = Strings.InStr(cmb_state.Items[i].ToString(), "(" + Cep.uf + ")");
+              if( vPos > 0 )
+              {
+                cmb_state.SelectedIndex = i;
+              }
+            }
           }
         }
       }
