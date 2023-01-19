@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,6 +21,32 @@ namespace LibraryWF
       {
         return false;
       }
+    }
+    public static string GeraJSONCEP(string CEP)
+    {
+      System.Net.HttpWebRequest requisicao = (HttpWebRequest)WebRequest.Create("https://viacep.com.br/ws/" + CEP + "/json/");
+      // A 'HttpWebRequest' serve para criar uma requisição HTTP.
+      HttpWebResponse resposta = (HttpWebResponse)requisicao.GetResponse();
+      // E a 'HttpWebResponse' serve para obter a resposta.
+
+      int cont;
+      byte[] buffer = new byte[1000];
+      // Como iremos utilizar o 'Stream' para o fluxo de dados, então criamos uma variável 'buffer' para armazenar os dados.
+      StringBuilder sb = new StringBuilder();
+      // Já o 'StringBuilder' sera utilizado para acumular a resposta e gerar um texto.
+      string temp;
+      // 'temp' sera utilizado para armazenar temporariamente os dados durante o loop.
+      Stream stream = resposta.GetResponseStream();
+      // Com o 'Stream' obtemos o fluxo de dados da resposta HTTP.
+      do
+      {
+        // Um resumo do funcionamento do loop. Primeiramente utilizamos o 'stream.Read' para ler o fluxo de dados e armazenar uma parte dele no 'buffer' e também serve para atribuir a variável 'cont' a quantidade de bytes lidos. Usando o 'Encoding.Default', armazenamos na variável "temp" a conversão da resposta para 'string'. Como ja vimos anteriormente, juntamos os dados na variável 'sb', formando o texto.
+        cont = stream.Read(buffer, 0, buffer.Length);
+        temp = Encoding.Default.GetString(buffer, 0, cont).Trim();
+        sb.Append(temp);
+      } while( cont > 0 );
+      // O loop continua até não ter mais dados para ler, então abaixo retornamos os dados em forma de 'string'.
+      return sb.ToString();
     }
     public static bool Valida(string cpf)
     {

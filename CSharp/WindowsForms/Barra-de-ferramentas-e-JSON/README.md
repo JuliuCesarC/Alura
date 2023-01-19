@@ -193,3 +193,7 @@ if (Information.IsNumeric(txt_familyIncome.Text))
 A classe *Information* possui diversos métodos como *IsDate*, *IsArray*, *IsError*, entre outros, mas para este projeto iremos utilizar o *IsNumeric* que como o nome sugere verifica se o conteúdo digitado no campo é um numero valido.
 
 Em seguida converte o texto para *double* e verifica se esse valor é menor que 0, caso seja então atribuímos 0 a propriedade, caso não atribuímos o valor do campo na propriedade.
+
+Ainda nessa aula validamos algumas informações que não dizem respeito ao formulário, mas sim ao conteúdo digitado. Na classe *Client* temos o método `CheckComplement` onde adicionamos essas validações.
+
+## Aula 6: JSON

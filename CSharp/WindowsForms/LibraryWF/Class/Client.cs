@@ -65,10 +65,10 @@ namespace LibraryWF.Class
         bool isValid = Validator.TryValidateObject(this, context, results, true);
         // O 'TryValidateObject' valida os testes, e caso alguns dos testes tenha um problema, ira retornar false.  
 
-        if (isValid == false)
+        if( isValid == false )
         {
           StringBuilder sbrErrors = new StringBuilder();
-          foreach (var validationResult in results)
+          foreach( var validationResult in results )
           // O 'foreach' é para mostrar na tela todos os erros, e não apenas o primeiro erro.
           {
             sbrErrors.AppendLine(validationResult.ErrorMessage);
@@ -84,13 +84,21 @@ namespace LibraryWF.Class
         {
           throw new Exception("Nome da mãe não pode ser igual a do pai");
         }
-        if( this.HaveFather == true )
+        if( this.HaveFather == true && this.FathersName.Trim() == "" )
         {
           throw new Exception("Nome do pai deve ser informado caso a opção esteja marcada");
+        }
+
+        bool checkCPF = Cls_Utils.Valida(this.CPF);
+
+        if( !checkCPF )
+        {
+          throw new Exception("CPF invalido");
         }
       }
 
     }
+
     public class List
     {
       public List<Unit> listUnit { get; set; }

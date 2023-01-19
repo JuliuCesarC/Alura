@@ -2,7 +2,7 @@
 
 ## Sequencia das aulas e os conteúdos apresentados
 
-- Aula 1: Eventos de mouse.
+## Aula 1: Eventos de mouse
 
 Dentro do aquivo *Frm_MouseEvent* vimos alguns eventos que podemos capturar, sendo eles o **MouseEnter**, **MouseLeave**, **MouseDown**, **MouseUp**, **MouseMove** e **MouseClick**. Os próprios nomes dos eventos já são sugestivos para como eles funcionam.
 
@@ -33,7 +33,7 @@ if( e.Button == MouseButtons.Right )
 
 > A propriedade *e.Button* informa qual botão foi utilizado, e dentro do próprio C# temos como verificar se foi o botão escolhido com o enumerador **MouseButtons**.
 
-- Aula 2: Menu flutuante.
+## Aula 2: Menu flutuante
 
 Para criar um menu flutuante é preciso faze-lo dinamicamente, pois ele aparecera apenas caso alguma ação seja tomada, por exemplo clicar com o botão direito do mouse, como vimos na aula 01.
 
@@ -91,7 +91,7 @@ vToolTip01.Click += new System.EventHandler(vToolTip01_Click);
 
 O **Click** é uma evento padrão que a instancia do item também tem, e adicionamos a ele um evento de click que quando ativado ira executar o método que criamos, que neste exercício foi o *vToolTip01_Click*.
 
-- Aula 3: Adicionando um menu flutuante no arquivo *Frm_Principal_Menu_UC*.
+## Aula 3: Adicionando um menu flutuante no arquivo *Frm_Principal_Menu_UC*
 
 Nesta aula adicionamos um menu com a funcionalidade de gerenciar as abas abertas, que é mostrado na tela quando clicado com o botão direito do mouse sobre as abas. As funcionalidades são *Apagar aba*, *Apagar todas a esquerda*, *Apagar todas a direita* e *Apagar todas menos a aba selecionada*.
 
@@ -129,7 +129,7 @@ for( int i = tbc_application.TabPages.Count - 1; i > SelectedItem; i-- )
 
 Já para remover as abas a direita, iremos atribuir o total de abas menos 1 à variável *"i"*, e o loop sera do total de abas até a aba selecionada.
 
-- Aula 4: Criando um formulário de cadastro de cliente.
+## Aula 4: Criando um formulário de cadastro de cliente
 
 Nesta aula criamos um formulário do tipo *Controle de usuário*, onde adicionamos diversos campos e novos componentes para simular um cadastro de cliente.
 

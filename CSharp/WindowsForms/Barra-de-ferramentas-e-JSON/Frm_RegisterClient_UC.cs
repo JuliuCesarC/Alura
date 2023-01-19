@@ -75,9 +75,14 @@ namespace Formularios_Componente_e_Eventos
         Client.Unit C = new Client.Unit();
         C = FormDataToClass();
         C.CheckClass();
+        C.CheckComplement();
         MessageBox.Show("Usuário adicionado com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
       catch( ValidationException Ex )
+      {
+        MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
+      catch (Exception Ex )
       {
         MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
