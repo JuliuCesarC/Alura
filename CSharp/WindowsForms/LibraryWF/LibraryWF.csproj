@@ -49,6 +49,7 @@
     <Compile Include="Class\CEP.cs" />
     <Compile Include="Class\Client.cs" />
     <Compile Include="Cls_Utils.cs" />
+    <Compile Include="DataBase\Binder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

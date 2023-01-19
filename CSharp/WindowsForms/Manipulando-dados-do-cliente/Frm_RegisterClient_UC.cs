@@ -12,10 +12,11 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualBasic;
 using LibraryWF;
 using Newtonsoft.Json;
+using LibraryWF.DataBase;
 
 namespace Formularios_Componente_e_Eventos
 {
-  public partial class Frm_RegisterClient_UC: UserControl
+  public partial class Frm_RegisterClient_UC : UserControl
   {
     public Frm_RegisterClient_UC()
     {
@@ -52,15 +53,35 @@ namespace Formularios_Componente_e_Eventos
       var file = "lista_de_estados.txt";
       var lines = File.ReadAllLines(file);
       cmb_state.Items.Clear();
-      foreach( var line in lines )
+      foreach (var line in lines)
       {
         cmb_state.Items.Add(line);
       }
     }
 
+    private void ClearForm()
+    {
+      txt_clientID.Text = "";
+      txt_district.Text = "";
+      txt_CEP.Text = "";
+      txt_complement.Text = "";
+      txt_CPF.Text = "";
+      cmb_state.SelectedIndex = -1;
+      txt_streetAddress.Text = "";
+      txt_clientName.Text = "";
+      txt_mothersName.Text = "";
+      txt_fathersName.Text = "";
+      txt_profession.Text = "";
+      txt_familyIncome.Text = "";
+      txt_phoneNumber.Text = "";
+      txt_city.Text = "";
+      chk_fathersName.Checked = true;
+      rdb_male.Checked = true;
+    }
+
     private void chk_fathersName_CheckedChanged(object sender, EventArgs e)
     {
-      if( !chk_fathersName.Checked )
+      if (!chk_fathersName.Checked)
       {
         txt_fathersName.Enabled = false;
       }
@@ -78,13 +99,34 @@ namespace Formularios_Componente_e_Eventos
         C = FormDataToClass();
         C.CheckClass();
         C.CheckComplement();
+
+        string clientJson = Client.SerializedClassUnit(C);
+
+        Binder F = new Binder("C:\\Users\\Cesar\\Desktop\\Curso_Dev\\Alura\\CSharp\\WindowsForms\\Manipulando-dados-do-cliente\\Banco-de-dados");
+        if (F.status)
+        {
+          F.AddClient(C.ID, clientJson);
+          if (F.status)
+          {
+            MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          }
+          else
+          {
+            MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          }
+        }
+        else
+        {
+          MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
         MessageBox.Show("Usuário adicionado com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
-      catch( ValidationException Ex )
+      catch (ValidationException Ex)
       {
         MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
-      catch( Exception Ex )
+      catch (Exception Ex)
       {
         MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
@@ -104,7 +146,7 @@ namespace Formularios_Componente_e_Eventos
       C.profession = txt_profession.Text;
       C.phoneNumber = txt_phoneNumber.Text;
 
-      if( chk_fathersName.Checked )
+      if (chk_fathersName.Checked)
       {
         C.FathersName = txt_fathersName.Text;
         C.HaveFather = true;
@@ -114,20 +156,20 @@ namespace Formularios_Componente_e_Eventos
         C.HaveFather = false;
       }
 
-      if( rdb_male.Checked )
+      if (rdb_male.Checked)
       {
         C.Gender = 0;
       }
-      if( rdb_female.Checked )
+      if (rdb_female.Checked)
       {
         C.Gender = 1;
       }
-      if( rdb_undefinedGender.Checked )
+      if (rdb_undefinedGender.Checked)
       {
         C.Gender = 2;
       }
 
-      if( cmb_state.SelectedIndex < 0 )
+      if (cmb_state.SelectedIndex < 0)
       {
         C.State = "";
       }
@@ -136,10 +178,10 @@ namespace Formularios_Componente_e_Eventos
         C.State = cmb_state.Items[cmb_state.SelectedIndex].ToString();
       }
 
-      if( Information.IsNumeric(txt_familyIncome.Text) )
+      if (Information.IsNumeric(txt_familyIncome.Text))
       {
         double income = Convert.ToDouble(txt_familyIncome.Text);
-        if( income < 0 )
+        if (income < 0)
         {
           C.familyIncome = 0;
         }
@@ -155,11 +197,11 @@ namespace Formularios_Componente_e_Eventos
     private void txt_CEP_Leave(object sender, EventArgs e)
     {
       string vCEP = txt_CEP.Text.Trim();
-      if( vCEP != "" )
+      if (vCEP != "")
       {
-        if( vCEP.Length == 8 )
+        if (vCEP.Length == 8)
         {
-          if( Information.IsNumeric(vCEP) )
+          if (Information.IsNumeric(vCEP))
           {
             var vJSON = Cls_Utils.GeraJSONCEP(vCEP);
 
@@ -169,10 +211,10 @@ namespace Formularios_Componente_e_Eventos
             txt_district.Text = Cep.bairro;
             txt_city.Text = Cep.localidade;
 
-            for( int i = 0; i < cmb_state.Items.Count - 1; i++ )
+            for (int i = 0; i < cmb_state.Items.Count - 1; i++)
             {
               var vPos = Strings.InStr(cmb_state.Items[i].ToString(), "(" + Cep.uf + ")");
-              if( vPos > 0 )
+              if (vPos > 0)
               {
                 cmb_state.SelectedIndex = i;
               }
@@ -180,6 +222,11 @@ namespace Formularios_Componente_e_Eventos
           }
         }
       }
+    }
+
+    private void clearToolStripButton1_Click(object sender, EventArgs e)
+    {
+      ClearForm();
     }
   }
 }

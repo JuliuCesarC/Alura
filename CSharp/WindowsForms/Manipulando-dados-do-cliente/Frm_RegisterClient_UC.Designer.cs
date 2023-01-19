@@ -479,6 +479,7 @@ namespace Formularios_Componente_e_Eventos
       this.clearToolStripButton1.Size = new System.Drawing.Size(46, 36);
       this.clearToolStripButton1.Text = "toolStripButton1";
       this.clearToolStripButton1.ToolTipText = "Limpar Formulario";
+      this.clearToolStripButton1.Click += new System.EventHandler(this.clearToolStripButton1_Click);
       // 
       // Frm_RegisterClient_UC
       // 
