@@ -56,5 +56,54 @@ namespace LibraryWF.DataBase
         message = "Não foi possível efetuar a conexão: " + Ex.Message;
       }
     }
+    public string Search(string id)
+    {
+      status = true;
+      try
+      {
+        if( !File.Exists(directory + "\\" + id + ".json") )
+        {
+          status = false;
+          message = "Identificador não existente: " + id;
+        }
+        else
+        {
+          string content = File.ReadAllText(directory + "\\" + id + ".json");
+          status = true;
+          message = "Cliente encontrado com sucesso.";
+          return content;
+        }
+
+      }
+      catch( Exception Ex )
+      {
+        status = false;
+        message = "Não foi possível encontrar o cliente: " + Ex.Message;
+      }
+      return "";
+    }
+    public void Save(string id, string jsonUnit)
+    {
+      status = true;
+      try
+      {
+        if( !File.Exists(directory + "\\" + id + ".json") )
+        {
+          status = false;
+          message = "Cliente ainda não adicionado: " + id;
+        }
+        else
+        {
+          File.WriteAllText(directory + "\\" + id + ".json", jsonUnit);
+          status = true;
+          message = "Novos dados atualizados: " + id;
+        }
+      }
+      catch( Exception Ex )
+      {
+        status = false;
+        message = "Não foi possível efetuar a conexão: " + Ex.Message;
+      }
+    }
   }
 }

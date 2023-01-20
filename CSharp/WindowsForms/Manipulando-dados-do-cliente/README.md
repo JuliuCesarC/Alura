@@ -62,6 +62,7 @@ public void AddClient(string id, string jsonUnit)
   try
   {
     if (File.Exists(directory + "\\" + id + ".json"))
+    // Verifica se ja existe um cliente com esse 'id'.
     {
       status = false;
       message = "Não é possível incluir pois o ID ja esta sendo usado. ID: " + id;
@@ -80,3 +81,83 @@ public void AddClient(string id, string jsonUnit)
   }
 }
 ```
+
+> Colocando o *status* como false quando ocorre algum erro, mais frente no código fonte do formulário poderemos utiliza-lo para fazer alguma validação antes de prosseguir.
+
+Para adicionar o cliente precisamos do *ID*, pois o nome do arquivo sera o próprio *ID*, e da classe *Serializada* para *JSON*. Com essas duas informações e mais o *directory* que ja esta salvo na propriedade da classe, podemos utilizar o método **WriteAllText** para adicionar o arquivo no diretório.
+
+Na classe *Client* adicionamos o comando para *Serializar* um JSON.
+
+```C#
+public static string SerializedClassUnit(Unit unit)
+{
+  return JsonConvert.SerializeObject(unit);
+}
+```
+
+Existe bastante semelhança entre o método de *Desserializar*, a diferença se da ao fato de que ele recebe uma classe *Unit* e retorna uma *string*.
+
+## **Aula 2**: Finalizando a funcionalidade do primeiro item da barra de ferramentas
+
+Dentro do código fonte do formulário temos o evento do item *Adicionar novo cliente*, que mudou bastante, mas ainda continua com alguns comandos do curso anterior. Vejamos abaixo o código.
+
+```C#
+try
+{
+  Client.Unit C = new Client.Unit();
+  C = FormDataToClass();
+  C.CheckClass();
+  C.CheckComplement();
+
+  string clientJson = Client.SerializedClassUnit(C);
+  Binder F = new Binder("C:\\Users\\Cesar\\Desktop\\Curso_Dev\\Alura\\CSharp\\WindowsForms\\Manipulando-dados-do-cliente\\Banco-de-dados");
+
+  // ...
+}
+```
+
+A primeira parte do comando é praticamente a mesma, transferimos os dados do formulário para a classe *Client*, executamos as 2 validações como anteriormente. Os novos comando são o método estático *SerializedClassUnit*, que ira transformar a classe em um JSON, e posteriormente sera usado no método **AddClient** que vimos na aula anterior, além de criarmos uma instancia da classe *Binder* informando o diretório onde pretendemos guardar os clientes.
+
+```C#
+try
+{
+  // ...
+
+  if (F.status)
+  // Testa se não houve nenhum erro ao criar a instancia da classe 'Binder'.
+  {
+    F.AddClient(C.ID, clientJson);
+
+    if (F.status)
+    // Verifica se não houve nenhum erro ao adicionar o cliente.
+    {
+      MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+    else
+    {
+      MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+  }
+  else
+  {
+    MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+  }
+}
+// ...
+```
+
+A segunda parte é responsável por adicionar o cliente e verificar possíveis erros que podem ocorrer nesse processo. Cada um desses processos retornando uma mensagem através do *F.message*, com ele podemos mostrar ao usuário aonde ocorreu o erro.
+
+```C#
+// ...
+catch (ValidationException Ex)
+{
+  MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+}
+catch (Exception Ex)
+{
+  MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+}
+```
+
+Por fim a ultima parte onde fica o *catch*, adicionamos um novo *catch* que ficara responsável pelos erros do tipo *Exception*, pois o do tipo *ValidationException* serve apenas pera as validações do formulário.

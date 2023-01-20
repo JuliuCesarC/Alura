@@ -439,7 +439,7 @@ namespace Formularios_Componente_e_Eventos
       this.novaToolStripButton.Name = "novaToolStripButton";
       this.novaToolStripButton.Size = new System.Drawing.Size(46, 36);
       this.novaToolStripButton.Text = "&Nova";
-      this.novaToolStripButton.ToolTipText = "Novo";
+      this.novaToolStripButton.ToolTipText = "Adicionar novo cliente";
       this.novaToolStripButton.Click += new System.EventHandler(this.novaToolStripButton_Click);
       // 
       // abrirToolStripButton
@@ -450,6 +450,7 @@ namespace Formularios_Componente_e_Eventos
       this.abrirToolStripButton.Name = "abrirToolStripButton";
       this.abrirToolStripButton.Size = new System.Drawing.Size(46, 36);
       this.abrirToolStripButton.Text = "&Abrir";
+      this.abrirToolStripButton.Click += new System.EventHandler(this.abrirToolStripButton_Click);
       // 
       // salvarToolStripButton
       // 
@@ -459,6 +460,7 @@ namespace Formularios_Componente_e_Eventos
       this.salvarToolStripButton.Name = "salvarToolStripButton";
       this.salvarToolStripButton.Size = new System.Drawing.Size(46, 36);
       this.salvarToolStripButton.Text = "&Salvar";
+      this.salvarToolStripButton.Click += new System.EventHandler(this.salvarToolStripButton_Click);
       // 
       // deleteToolStripButton1
       // 

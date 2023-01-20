@@ -18,6 +18,7 @@ namespace Formularios_Componente_e_Eventos
 {
   public partial class Frm_RegisterClient_UC : UserControl
   {
+    string directory = "C:\\Users\\Cesar\\Desktop\\Curso_Dev\\Alura\\CSharp\\WindowsForms\\Manipulando-dados-do-cliente\\Banco-de-dados";
     public Frm_RegisterClient_UC()
     {
       InitializeComponent();
@@ -102,7 +103,7 @@ namespace Formularios_Componente_e_Eventos
 
         string clientJson = Client.SerializedClassUnit(C);
 
-        Binder F = new Binder("C:\\Users\\Cesar\\Desktop\\Curso_Dev\\Alura\\CSharp\\WindowsForms\\Manipulando-dados-do-cliente\\Banco-de-dados");
+        Binder F = new Binder(directory);
         if (F.status)
         {
           F.AddClient(C.ID, clientJson);
@@ -119,8 +120,6 @@ namespace Formularios_Componente_e_Eventos
         {
           MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
-        MessageBox.Show("Usuário adicionado com sucesso", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
       catch (ValidationException Ex)
       {
@@ -227,6 +226,138 @@ namespace Formularios_Componente_e_Eventos
     private void clearToolStripButton1_Click(object sender, EventArgs e)
     {
       ClearForm();
+    }
+
+    private void abrirToolStripButton_Click(object sender, EventArgs e)
+    {
+      if( txt_clientID.Text == "" )
+      {
+        MessageBox.Show("Código do cliente vazio.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
+      else
+      {
+        Binder F = new Binder(directory);
+        if( F.status )
+        {
+          string clientJSON = F.Search(txt_clientID.Text);
+
+          Client.Unit C = new Client.Unit();
+          C = Client.DesSerializedClassUnit(clientJSON);
+          writeOnForm(C);
+        }
+        else
+        {
+          MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+      }
+    }
+
+    private void writeOnForm(Client.Unit C)
+    {
+      txt_clientID.Text = C.ID;
+      txt_clientName.Text = C.Name;
+      txt_mothersName.Text = C.MothersName;
+      txt_CPF.Text = C.CPF;
+      txt_CEP.Text = C.CEP;
+      txt_streetAddress.Text = C.streetAddress;
+      txt_complement.Text = C.complement;
+      txt_city.Text = C.city;
+      txt_district.Text = C.district;
+      txt_profession.Text = C.profession;
+      txt_phoneNumber.Text = C.phoneNumber;
+      txt_familyIncome.Text = C.familyIncome.ToString();
+
+      if( C.HaveFather )
+      {
+        txt_fathersName.Text = C.FathersName;
+        C.HaveFather = true;
+      }
+      else
+      {
+        txt_fathersName.Text = "";
+        C.HaveFather = false;
+      }
+
+      if( C.Gender == 0)
+      {
+        rdb_male.Checked = true;
+      }
+      if( C.Gender == 1)
+      {
+        rdb_female.Checked = true;
+      }
+      if( C.Gender == 2)
+      {
+        rdb_undefinedGender.Checked = true;
+      }
+      
+
+      if( C.State == "" )
+      {
+        cmb_state.SelectedIndex = -1;
+      }
+      else
+      {
+        for( int i = 0; i < cmb_state.Items.Count -1; i++ )
+        {
+          if( C.State == cmb_state.Items[i].ToString() )
+          {
+            cmb_state.SelectedIndex = i;
+          }
+        }
+      }
+
+      if( Information.IsNumeric(txt_familyIncome.Text) )
+      {
+        double income = Convert.ToDouble(txt_familyIncome.Text);
+        if( income < 0 )
+        {
+          C.familyIncome = 0;
+        }
+        else
+        {
+          C.familyIncome = income;
+        }
+      }
+    }
+
+    private void salvarToolStripButton_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        Client.Unit C = new Client.Unit();
+        C = FormDataToClass();
+        C.CheckClass();
+        C.CheckComplement();
+
+        string clientJson = Client.SerializedClassUnit(C);
+
+        Binder F = new Binder(directory);
+        if( F.status )
+        {
+          F.Save(C.ID, clientJson);
+          if( F.status )
+          {
+            MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          }
+          else
+          {
+            MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          }
+        }
+        else
+        {
+          MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+      }
+      catch( ValidationException Ex )
+      {
+        MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
+      catch( Exception Ex )
+      {
+        MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
     }
   }
 }
