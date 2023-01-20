@@ -161,3 +161,89 @@ catch (Exception Ex)
 ```
 
 Por fim a ultima parte onde fica o *catch*, adicionamos um novo *catch* que ficara responsável pelos erros do tipo *Exception*, pois o do tipo *ValidationException* serve apenas pera as validações do formulário.
+
+## **Aula 3**: Buscando um cliente
+
+Todas as funcionalidades implementadas são muito semelhante em sua implementação, sendo a maior diferença o comando principal da classe **File**. Para ver todos os comandos de validação e de verificação das funções, entrar no arquivo **Frm_RegisterClient_UC**.
+
+Dentro do arquivo *Binder* adicionamos a função que ira buscar o cliente no diretório e retorna-lo para ser adicionado suas informações no formulário. Os único comando que o diferencia do *Adicionar novo Cliente* é o abaixo.
+
+```C#
+string content = File.ReadAllText(directory + "\\" + id + ".json");
+```
+
+Dentro do código fonte do formulário adicionamos as funções do item *Abrir dados do Cliente*. O código que realmente faz o trabalho esta abaixo.
+
+```C#
+string clientJSON = F.Search(txt_clientID.Text);
+
+Client.Unit C = new Client.Unit();
+C = Client.DesSerializedClassUnit(clientJSON);
+writeOnForm(C);
+```
+
+> O método *Search* é o que adicionamos na classe *Binder*.
+
+Primeiramente buscamos o cliente com o método *Search*, e então criamos uma instancia de *Client* e transformamos os dados do cliente do formato JSON para uma classe com o *DesSerializedClassUnit*, apos isso utilizamos o método *writeOnForm* para escrever os dados no formulário.
+
+O método *writeOnForm* abaixo possui os mesmos comando de quando passamos os dados do formulário para a classe, porem agora é ao contrario.
+
+```C#
+txt_clientID.Text = C.ID;
+txt_clientName.Text = C.Name;
+// ...
+```
+
+Para selecionar o estado no **ComboBox** utilizamos um loop *for*. O código é praticamente o mesmo de quando utilizamos o CEP para fazer uma requisição à uma API, e precisamos escolher o estado de acordo com o retorno.
+
+## **Aula 4**: Adicionando as funções de *Alterar* e *Deletar*
+
+Não fugindo a regra dos itens anteriores, adicionamos os métodos na classe *Binder*, sendo eles *Save* e o *Delete*. A unica diferença é o método da classe *File*. Para o item *Delete* temos abaixo.
+
+```C#
+File.Delete(directory + "\\" + id + ".json");
+```
+
+Para o item *Save* temos uma junção de adicionar novo e de excluir.
+
+```C#
+File.Delete(directory + "\\" + id + ".json");
+File.WriteAllText(directory + "\\" + id + ".json", jsonUnit);
+```
+
+> O *jsonUnit* é a classe já *Serializada* que recebemos como parâmetro.
+
+Para o *Delete* no código fonte do formulário, adicionamos algumas novas funcionalidades.
+
+```C#
+Binder F = new Binder(directory);
+if (F.status)
+{
+  string clientJson = F.Search(txt_clientID.Text);
+  Client.Unit C = new Client.Unit();
+  C = Client.DesSerializedClassUnit(clientJson);
+  writeOnForm(C);
+
+  Frm_Question Db = new Frm_Question("Deseja excluir cliente?", "Frm_Question");
+  Db.ShowDialog();
+
+  if (Db.DialogResult == DialogResult.Yes)
+  {
+    F.Delete(txt_clientID.Text);
+    if (F.status)
+    {
+      MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      ClearForm();
+    }
+    // ...
+  }
+}
+```
+
+Assim como o buscar cliente, utilizamos o método *writeOnForm* para escrever no formulário os dados do cliente que sera excluído, dando assim maior garantia para o usuário que é aquele o cliente escolhido.
+
+Trouxemos do Curso 2 o formulário **Frm_Question** para abrir uma *DialogBox* perguntado se o cliente tem certeza que deseja excluir o cliente.
+
+Caso o usuário concorde, então excluimos o cliente com o *F.Delete* e verificamos se o método executou normalmente com o *F.status*. Por fim utilizamos o *ClearForm* para limpar os dados do formulário.
+
+Para o *Save*, os comando são os mesmos que o de adicionar novo cliente, a principal diferença é o comando `F.Save(C.ID, clientJson);`.

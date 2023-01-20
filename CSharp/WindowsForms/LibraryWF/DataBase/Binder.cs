@@ -94,6 +94,7 @@ namespace LibraryWF.DataBase
         }
         else
         {
+          File.Delete(directory + "\\" + id + ".json");
           File.WriteAllText(directory + "\\" + id + ".json", jsonUnit);
           status = true;
           message = "Novos dados atualizados: " + id;

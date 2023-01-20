@@ -450,6 +450,7 @@ namespace Formularios_Componente_e_Eventos
       this.abrirToolStripButton.Name = "abrirToolStripButton";
       this.abrirToolStripButton.Size = new System.Drawing.Size(46, 36);
       this.abrirToolStripButton.Text = "&Abrir";
+      this.abrirToolStripButton.ToolTipText = "Abrir dados do cliente";
       this.abrirToolStripButton.Click += new System.EventHandler(this.abrirToolStripButton_Click);
       // 
       // salvarToolStripButton
