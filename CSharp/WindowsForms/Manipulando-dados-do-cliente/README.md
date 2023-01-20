@@ -247,3 +247,94 @@ Trouxemos do Curso 2 o formulário **Frm_Question** para abrir uma *DialogBox* p
 Caso o usuário concorde, então excluimos o cliente com o *F.Delete* e verificamos se o método executou normalmente com o *F.status*. Por fim utilizamos o *ClearForm* para limpar os dados do formulário.
 
 Para o *Save*, os comando são os mesmos que o de *Incluir novo cliente*, a principal diferença é o comando `F.Save(C.ID, clientJson);`.
+
+## **Aula 5**: Adicionando uma DialogBox para selecionar o cliente
+
+O método utilizado até agora para selecionar um cliente, ou deletar um cliente, foi utilizando o *Código do cliente* que o usuário digitou no formulário. Porem existem maneiras muito mais praticas para buscar por um arquivo, e um desses é criando um formulário para utilizar com o **DialogBox**.
+
+Criamos o formulário *Frm_Search*, que sera o responsável por exibir os itens no **ListBox** e selecionar o cliente. Mas para funcionar corretamente precisamos adicionar alguns métodos que iram ler todos os arquivos dentro do diretório e depois envia-los para o formulário.
+
+Dentro da classe *Binder* criamos o método que ira buscar por todos os itens do diretório.
+
+```C#
+public List<string> SearchAll()
+{
+  status = true;
+  List<string> List = new List<string>();
+  try
+  {
+    var files = Directory.GetFiles(directory, "*.json");
+    for (int i = 0; i < files.Length - 1; i++)
+    {
+      string content = File.ReadAllText(files[i]);
+      List.Add(content);
+    }
+    return List;
+  }
+  catch (Exception Ex)
+  {
+    status = false;
+    message = "Não foi possível encontrar o cliente: " + Ex.Message;
+  }
+  return List;
+}
+```
+
+> O *List\<string\>* na declaração do método, indica que sera retornado uma lista de strings.
+
+O método **GetFiles** é o responsável por selecionar os arquivos, o primeiro parâmetro é o diretório que sera feita a busca, e o segundo parâmetro é o que ele ira buscar, por exemplo o comando `"a*.ico"` ira filtrar todos os arquivos que começão com a letra *a*, e terminai com a extenção *.ico*.
+
+Em seguida criamos um loop com o intuito de ler individualmente cada arquivo e escrever os seus dados na lista de string *List*. Por fim retornamos essa lista.
+
+___
+
+No formulário principal adicionamos um botão que abrira a *DialogBox*. Dentro do evento de click dele colocamos o código abaixo.
+
+```C#
+Binder F = new Binder(directory);
+if (F.status)
+{
+  List<string> List = new List<string>();
+  List = F.SearchAll();
+  // Adiciona todos os dados dos clientes na lista de strings 'List'.
+  if (F.status)
+  {
+    List<List<string>> searchList = new List<List<string>>();
+    
+    for (int i = 0; i < List.Count; i++)
+    {
+      Client.Unit C = Client.DesSerializedClassUnit(List[i]);
+      // Interpreta os dados da lista de clientes.
+      searchList.Add(new List<string> { C.ID, C.Name });
+      // Cria uma lista com os dados importantes e adiciona essa lista na lista de listas 'searchList'.
+    }
+    Frm_Search S = new Frm_Search(searchList);
+    S.ShowDialog();
+    // Mostra os formulário na tela.
+    if (S.DialogResult == DialogResult.OK)
+    {
+      var IdSelect = S.IdSelect;
+      string clientJSON = F.Search(IdSelect);
+
+      Client.Unit C = new Client.Unit();
+      C = Client.DesSerializedClassUnit(clientJSON);
+      writeOnForm(C);
+      // Escreve os dados no formulário.
+    }
+  }
+  // ...
+}
+// ...
+```
+
+A lista de strings *List* recebera todos os dados dos arquivos encontrados através do método *SearchAll*.
+
+Utilizamos o *List\<List\<string\>>* para criar um **Array Bidimensional**, que nada mais é que uma lista de listas.
+
+Então inserimos um loop *for* para transformar os dados no formato string em uma classe com o método *DesSerializedClassUnit*. Com esses dados interpretados, podemos criar uma lista com apenas as informações necessárias, que são o código do cliente *C.ID* e o nome do cliente *C.Name*, e então adicionar essa lista na lista de listas *searchList*.
+
+Apos isso instanciamos a classe *Frm_Search* passando a *searchList*, e exibimos o formulário através do *ShowDialog*. Dentro do código fonte do formulário *Frm_Search* adicionamos um *DialogResult.OK* no método que seleciona uma opção, dessa forma podemos capturar essa informação com o *S.DialogResult*.
+
+Os comandos apos o *if* do *DialogResult* são os mesmos do método *Seleciona cliente cadastrado*, com a diferença que a busca é feita através do id selecionado no **ListBox** do formulário de busca.
+
+## **Aula 5**: Exibindo itens no ListBox

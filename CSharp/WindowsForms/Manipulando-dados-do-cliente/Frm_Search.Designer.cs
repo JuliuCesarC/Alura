@@ -32,7 +32,7 @@
       this.tls_principal = new System.Windows.Forms.ToolStrip();
       this.salvarToolStripButton = new System.Windows.Forms.ToolStripButton();
       this.deleteToolStripButton1 = new System.Windows.Forms.ToolStripButton();
-      this.listBox1 = new System.Windows.Forms.ListBox();
+      this.lst_search = new System.Windows.Forms.ListBox();
       this.tls_principal.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -56,6 +56,7 @@
       this.salvarToolStripButton.Name = "salvarToolStripButton";
       this.salvarToolStripButton.Size = new System.Drawing.Size(46, 36);
       this.salvarToolStripButton.Text = "&Salvar";
+      this.salvarToolStripButton.Click += new System.EventHandler(this.salvarToolStripButton_Click);
       // 
       // deleteToolStripButton1
       // 
@@ -68,21 +69,21 @@
       this.deleteToolStripButton1.ToolTipText = "Fechar";
       this.deleteToolStripButton1.Click += new System.EventHandler(this.deleteToolStripButton1_Click);
       // 
-      // listBox1
+      // lst_search
       // 
-      this.listBox1.FormattingEnabled = true;
-      this.listBox1.ItemHeight = 32;
-      this.listBox1.Location = new System.Drawing.Point(12, 78);
-      this.listBox1.Name = "listBox1";
-      this.listBox1.Size = new System.Drawing.Size(950, 836);
-      this.listBox1.TabIndex = 43;
+      this.lst_search.FormattingEnabled = true;
+      this.lst_search.ItemHeight = 32;
+      this.lst_search.Location = new System.Drawing.Point(12, 78);
+      this.lst_search.Name = "lst_search";
+      this.lst_search.Size = new System.Drawing.Size(950, 836);
+      this.lst_search.TabIndex = 43;
       // 
       // Frm_Search
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(974, 929);
-      this.Controls.Add(this.listBox1);
+      this.Controls.Add(this.lst_search);
       this.Controls.Add(this.tls_principal);
       this.Name = "Frm_Search";
       this.Text = "Frm_Search";
@@ -98,6 +99,6 @@
     private ToolStrip tls_principal;
     private ToolStripButton salvarToolStripButton;
     private ToolStripButton deleteToolStripButton1;
-    private ListBox listBox1;
+    private ListBox lst_search;
   }
 }

@@ -237,7 +237,7 @@ namespace Formularios_Componente_e_Eventos
       this.tbc_application.Location = new System.Drawing.Point(0, 40);
       this.tbc_application.Name = "tbc_application";
       this.tbc_application.SelectedIndex = 0;
-      this.tbc_application.Size = new System.Drawing.Size(1574, 1089);
+      this.tbc_application.Size = new System.Drawing.Size(1574, 1139);
       this.tbc_application.TabIndex = 1;
       this.tbc_application.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tbc_application_MouseDown);
       // 
@@ -259,7 +259,7 @@ namespace Formularios_Componente_e_Eventos
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1574, 1129);
+      this.ClientSize = new System.Drawing.Size(1574, 1179);
       this.Controls.Add(this.tbc_application);
       this.Controls.Add(this.mnu_principal);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

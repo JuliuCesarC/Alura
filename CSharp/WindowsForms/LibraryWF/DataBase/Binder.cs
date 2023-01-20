@@ -136,7 +136,7 @@ namespace LibraryWF.DataBase
       try
       {
         var files = Directory.GetFiles(directory, "*.json");
-        for( int i = 0; i < files.Length - 1; i++ )
+        for( int i = 0; i < files.Length; i++ )
         {
           string content = File.ReadAllText(files[i]);
           List.Add(content);
