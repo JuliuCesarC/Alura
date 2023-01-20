@@ -471,6 +471,7 @@ namespace Formularios_Componente_e_Eventos
       this.deleteToolStripButton1.Size = new System.Drawing.Size(46, 36);
       this.deleteToolStripButton1.Text = "toolStripButton1";
       this.deleteToolStripButton1.ToolTipText = "Deletar Usuario";
+      this.deleteToolStripButton1.Click += new System.EventHandler(this.deleteToolStripButton1_Click);
       // 
       // clearToolStripButton1
       // 

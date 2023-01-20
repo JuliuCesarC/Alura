@@ -105,5 +105,28 @@ namespace LibraryWF.DataBase
         message = "Não foi possível efetuar a conexão: " + Ex.Message;
       }
     }
+    public void Delete(string id)
+    {
+      status = true;
+      try
+      {
+        if( !File.Exists(directory+"\\"+id+".json") )
+        {
+          status = false;
+          message = "Cliente não encontrado: " + id;
+        }
+        else
+        {
+          File.Delete(directory + "\\" + id + ".json");
+          status = true;
+          message = "Cliente excluido com sucesso: " + id;
+        }
+      }
+      catch( Exception Ex )
+      {
+        status = false;
+        message = "Não foi possível efetuar a conexão: " + Ex.Message;
+      }
+    }
   }
 }
