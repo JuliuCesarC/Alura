@@ -52,6 +52,7 @@ namespace Formularios_Componente_e_Eventos
       this.txt_profession = new System.Windows.Forms.TextBox();
       this.lbl_profession = new System.Windows.Forms.Label();
       this.grb_clientCode = new System.Windows.Forms.GroupBox();
+      this.btn_search = new System.Windows.Forms.Button();
       this.txt_clientID = new System.Windows.Forms.TextBox();
       this.grb_personalData = new System.Windows.Forms.GroupBox();
       this.chk_fathersName = new System.Windows.Forms.CheckBox();
@@ -258,17 +259,28 @@ namespace Formularios_Componente_e_Eventos
       // 
       // grb_clientCode
       // 
+      this.grb_clientCode.Controls.Add(this.btn_search);
       this.grb_clientCode.Controls.Add(this.txt_clientID);
-      this.grb_clientCode.Location = new System.Drawing.Point(20, 79);
+      this.grb_clientCode.Location = new System.Drawing.Point(20, 74);
       this.grb_clientCode.Name = "grb_clientCode";
-      this.grb_clientCode.Size = new System.Drawing.Size(505, 85);
+      this.grb_clientCode.Size = new System.Drawing.Size(792, 90);
       this.grb_clientCode.TabIndex = 10;
       this.grb_clientCode.TabStop = false;
       this.grb_clientCode.Text = "groupBox1";
       // 
+      // btn_search
+      // 
+      this.btn_search.Location = new System.Drawing.Point(513, 34);
+      this.btn_search.Name = "btn_search";
+      this.btn_search.Size = new System.Drawing.Size(242, 46);
+      this.btn_search.TabIndex = 2;
+      this.btn_search.Text = "button1";
+      this.btn_search.UseVisualStyleBackColor = true;
+      this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+      // 
       // txt_clientID
       // 
-      this.txt_clientID.Location = new System.Drawing.Point(15, 40);
+      this.txt_clientID.Location = new System.Drawing.Point(15, 38);
       this.txt_clientID.Name = "txt_clientID";
       this.txt_clientID.Size = new System.Drawing.Size(474, 39);
       this.txt_clientID.TabIndex = 1;
@@ -558,5 +570,6 @@ namespace Formularios_Componente_e_Eventos
     private ToolStripButton salvarToolStripButton;
     private ToolStripButton deleteToolStripButton1;
     private ToolStripButton clearToolStripButton1;
+    private Button btn_search;
   }
 }

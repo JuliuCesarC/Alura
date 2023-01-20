@@ -4,7 +4,7 @@
 
 ## **Aula 1**: Implementando funcionalidades na Barra de Ferramenta
 
-No curso anterior adicionamos os itens da Barra de Ferramentas, mas a funções que cada um deveria executar não. Nesta aula iremos adicionar a funcionalidade do item *Limpar formulário*, que sera o mais simples, e também do item *Adicionar novo cliente*.
+No curso anterior adicionamos os itens da Barra de Ferramentas, mas a funções que cada um deveria executar não. Nesta aula iremos adicionar a funcionalidade do item *Limpar formulário*, que sera o mais simples, e também do item *Incluir novo cliente*.
 
 Começando com o primeiro, para limpar o formulário é muito simples, basta criar um método que torna a propriedade *Text* como vazio, com algumas especificidades em 3 campos, o **ComboBox**, o **CheckBox** e o **RadioButton**.
 
@@ -23,7 +23,7 @@ Para o **ComboBox** selecionamos o item *"-1"* com a propriedade *SelectedIndex*
 
 Para este projeto, foi escolhido guardar os cliente no formato **JSON**, em uma pasta no próprio computador. A classe *Binder* criada na biblioteca *LibraryWF* ficara responsável por salvar o cliente. Além disso adicionamos um método para fazer a **Serialização** dentro da classe *Client*.
 
-Dentro do código fonte do formulário, no evento do item *Adicionar novo cliente* foi implementado diversos códigos que veremos mais a frente.
+Dentro do código fonte do formulário, no evento do item *Incluir novo cliente* foi implementado diversos códigos que veremos mais a frente.
 
 Começaremos com a classe *Binder*. As propriedades adicionadas foram a `directory` responsável por armazenas o caminho do diretório escolhido, a `message` responsável pela mensagem de erro ou de sucesso e a `status` responsável por armazenar o estado caso ocorra um erro ou caso tenha executado tudo normalmente.
 
@@ -99,7 +99,7 @@ Existe bastante semelhança entre o método de *Desserializar*, a diferença se 
 
 ## **Aula 2**: Finalizando a funcionalidade do primeiro item da barra de ferramentas
 
-Dentro do código fonte do formulário temos o evento do item *Adicionar novo cliente*, que mudou bastante, mas ainda continua com alguns comandos do curso anterior. Vejamos abaixo o código.
+Dentro do código fonte do formulário temos o evento do item *Incluir novo cliente*, que mudou bastante, mas ainda continua com alguns comandos do curso anterior. Vejamos abaixo o código.
 
 ```C#
 try
@@ -162,17 +162,17 @@ catch (Exception Ex)
 
 Por fim a ultima parte onde fica o *catch*, adicionamos um novo *catch* que ficara responsável pelos erros do tipo *Exception*, pois o do tipo *ValidationException* serve apenas pera as validações do formulário.
 
-## **Aula 3**: Buscando um cliente
+## **Aula 3**: Seleciona cliente cadastrado
 
 Todas as funcionalidades implementadas são muito semelhante em sua implementação, sendo a maior diferença o comando principal da classe **File**. Para ver todos os comandos de validação e de verificação das funções, entrar no arquivo **Frm_RegisterClient_UC**.
 
-Dentro do arquivo *Binder* adicionamos a função que ira buscar o cliente no diretório e retorna-lo para ser adicionado suas informações no formulário. Os único comando que o diferencia do *Adicionar novo Cliente* é o abaixo.
+Dentro do arquivo *Binder* adicionamos a função que ira buscar o cliente no diretório e retorna-lo para ser adicionado suas informações no formulário. Os único comando que o diferencia do *Incluir novo cliente* é o abaixo.
 
 ```C#
 string content = File.ReadAllText(directory + "\\" + id + ".json");
 ```
 
-Dentro do código fonte do formulário adicionamos as funções do item *Abrir dados do Cliente*. O código que realmente faz o trabalho esta abaixo.
+Dentro do código fonte do formulário adicionamos as funções do item *Seleciona cliente cadastrado*. O código que realmente faz o trabalho esta abaixo.
 
 ```C#
 string clientJSON = F.Search(txt_clientID.Text);
@@ -204,7 +204,7 @@ Não fugindo a regra dos itens anteriores, adicionamos os métodos na classe *Bi
 File.Delete(directory + "\\" + id + ".json");
 ```
 
-Para o item *Save* temos uma junção de adicionar novo e de excluir.
+Para o item *Save* temos uma junção de *Incluir novo cliente* e de excluir.
 
 ```C#
 File.Delete(directory + "\\" + id + ".json");
@@ -240,10 +240,10 @@ if (F.status)
 }
 ```
 
-Assim como o buscar cliente, utilizamos o método *writeOnForm* para escrever no formulário os dados do cliente que sera excluído, dando assim maior garantia para o usuário que é aquele o cliente escolhido.
+Assim como o *Seleciona cliente cadastrado*, utilizamos o método *writeOnForm* para escrever no formulário os dados do cliente que sera excluído, dando assim maior garantia para o usuário que é aquele o cliente escolhido.
 
 Trouxemos do Curso 2 o formulário **Frm_Question** para abrir uma *DialogBox* perguntado se o cliente tem certeza que deseja excluir o cliente.
 
 Caso o usuário concorde, então excluimos o cliente com o *F.Delete* e verificamos se o método executou normalmente com o *F.status*. Por fim utilizamos o *ClearForm* para limpar os dados do formulário.
 
-Para o *Save*, os comando são os mesmos que o de adicionar novo cliente, a principal diferença é o comando `F.Save(C.ID, clientJson);`.
+Para o *Save*, os comando são os mesmos que o de *Incluir novo cliente*, a principal diferença é o comando `F.Save(C.ID, clientJson);`.

@@ -111,7 +111,7 @@ namespace LibraryWF.DataBase
       status = true;
       try
       {
-        if( !File.Exists(directory+"\\"+id+".json") )
+        if( !File.Exists(directory + "\\" + id + ".json") )
         {
           status = false;
           message = "Cliente não encontrado: " + id;
@@ -128,6 +128,27 @@ namespace LibraryWF.DataBase
         status = false;
         message = "Não foi possível efetuar a conexão: " + Ex.Message;
       }
+    }
+    public List<string> SearchAll()
+    {
+      status = true;
+      List<string> List = new List<string>();
+      try
+      {
+        var files = Directory.GetFiles(directory, "*.json");
+        for( int i = 0; i < files.Length - 1; i++ )
+        {
+          string content = File.ReadAllText(files[i]);
+          List.Add(content);
+        }
+        return List;
+      }
+      catch( Exception Ex )
+      {
+        status = false;
+        message = "Não foi possível encontrar o cliente: " + Ex.Message;
+      }
+      return List;
     }
   }
 }
