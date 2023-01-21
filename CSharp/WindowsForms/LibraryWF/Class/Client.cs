@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using LibraryWF.DataBase;
 
 namespace LibraryWF.Class
 {
@@ -98,12 +99,34 @@ namespace LibraryWF.Class
         }
       }
 
+      #region CRUD do fichario
+      public void addBinder(string connection)
+      {
+        string clientJson = SerializedClassUnit(this);
+
+        Binder F = new Binder(connection);
+        if( F.status )
+        {
+          F.AddClient(this.ID, clientJson);
+          if( !F.status )
+          {
+            throw new Exception(F.message);
+          }
+        }
+        else
+        {
+          throw new Exception(F.message);
+        }
+      }
+      #endregion
+
     }
 
     public class List
     {
       public List<Unit> listUnit { get; set; }
     }
+
 
     public static Unit DesSerializedClassUnit(string vJson)
     {
