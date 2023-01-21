@@ -31,7 +31,7 @@
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Search));
       this.tls_principal = new System.Windows.Forms.ToolStrip();
       this.salvarToolStripButton = new System.Windows.Forms.ToolStripButton();
-      this.deleteToolStripButton1 = new System.Windows.Forms.ToolStripButton();
+      this.closeToolStripButton1 = new System.Windows.Forms.ToolStripButton();
       this.lst_search = new System.Windows.Forms.ListBox();
       this.tls_principal.SuspendLayout();
       this.SuspendLayout();
@@ -41,7 +41,7 @@
       this.tls_principal.ImageScalingSize = new System.Drawing.Size(32, 32);
       this.tls_principal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.salvarToolStripButton,
-            this.deleteToolStripButton1});
+            this.closeToolStripButton1});
       this.tls_principal.Location = new System.Drawing.Point(0, 0);
       this.tls_principal.Name = "tls_principal";
       this.tls_principal.Size = new System.Drawing.Size(974, 42);
@@ -58,16 +58,16 @@
       this.salvarToolStripButton.Text = "&Salvar";
       this.salvarToolStripButton.Click += new System.EventHandler(this.salvarToolStripButton_Click);
       // 
-      // deleteToolStripButton1
+      // closeToolStripButton1
       // 
-      this.deleteToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.deleteToolStripButton1.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.ExcluirBarra;
-      this.deleteToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.deleteToolStripButton1.Name = "deleteToolStripButton1";
-      this.deleteToolStripButton1.Size = new System.Drawing.Size(46, 36);
-      this.deleteToolStripButton1.Text = "toolStripButton1";
-      this.deleteToolStripButton1.ToolTipText = "Fechar";
-      this.deleteToolStripButton1.Click += new System.EventHandler(this.deleteToolStripButton1_Click);
+      this.closeToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.closeToolStripButton1.Image = global::Formularios_Componente_e_Eventos.Properties.Resources.ExcluirBarra;
+      this.closeToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.closeToolStripButton1.Name = "closeToolStripButton1";
+      this.closeToolStripButton1.Size = new System.Drawing.Size(46, 36);
+      this.closeToolStripButton1.Text = "toolStripButton1";
+      this.closeToolStripButton1.ToolTipText = "Fechar";
+      this.closeToolStripButton1.Click += new System.EventHandler(this.deleteToolStripButton1_Click);
       // 
       // lst_search
       // 
@@ -98,7 +98,7 @@
 
     private ToolStrip tls_principal;
     private ToolStripButton salvarToolStripButton;
-    private ToolStripButton deleteToolStripButton1;
+    private ToolStripButton closeToolStripButton1;
     private ListBox lst_search;
   }
 }

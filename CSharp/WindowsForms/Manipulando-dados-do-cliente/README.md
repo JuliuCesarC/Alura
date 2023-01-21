@@ -306,12 +306,14 @@ if (F.status)
       Client.Unit C = Client.DesSerializedClassUnit(List[i]);
       // Interpreta os dados da lista de clientes.
       searchList.Add(new List<string> { C.ID, C.Name });
-      // Cria uma lista com os dados importantes e adiciona essa lista na lista de listas 'searchList'.
+      // Cria uma lista com os dados importantes 'C.ID, C.Name', e adiciona essa lista na lista de listas 'searchList'.
     }
     Frm_Search S = new Frm_Search(searchList);
     S.ShowDialog();
     // Mostra os formulário na tela.
+
     if (S.DialogResult == DialogResult.OK)
+    // Verifica se o usuário clicou no botão de escolher o cliente.
     {
       var IdSelect = S.IdSelect;
       string clientJSON = F.Search(IdSelect);
@@ -327,14 +329,59 @@ if (F.status)
 // ...
 ```
 
-A lista de strings *List* recebera todos os dados dos arquivos encontrados através do método *SearchAll*.
-
 Utilizamos o *List\<List\<string\>>* para criar um **Array Bidimensional**, que nada mais é que uma lista de listas.
 
-Então inserimos um loop *for* para transformar os dados no formato string em uma classe com o método *DesSerializedClassUnit*. Com esses dados interpretados, podemos criar uma lista com apenas as informações necessárias, que são o código do cliente *C.ID* e o nome do cliente *C.Name*, e então adicionar essa lista na lista de listas *searchList*.
+Dentro do código fonte do formulário *Frm_Search* adicionamos um *DialogResult.OK* no botão que seleciona uma opção na lista, dessa forma podemos capturar essa informação com o *S.DialogResult*.
 
-Apos isso instanciamos a classe *Frm_Search* passando a *searchList*, e exibimos o formulário através do *ShowDialog*. Dentro do código fonte do formulário *Frm_Search* adicionamos um *DialogResult.OK* no método que seleciona uma opção, dessa forma podemos capturar essa informação com o *S.DialogResult*.
-
-Os comandos apos o *if* do *DialogResult* são os mesmos do método *Seleciona cliente cadastrado*, com a diferença que a busca é feita através do id selecionado no **ListBox** do formulário de busca.
+Os comandos apos o *if* do *DialogResult* são os mesmos do método *Seleciona cliente cadastrado*, com a diferença que a busca é feita através do id selecionado `F.Search(IdSelect);`.
 
 ## **Aula 5**: Exibindo itens no ListBox
+
+Para adicionar os itens na **ListBox** e no **ComboBox** precisamos entender um pouco seu funcionamento. Esses e outros elementos podem receber *string* e classes como itens da lista, e uma string nada mais é que uma classe implícita, que no momento de ser exibida na tela sera executado o comando `string.ToString();`. Ao passar a classe como item do componente, acontecera o mesmo, porem o que sera exibido é algumas informações da classe, e não o conteúdo desejado.
+
+Para resolver o problema descrito acima, precisamos criar um método dentro da classe que sobrescreva o método **ToString**. Abaixo temos o exemplo da classe que adicionamos no formulário *Frm_Search*, que representara cada item da lista.
+
+```C#
+class ItemBox
+{
+  public string id { get; set; }
+  // O 'id' é o que sera enviado para o formulário principal ao escolher o item na lista.
+  public string name { get; set; }
+  // O 'name' sera o texto exibido na tela.
+
+  public override string ToString()
+  {
+    return name;
+  }
+}
+```
+
+Utilizando a palavra chave **override** substituiremos o método original *ToString*, com isso podemos escolher o que sera exibido na tela quando o **ListBox** executar esse método, que no caso é o texto do *name*.
+
+___
+
+### Por que utilizar um classe ao invés de uma string?
+
+O método correto para a maioria dos elementos como o **ListBox** ou o **ComboBox**, é utilizar uma classe, pois as buscas nos servidores onde estão os dados dos clientes por exemplo, são feitas em sua maioria através de um ID ou um código, e não através de um nome.
+
+Porem para o usuário, buscar pelo nome do cliente é muito mais simples, com isso precisamos de uma maneira de atrelar o nome do cliente ao seu código, para que quando o usuário selecionem o nome desejado, a busca seja feita através do código do cliente.
+
+Por isso é recomendado o uso de uma classe, por poder trabalhar melhor com a lista, fazer uma busca pelo nome, organizar a lista em ordem alfabética, e tudo isso sem perder o *link* entre o nome e o código do cliente.
+
+___
+
+Ainda dentro do formulário, adicionamos o método responsável por adicionar os intens no *ListBox*, e que sera ativo no método construtor.
+
+```C#
+lst_search.Items.Clear();
+
+for (int i = 0; i < _SearchList.Count; i++)
+{
+  ItemBox item = new ItemBox();
+  item.id = _SearchList[i][0];
+  item.name = _SearchList[i][1];
+  lst_search.Items.Add(item);
+}
+```
+
+> Como o *_SearchList* é uma **lista bidimensional**, precisamos indicar a primeira e a segunda posição nessa lista `[i][0]`.
