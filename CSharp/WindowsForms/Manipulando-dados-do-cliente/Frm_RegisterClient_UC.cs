@@ -238,18 +238,36 @@ namespace Formularios_Componente_e_Eventos
       }
       else
       {
-        Binder F = new Binder(directory);
-        if( F.status )
+        try
         {
-          string clientJSON = F.Search(txt_clientID.Text);
-
           Client.Unit C = new Client.Unit();
-          C = Client.DesSerializedClassUnit(clientJSON);
-          writeOnForm(C);
+          C = C.searchBinder(txt_clientID.Text, directory);
+          if( C == null )
+          {
+            MessageBox.Show("Cliente não encontrado.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          }
+          else
+          {
+            writeOnForm(C);
+          }
+
+          //Binder F = new Binder(directory);
+          //if( F.status )
+          //{
+          //  string clientJSON = F.Search(txt_clientID.Text);
+
+          //  Client.Unit C = new Client.Unit();
+          //  C = Client.DesSerializedClassUnit(clientJSON);
+          //  writeOnForm(C);
+          //}
+          //else
+          //{
+          //  MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          //}
         }
-        else
+        catch( Exception Ex )
         {
-          MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
       }
     }
@@ -331,26 +349,27 @@ namespace Formularios_Componente_e_Eventos
         C = FormDataToClass();
         C.CheckClass();
         C.CheckComplement();
+        C.Save(directory);
+        MessageBox.Show("Cliente atualizado com sucesso.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-        string clientJson = Client.SerializedClassUnit(C);
-
-        Binder F = new Binder(directory);
-        if( F.status )
-        {
-          F.Save(C.ID, clientJson);
-          if( F.status )
-          {
-            MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
-          }
-          else
-          {
-            MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
-          }
-        }
-        else
-        {
-          MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        //string clientJson = Client.SerializedClassUnit(C);
+        //Binder F = new Binder(directory);
+        //if( F.status )
+        //{
+        //  F.Save(C.ID, clientJson);
+        //  if( F.status )
+        //  {
+        //    MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //  }
+        //  else
+        //  {
+        //    MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //  }
+        //}
+        //else
+        //{
+        //  MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //}
       }
       catch( ValidationException Ex )
       {
@@ -370,52 +389,78 @@ namespace Formularios_Componente_e_Eventos
       }
       else
       {
-        Binder F = new Binder(directory);
-        if( F.status )
+        Client.Unit C = new Client.Unit();
+        C = C.searchBinder(txt_clientID.Text, directory);
+        if( C == null )
         {
-          string clientJson = F.Search(txt_clientID.Text);
-          Client.Unit C = new Client.Unit();
-          C = Client.DesSerializedClassUnit(clientJson);
-          writeOnForm(C);
-
-          Frm_Question Db = new Frm_Question("Deseja excluir cliente?", "Frm_Question");
-          Db.ShowDialog();
-
-          if( Db.DialogResult == DialogResult.Yes )
-          {
-            F.Delete(txt_clientID.Text);
-            if( F.status )
-            {
-              MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              ClearForm();
-            }
-            else
-            {
-              MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-          }
+          MessageBox.Show("Cliente não encontrado.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         else
         {
-          MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          writeOnForm(C);
+          Frm_Question Db = new Frm_Question("Deseja excluir cliente?", "Frm_Question");
+          Db.ShowDialog();
+          if( Db.DialogResult == DialogResult.Yes )
+          {
+            C.Delete(directory);
+            MessageBox.Show("Cliente apagado com sucesso.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ClearForm();
+          }
         }
+
+
+
+        //Binder F = new Binder(directory);
+        //if( F.status )
+        //{
+        //  string clientJson = F.Search(txt_clientID.Text);
+        //  Client.Unit C = new Client.Unit();
+        //  C = Client.DesSerializedClassUnit(clientJson);
+        //  writeOnForm(C);
+
+        //  Frm_Question Db = new Frm_Question("Deseja excluir cliente?", "Frm_Question");
+        //  Db.ShowDialog();
+
+        //  if( Db.DialogResult == DialogResult.Yes )
+        //  {
+        //    F.Delete(txt_clientID.Text);
+        //    if( F.status )
+        //    {
+        //      MessageBox.Show("OK: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //      ClearForm();
+        //    }
+        //    else
+        //    {
+        //      MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //  }
+        //}
+        //else
+        //{
+        //  MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //}
       }
     }
 
     private void btn_search_Click(object sender, EventArgs e)
     {
-
-      Binder F = new Binder(directory);
-      if( F.status )
+      try
       {
+        Client.Unit C = new Client.Unit();
         List<string> List = new List<string>();
-        List = F.SearchAll();
-        if( F.status )
+        List = C.searchAllBinder(directory);
+
+        if( List == null )
         {
+          MessageBox.Show("Base de dados vazia. Nenhum cliente foi encontrado.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        else
+        {
+
           List<List<string>> searchList = new List<List<string>>();
           for( int i = 0; i < List.Count; i++ )
           {
-            Client.Unit C = Client.DesSerializedClassUnit(List[i]);
+            C = Client.DesSerializedClassUnit(List[i]);
             searchList.Add(new List<string> { C.ID, C.Name });
           }
           Frm_Search S = new Frm_Search(searchList);
@@ -423,22 +468,58 @@ namespace Formularios_Componente_e_Eventos
           if( S.DialogResult == DialogResult.OK )
           {
             var IdSelect = S.IdSelect;
-            string clientJSON = F.Search(IdSelect);
-
-            Client.Unit C = new Client.Unit();
-            C = Client.DesSerializedClassUnit(clientJSON);
-            writeOnForm(C);
+            C = C.searchBinder(IdSelect, directory);
+            if( C == null )
+            {
+              MessageBox.Show("Cliente não encontrado.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+              writeOnForm(C);
+            }
           }
         }
-        else
-        {
-          MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
       }
-      else
+      catch( Exception Ex )
       {
-        MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        MessageBox.Show(Ex.Message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
+
+
+      //Binder F = new Binder(directory);
+      //if( F.status )
+      //{
+      //  List<string> List = new List<string>();
+      //  List = F.SearchAll();
+      //  if( F.status )
+      //  {
+      //    List<List<string>> searchList = new List<List<string>>();
+      //    for( int i = 0; i < List.Count; i++ )
+      //    {
+      //      Client.Unit C = Client.DesSerializedClassUnit(List[i]);
+      //      searchList.Add(new List<string> { C.ID, C.Name });
+      //    }
+      //    Frm_Search S = new Frm_Search(searchList);
+      //    S.ShowDialog();
+      //    if( S.DialogResult == DialogResult.OK )
+      //    {
+      //      var IdSelect = S.IdSelect;
+      //      string clientJSON = F.Search(IdSelect);
+
+      //      Client.Unit C = new Client.Unit();
+      //      C = Client.DesSerializedClassUnit(clientJSON);
+      //      writeOnForm(C);
+      //    }
+      //  }
+      //  else
+      //  {
+      //    MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      //  }
+      //}
+      //else
+      //{
+      //  MessageBox.Show("ERRO: " + F.message, "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      //}
 
     }
   }

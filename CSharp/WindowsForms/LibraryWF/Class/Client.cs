@@ -118,6 +118,64 @@ namespace LibraryWF.Class
           throw new Exception(F.message);
         }
       }
+      public Unit searchBinder(string id, string connection)
+      {
+        Binder F = new Binder(connection);
+        if( F.status )
+        {
+          string clientJSON = F.Search(id);
+          return DesSerializedClassUnit(clientJSON);
+        }
+        else
+        {
+          throw new Exception(F.message);
+        }
+      }
+      public void Save(string connection)
+      {
+        Binder F = new Binder(connection);
+        if( F.status )
+        {
+          string clientJson = SerializedClassUnit(this);
+          F.Save(this.ID, clientJson);
+          if( !F.status )
+          {
+            throw new Exception(F.message);
+          }
+        }
+        else
+        {
+          throw new Exception(F.message);
+        }
+      }
+      public void Delete(string connection) 
+      {
+        Binder F = new Binder(connection);
+        if( F.status )
+        {
+          F.Delete(this.ID);
+          if( !F.status )
+          {
+            throw new Exception(F.message);
+          }
+        }
+        else
+        {
+          throw new Exception(F.message);
+        }
+      }
+      public List<string> searchAllBinder(string connection)
+      {
+        Binder F = new Binder(connection);
+        if( F.status )
+        {
+          return F.SearchAll();
+        }
+        else
+        {
+          throw new Exception(F.message);
+        }
+      }
       #endregion
 
     }
