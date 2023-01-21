@@ -385,3 +385,19 @@ for (int i = 0; i < _SearchList.Count; i++)
 ```
 
 > Como o *_SearchList* é uma **lista bidimensional**, precisamos indicar a primeira e a segunda posição nessa lista `[i][0]`.
+
+___
+
+O botão de escolher o item da lista também possui algumas particularidades que veremos no comando abaixo.
+
+```C#
+ItemBox selectedItem = (ItemBox)lst_search.Items[lst_search.SelectedIndex];
+IdSelect = selectedItem.id;
+DialogResult = DialogResult.OK;
+// Informa que ao fechar o formulário nesse método, o 'DialogResult' sera 'OK'.
+this.Close();
+```
+
+Criamos uma variável do tipo *ItemBox* e atribuímos nela o item selecionado. O `lst_search.Items[...]` seleciona um item na lista e assim como o **ComboBox**, podemos selecionar o item através do `SelectedIndex`.
+
+Apesar de todos os itens do **ListBox** serem uma classe, o C# não converte implicitamente esse item em uma classe novamente, é necessario forçar isso explicitamente, e fazemos isso através do `(ItemBox)`.

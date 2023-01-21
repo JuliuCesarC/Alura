@@ -46,9 +46,9 @@ namespace Formularios_Componente_e_Eventos
 
     private void salvarToolStripButton_Click(object sender, EventArgs e)
     {
-      DialogResult = DialogResult.OK;
       ItemBox selectedItem = (ItemBox)lst_search.Items[lst_search.SelectedIndex];
       IdSelect = selectedItem.id;
+      DialogResult = DialogResult.OK;
       this.Close();
     }
 
