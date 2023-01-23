@@ -102,11 +102,10 @@ namespace LibraryWF.Class
       #region CRUD do fichario
       public void addBinder(string connection)
       {
-        string clientJson = SerializedClassUnit(this);
-
         Binder F = new Binder(connection);
         if( F.status )
         {
+          string clientJson = SerializedClassUnit(this);
           F.AddClient(this.ID, clientJson);
           if( !F.status )
           {
@@ -148,7 +147,7 @@ namespace LibraryWF.Class
           throw new Exception(F.message);
         }
       }
-      public void Delete(string connection) 
+      public void Delete(string connection)
       {
         Binder F = new Binder(connection);
         if( F.status )

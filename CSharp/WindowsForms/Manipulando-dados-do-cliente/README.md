@@ -401,3 +401,105 @@ this.Close();
 Criamos uma variável do tipo *ItemBox* e atribuímos nela o item selecionado. O `lst_search.Items[...]` seleciona um item na lista e assim como o **ComboBox**, podemos selecionar o item através do `SelectedIndex`.
 
 Apesar de todos os itens do **ListBox** serem uma classe, o C# não converte implicitamente esse item em uma classe novamente, é necessario forçar isso explicitamente, e fazemos isso através do `(ItemBox)`.
+
+## **Aula 6**: Trocando a ordem das classes
+
+Até o momento adicionamos a instancia do cliente(*Client*) e a instancia do fichário(*Binder*) dentro do formulário principal, porem a forma como as dados do cliente são manipulados não dis respeito á classe principal, apenas a classe cliente deveria se responsabilizar por essa tarefa. Para resolver isso iremos transportar todos os métodos referentes ao fichário para a classe cliente.
+
+Primeiramente iremos adicionar os novos métodos na classe *Client*. Abaixo teremos os códigos de todos os métodos e um breve resumo.
+
+```C#
+public void addBinder(string connection)
+{
+  Binder F = new Binder(connection);
+  if (F.status)
+  {
+    string clientJson = SerializedClassUnit(this);
+    F.AddClient(this.ID, clientJson);
+    if (!F.status)
+    {
+      throw new Exception(F.message);
+    }
+  }
+  else
+  {
+    throw new Exception(F.message);
+  }
+}
+```
+
+Como agora o método *SerializedClassUnit* esta dentro da mesma classe, o parâmetro é a própria classe, por isso o *this*. O mesmo vale para a propriedade *ID*.
+
+Veremos que os próximos métodos são muito semelhantes, que por sequencia são muito semelhantes aos que estavam no código fonte do formulário principal.
+
+___
+
+```C#
+public Unit searchBinder(string id, string connection)
+{
+  Binder F = new Binder(connection);
+  if (F.status)
+  {
+    string clientJSON = F.Search(id);
+    return DesSerializedClassUnit(clientJSON);
+  }
+  // ...
+}
+```
+
+Como a classe que esta sendo buscada provavelmente não esta instanciada, não podemos utilizar o *this.ID*, pois essa propriedade estará vazia, por isso precisamos receber o *id* como parâmetro.
+
+___
+
+```C#
+public void Save(string connection)
+{
+  Binder F = new Binder(connection);
+  if (F.status)
+  {
+    string clientJson = SerializedClassUnit(this);
+    F.Save(this.ID, clientJson);
+    if (!F.status)
+    {
+      throw new Exception(F.message);
+    }
+  }
+  // ...
+}
+```
+
+O método de salvar alteração é praticamente o mesmo de adicionar novo.
+
+___
+
+```C#
+public void Delete(string connection)
+{
+  Binder F = new Binder(connection);
+  if (F.status)
+  {
+    F.Delete(this.ID);
+    if (!F.status)
+    {
+      throw new Exception(F.message);
+    }
+  }
+  // ...
+}
+```
+
+___
+
+```C#
+public List<string> searchAllBinder(string connection)
+{
+  Binder F = new Binder(connection);
+  if (F.status)
+  {
+    return F.SearchAll();
+  }
+  // ...
+}
+```
+
+O método que busca todos os clientes para o **ListBox** também precisa ser adicionado.
