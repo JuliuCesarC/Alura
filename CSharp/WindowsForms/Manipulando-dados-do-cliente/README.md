@@ -53,6 +53,8 @@ catch (Exception Ex)
 
 Começamos com um *TryCatch* pois trabalhando com arquivos sempre pode ocorrer alguns erros, e logo em seguida utilizamos o método **Exists** da classe *Directory* para validar se o diretório informado existe. Caso esse diretório não exista, criaremos ele através do *CreateDirectory*, e logo em seguida adicionamos o caminho do diretório na propriedade *directory*.
 
+___
+
 Dentro da classe adicionamos um método que sera o responsável por adicionar o cliente.
 
 ```C#
@@ -85,6 +87,8 @@ public void AddClient(string id, string jsonUnit)
 > Colocando o *status* como false quando ocorre algum erro, mais frente no código fonte do formulário poderemos utiliza-lo para fazer alguma validação antes de prosseguir.
 
 Para adicionar o cliente precisamos do *ID*, pois o nome do arquivo sera o próprio *ID*, e da classe *Serializada* para *JSON*. Com essas duas informações e mais o *directory* que ja esta salvo na propriedade da classe, podemos utilizar o método **WriteAllText** para adicionar o arquivo no diretório.
+
+___
 
 Na classe *Client* adicionamos o comando para *Serializar* um JSON.
 
@@ -172,6 +176,8 @@ Dentro do arquivo *Binder* adicionamos a função que ira buscar o cliente no di
 string content = File.ReadAllText(directory + "\\" + id + ".json");
 ```
 
+___
+
 Dentro do código fonte do formulário adicionamos as funções do item *Seleciona cliente cadastrado*. O código que realmente faz o trabalho esta abaixo.
 
 ```C#
@@ -185,6 +191,8 @@ writeOnForm(C);
 > O método *Search* é o que adicionamos na classe *Binder*.
 
 Primeiramente buscamos o cliente com o método *Search*, e então criamos uma instancia de *Client* e transformamos os dados do cliente do formato JSON para uma classe com o *DesSerializedClassUnit*, apos isso utilizamos o método *writeOnForm* para escrever os dados no formulário.
+
+___
 
 O método *writeOnForm* abaixo possui os mesmos comando de quando passamos os dados do formulário para a classe, porem agora é ao contrario.
 
@@ -204,6 +212,8 @@ Não fugindo a regra dos itens anteriores, adicionamos os métodos na classe *Bi
 File.Delete(directory + "\\" + id + ".json");
 ```
 
+___
+
 Para o item *Save* temos uma junção de *Incluir novo cliente* e de excluir.
 
 ```C#
@@ -212,6 +222,8 @@ File.WriteAllText(directory + "\\" + id + ".json", jsonUnit);
 ```
 
 > O *jsonUnit* é a classe já *Serializada* que recebemos como parâmetro.
+
+___
 
 Para o *Delete* no código fonte do formulário, adicionamos algumas novas funcionalidades.
 

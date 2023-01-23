@@ -1,6 +1,6 @@
 # Projetos desenvolvidos durante o curso na Alura
 
-## Após participar da imersão React AluraTube perceber a excelente didática dos instrutores da Alura, decidi que seria ótimo participar dessa escola, principalmente para quem está procurando o primeiro emprego, e precisa aprender as mais diversas tecnologias que estão sendo exigidas pelo mercado
+## Após participar da imersão React AluraTube e perceber a excelente didática dos instrutores da Alura, decidi que seria ótimo participar dessa escola, principalmente para quem está procurando o primeiro emprego, e precisa aprender as mais diversas tecnologias que estão sendo exigidas pelo mercado
 
 Com o termino do curso ProgramadorBR, comecei a buscar por as principais tecnologias que aparecem como requisito nas vagas de emprego para área de frontend e banco de dados. Os projetos abaixo seguem um plano de estudo baseado nessas tecnologias.
 
