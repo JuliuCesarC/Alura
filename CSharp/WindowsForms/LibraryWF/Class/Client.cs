@@ -100,6 +100,7 @@ namespace LibraryWF.Class
       }
 
       #region CRUD do fichario
+      // --------------- // ---------------
       public void addBinder(string connection)
       {
         Binder F = new Binder(connection);
@@ -117,6 +118,7 @@ namespace LibraryWF.Class
           throw new Exception(F.message);
         }
       }
+      // --------------- // ---------------
       public Unit searchBinder(string id, string connection)
       {
         Binder F = new Binder(connection);
@@ -130,6 +132,7 @@ namespace LibraryWF.Class
           throw new Exception(F.message);
         }
       }
+      // --------------- // ---------------
       public void Save(string connection)
       {
         Binder F = new Binder(connection);
@@ -147,6 +150,7 @@ namespace LibraryWF.Class
           throw new Exception(F.message);
         }
       }
+      // --------------- // ---------------
       public void Delete(string connection)
       {
         Binder F = new Binder(connection);
@@ -163,6 +167,7 @@ namespace LibraryWF.Class
           throw new Exception(F.message);
         }
       }
+      // --------------- // ---------------
       public List<string> searchAllBinder(string connection)
       {
         Binder F = new Binder(connection);

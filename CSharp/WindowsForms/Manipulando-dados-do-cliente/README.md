@@ -503,3 +503,54 @@ public List<string> searchAllBinder(string connection)
 ```
 
 O método que busca todos os clientes para o **ListBox** também precisa ser adicionado.
+
+___
+
+Agora como removemos a responsabilidade do fichário do formulário principal, o programa ficou um pouco menor.
+
+Abaixo temos o código do método adicionar novo e de salvar alterações, que são idênticos.
+
+```C#
+Client.Unit C = new Client.Unit();
+C = FormDataToClass();
+C.CheckClass();
+C.CheckComplement();
+C.addBinder(directory);
+MessageBox.Show(/*...*/);
+```
+
+> A unica diferença é o método *addBinder*, que seria *Save*.
+
+___
+
+Abaixo temos o código do método *Delete*, que é o mesmo do *Seleciona cliente cadastrado*, porem com o código de deletar a mais.
+
+```C#
+if (txt_clientID.Text.Trim() == "")
+{
+  MessageBox.Show("Código do cliente  vazio.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+}
+else
+{
+  Client.Unit C = new Client.Unit();
+  C = C.searchBinder(txt_clientID.Text, directory);
+  if (C == null)
+  {
+    MessageBox.Show("Cliente não encontrado.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Error);
+  }
+  else
+  {
+    writeOnForm(C);
+    Frm_Question Db = new Frm_Question("Deseja excluir cliente?", "Frm_Question");
+    Db.ShowDialog();
+    if (Db.DialogResult == DialogResult.Yes)
+    {
+      C.Delete(directory);
+      MessageBox.Show("Cliente apagado com sucesso.", "ByteBank", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      ClearForm();
+    }
+  }
+}
+```
+
+> O *Seleciona cliente cadastrado* termina na linha do código `writeOnForm(C);`, o resto do código diz respeito ao método *Delete*.
