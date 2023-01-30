@@ -10,6 +10,19 @@
 
 ---
 
+### Primeiros comandos para adicionar um repositório no github
+
+Comandos para um repositório ja existente
+
+```bash
+git remote add origin https://githubg.com/usuario_github/nome_do_repositorio.git
+git pull origin main --allow-unrelated-histories
+git commit -a -m "merge"
+git push -u origin main
+```
+
+---
+
 ```bash
 git init
 ```
@@ -43,9 +56,9 @@ git remote
 
 Lista todos os repositórios remotos disponíveis no arquivo.
 
-- `git remote add nome_do_remoto caminho_para_repositório`: adiciona um repositório remoto, o caminho pode ser uma pasta, uma url, um repositório GitHub. exemplo:
-- `git remote add repoLocal C:\Users\Cesar\Desktop\Curso_Dev`
+- `git remote add nome_do_remoto caminho_para_repositório`: adiciona um repositório remoto, o caminho pode ser uma pasta, uma url, um repositório GitHub. Por exemplo: `git remote add repoLocal C:\Users\Cesar\Desktop\Curso_Dev`.
 - `git remote rename nome_atual novo_nome`: renomeia o repositório remoto.
+- `git remote set-url nome_do_remoto nova_url`: altera a url do repositório remoto selecionado.
 - `git remote -v`: mostra a url dos repositórios remotos.
 
 ---
