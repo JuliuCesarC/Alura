@@ -15,7 +15,7 @@
 Comandos para um repositório ja existente
 
 ```bash
-git remote add origin https://githubg.com/usuario_github/nome_do_repositorio.git
+git remote add origin https://github.com/usuario_github/nome_do_repositorio.git
 git pull origin main --allow-unrelated-histories
 git commit -a -m "merge"
 git push -u origin main
