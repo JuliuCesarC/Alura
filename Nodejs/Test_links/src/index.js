@@ -7,6 +7,12 @@ function Log(data) {
 function errorHandling(err) {
   throw new Error(chalk.red(err));
 }
+function getLinks(text) {
+  const regex = /\[([^[\]]*)\]\((https?:\/\/[^)]*)\)/gm;
+  const match = [...text.matchAll(regex)];
+  const res = match.map((arr) => ({ [arr[1]]: arr[2] }));
+  return res.length > 1 ? res : "Nenhum link encontrado";
+}
 
 function getFile_1(filePath) {
   fs.readFile(filePath, "utf-8", (err, data) => {
@@ -36,12 +42,6 @@ async function getFile_3(filePath) {
 }
 // getFile_3("./Text/Textt.md");
 
-function getLinks(text) {
-  const regex = /\[([^[\]]*)\]\((https?:\/\/[^)]*)\)/gm;
-  const match = [...text.matchAll(regex)];
-  const res = match.map((arr) => ({ [arr[1]]: arr[2] }));
-  return res.length > 1 ? res : "Nenhum link encontrado";
-}
 
 export default async function getFile_4(filePath) {
   try {
