@@ -27,31 +27,28 @@ function getFile_2(filePath) {
 // getFile_2("./Text/Text.md");
 
 async function getFile_3(filePath) {
-  try{
+  try {
     const text = await fs.promises.readFile(filePath, "utf-8");
     Log(text);
-  }catch(err){
-    errorHandling(err)
+  } catch (err) {
+    errorHandling(err);
   }
-
 }
 // getFile_3("./Text/Textt.md");
 
-function regexMatch(text){
+function getLinks(text) {
   const regex = /\[([^[\]]*)\]\((https?:\/\/[^)]*)\)/gm;
-  const match = [...text.matchAll(regex)]
-  const res = match.map((arr)=>({[arr[1]]: arr[2]}))
-  return res
+  const match = [...text.matchAll(regex)];
+  const res = match.map((arr) => ({ [arr[1]]: arr[2] }));
+  return res.length > 1 ? res : "Nenhum link encontrado";
 }
 
-async function getFile_4(filePath) {
-
-  try{
+export default async function getFile_4(filePath) {
+  try {
     const text = await fs.promises.readFile(filePath, "utf-8");
-    console.log(regexMatch(text));
-  }catch(err){
-    errorHandling(err)
+    return getLinks(text);
+  } catch (err) {
+    errorHandling(err);
   }
-
 }
-getFile_4("./Text/Text.md");
+// getFile_4("./Text/Text.md");
