@@ -8,6 +8,14 @@ public class Episode implements Classifiable {
   private Series series;
   private int numberOfViews;
 
+  public int getNumberOfViews() {
+    return numberOfViews;
+  }
+
+  public void setNumberOfViews(int numberOfViews) {
+    this.numberOfViews = numberOfViews;
+  }
+
   public int getNumber() {
     return number;
   }
