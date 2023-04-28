@@ -1,4 +1,4 @@
-package com.cesar.aula01.model;
+package com.cesar.aula02.model;
 
 public class Title {
   private String name;

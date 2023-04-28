@@ -1,6 +1,6 @@
-package com.cesar.aula01.model;
+package com.cesar.aula02.model;
 
-public class Seasons extends Title {
+public class Series extends Title {
   private int numberOfSeasons;
   private int episodesPerSeason;
   private boolean completeSeries;
@@ -36,5 +36,10 @@ public class Seasons extends Title {
 
   public void setMinutesEpisode(int minutesEpisode) {
     this.minutesEpisode = minutesEpisode;
+  }
+
+  @Override
+  public int getDuration() {
+    return numberOfSeasons * episodesPerSeason * minutesEpisode;
   }
 }
