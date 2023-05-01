@@ -1,3 +1,5 @@
+package com.cesar.aula03.Principal;
+
 import com.cesar.aula03.bingeWatch.TotalTimeCalculator;
 import com.cesar.aula03.filters.Recommendation;
 import com.cesar.aula03.model.Episode;
@@ -11,18 +13,26 @@ public class Principal {
   public static void main(String[] args) {
     DecimalFormat df = new DecimalFormat("#.0");
     
-    Movie interestelar = new Movie("Interestelar");
-    interestelar.setReleaseDate(2014);
+    Movie interestelar = new Movie("Interestelar", 2014);
     interestelar.setDuration(169);
     interestelar.showInfo();
-    System.out.println("Duração filme em minutos: "+ interestelar.getDuration());
-    
+    System.out.println("Duração filme em minutos: "+ interestelar.getDuration());    
     interestelar.rate(8);
     interestelar.rate(7.5);
     interestelar.rate(8.2);
     System.out.println("Avaliação do filme: "+df.format(interestelar.average()));
-
-    Series RickMorty = new Series("Rick and Morty");
+    
+//    TotalTimeCalculator calculator = new TotalTimeCalculator();
+//    calculator.include(RickMorty);
+//    System.out.println("\nTempo total para maratonar: "+df.format(calculator.getTotalTime() / 60.0)+" horas");
+    
+    Movie matrix = new Movie("Matrix", 1999);
+    matrix.setDuration(136);
+    
+    Movie feriasFrustradas = new Movie("Férias Frustradas", 2015);
+    feriasFrustradas.setDuration(99);
+    
+    Series RickMorty = new Series("Rick and Morty", 2013);
     RickMorty.setMinutesEpisode(22);
     RickMorty.setCompleteSeries(false);
     RickMorty.setEpisodesPerSeason(10);
@@ -33,19 +43,7 @@ public class Principal {
     episodeRM.setSeries(RickMorty);
     episodeRM.setNumberOfViews(1200);
     
-    TotalTimeCalculator calculator = new TotalTimeCalculator();
-//    calculator.include(RickMorty);
-//    System.out.println("\nTempo total para maratonar: "+df.format(calculator.getTotalTime() / 60.0)+" horas");
-    
-    Movie matrix = new Movie("Matrix");
-    matrix.setReleaseDate(1999);
-    matrix.setDuration(136);
-    
-    Movie feriasFrustradas = new Movie("Férias Frustradas");
-    feriasFrustradas.setReleaseDate(2015);
-    feriasFrustradas.setDuration(99);
-    
-    Recommendation filter = new Recommendation();
+//    Recommendation filter = new Recommendation();
 //    filter.filter(interestelar);
 //    filter.filter(episodeRM);
 

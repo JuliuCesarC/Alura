@@ -1,6 +1,6 @@
 package com.cesar.aula03.model;
 
-public class Title {
+public class Title implements Comparable<Title> {
   private String name;
   private int releaseDate;
   private boolean premiumPlan;
@@ -8,10 +8,11 @@ public class Title {
   private double rating;
   private int totalRating;
 
-  public Title(String name){
-    setName(name);
+  public Title(String name, int releaseDate) {
+    this.name = name;
+    this.releaseDate = releaseDate;
   }
-  
+
   public String getName() {
     return name;
   }
@@ -58,5 +59,10 @@ public class Title {
   }
   public double average(){
     return rating / totalRating;
+  }
+
+  @Override
+  public int compareTo(Title nextName) {
+    return this.getName().compareTo(nextName.getName());
   }
 }

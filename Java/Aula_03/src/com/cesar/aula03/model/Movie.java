@@ -5,8 +5,8 @@ import com.cesar.aula03.filters.Classifiable;
 public class Movie extends Title implements Classifiable {
   private String director;
 
-  public Movie(String name) {
-    super(name);
+  public Movie(String name, int releaseDate) {
+    super(name, releaseDate);
   }
 
   public String getDirector() {
@@ -20,5 +20,10 @@ public class Movie extends Title implements Classifiable {
   @Override
   public int getClassification() {
     return (int) average() / 2;
+  }
+
+  @Override
+  public String toString() {
+    return "Filme: "+this.getName()+" ("+this.getReleaseDate()+")";
   }
 }

@@ -6,8 +6,8 @@ public class Series extends Title {
   private boolean completeSeries;
   private int minutesEpisode;
 
-  public Series(String name) {
-    super(name);
+  public Series(String name, int releaseDate) {
+    super(name, releaseDate);
   }
 
   public int getNumberOfSeasons() {
@@ -45,5 +45,10 @@ public class Series extends Title {
   @Override
   public int getDuration() {
     return numberOfSeasons * episodesPerSeason * minutesEpisode;
+  }
+
+  @Override
+  public String toString() {
+    return "Serie: "+this.getName()+" ("+this.getReleaseDate()+")";
   }
 }
