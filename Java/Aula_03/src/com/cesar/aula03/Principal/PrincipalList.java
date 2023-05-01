@@ -7,6 +7,7 @@ import com.cesar.aula03.model.Title;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class PrincipalList {
   public static void main(String[] args) {
@@ -48,7 +49,7 @@ public class PrincipalList {
 //    -------------------- Odenando uma lista --------------------
     
 //    Abaixo temos um exemplo de como ordenar uma lista. O método "sort" funciona bem com qualquer dado que ja possua a implementação do "compareTo()", como strings e numeros.
-    ArrayList<String> actorsName = new ArrayList<>();
+    List<String> actorsName = new ArrayList<>();
     actorsName.add("Jennifer Aniston");
     actorsName.add("Ed Helms");
     actorsName.add("Zach Galifianakis");
