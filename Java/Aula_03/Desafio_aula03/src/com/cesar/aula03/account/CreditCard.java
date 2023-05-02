@@ -4,19 +4,26 @@ import java.util.*;
 
 public class CreditCard {
   private double cardLimit;
+  private double balance;
   private Map<String, Double> purchases = new HashMap<>();
+
+  public CreditCard(double cardLimit) {
+    this.cardLimit = cardLimit;
+    this.balance = cardLimit;
+  }
 
   public double getCardLimit() {
     return cardLimit;
   }
 
-  public void setCardLimit(double value) {
-    this.cardLimit = value;
+  public double getBalance() {
+    return balance;
   }
 
   public Map getPurchases() {
     return purchases;
   }
+  
   public Map getSortedPurchases() {
     List<Map.Entry<String, Double>> listSorting = new ArrayList<>(purchases.entrySet());
 
@@ -31,11 +38,13 @@ public class CreditCard {
   }
   
   public boolean buy(String purchase, double value) {
-    if(value > cardLimit){
+    if(value > balance){
+      System.out.println("\nCompra não aprovada. Limite do cartão excedido.");
       return false;
     } else {
       purchases.put(purchase, value);
-      cardLimit -= value;
+      balance -= value;
+      System.out.println("Compra efetuada com sucesso.");
     return true;
     }
   }
