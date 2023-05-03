@@ -1,5 +1,6 @@
 package com.cesar.aula04.model;
 
+import com.cesar.aula04.CustomException.ConvertYearException;
 import com.google.gson.annotations.SerializedName;
 
 public class Title implements Comparable<Title> {
@@ -15,6 +16,17 @@ public class Title implements Comparable<Title> {
   public Title(String name, int releaseDate) {
     this.name = name;
     this.releaseDate = releaseDate;
+  }
+
+  public Title(TitleOMDb recordClass) {
+    this.name = recordClass.title();
+    if (recordClass.year().length() > 4){
+//     ---------- Criando uma exceção personalizada ----------
+//      Para este projeto, não necessariamente seria indicado criar uma exceção para o problema de conversão de 'ano de lançamento', é apenas um exemplo de como criar uma exceção para um erro especifico.
+      throw new ConvertYearException("Não foi possivel converter o ano de lançamento. Texto maior que 4 digitos.");
+    }
+    this.releaseDate = Integer.valueOf(recordClass.year());
+    this.duration = Integer.valueOf(recordClass.runtime().substring(0,3));
   }
 
   public String getName() {
@@ -75,6 +87,6 @@ public class Title implements Comparable<Title> {
 
   @Override
   public String toString() {
-    return "Nome: " + name + " (" + releaseDate + ")";
+    return "Nome: " + name + " (" + releaseDate + "), duração: "+duration+" min";
   }
 }
