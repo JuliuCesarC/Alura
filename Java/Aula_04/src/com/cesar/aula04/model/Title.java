@@ -4,9 +4,9 @@ import com.cesar.aula04.CustomException.ConvertYearException;
 import com.google.gson.annotations.SerializedName;
 
 public class Title implements Comparable<Title> {
-  @SerializedName("Title")
+//  @SerializedName("Title")
   private String name;
-  @SerializedName("Year")
+//  @SerializedName("Year")
   private int releaseDate;
   private boolean premiumPlan;
   private int duration;
@@ -26,7 +26,7 @@ public class Title implements Comparable<Title> {
       throw new ConvertYearException("Não foi possivel converter o ano de lançamento. Texto maior que 4 digitos.");
     }
     this.releaseDate = Integer.valueOf(recordClass.year());
-    this.duration = Integer.valueOf(recordClass.runtime().substring(0,3));
+    this.duration = Integer.valueOf(recordClass.runtime().substring(0,2));
   }
 
   public String getName() {
