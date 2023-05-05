@@ -68,7 +68,7 @@ O SQL possui alguns operadores específicos, como os 3 que veremos abaixo.
 Abaixo temos um exemplo, onde é selecionado todas as colunas das linhas que estão entre a data informada.
 
 ```sql
-SELECT * FROM alunos 
+SELECT * FROM aluno 
   WHERE matriculado_em BETWEEN '2022-01-01' AND '2022-12-31';
 ```
 
@@ -77,7 +77,7 @@ SELECT * FROM alunos
 Abaixo temos um exemplo, onde é selecionado todas as colunas das linhas que tenham o *id* igual aos valores informados.
 
 ```sql
-SELECT * FROM alunos WHERE id IN (1, 3, 5, 7, 9);
+SELECT * FROM aluno WHERE id IN (1, 3, 5, 7, 9);
 ```
 
 - `LIKE`: retorna true caso o valor informado ou buscado esteja dentro do padrão de texto informado.
@@ -87,7 +87,7 @@ SELECT * FROM alunos WHERE id IN (1, 3, 5, 7, 9);
 Abaixo temos um exemplo, que seleciona todos as colunas das linhas que possuam um email que termine com *gmail.com*.
 
 ```sql
-SELECT * FROM alunos WHERE email LIKE '%gmail.com';
+SELECT * FROM aluno WHERE email LIKE '%gmail.com';
 ```
 
 Agora um exemplo que seleciona todos os professores que tenham no campo materia um texto que se encaixe no padrão, podendo ser "Matemática" com ou sem acento, e começando ou não com letra maiúscula.
@@ -97,6 +97,19 @@ SELECT * FROM professor WHERE materia LIKE '_atem_tica';
 ```
 
 > O operador **LIKE** pode ser utilizado para um campo de busca, escapando do camelCase caso o texto digitado não seja especificamente igual.
+
+### Operadores AND e OR
+
+Esses 2 operadores servem para criar múltiplas condições, sendo utilizados junto com os outros operadores. Por exemplo:
+
+```sql
+SELECT * FROM aluno 
+  WHERE nome LIKE 'J%'
+  AND cpf IS NOT NULL
+  OR idade >= 25;
+```
+
+O exemplo acima seleciona todos os alunos que tenham um nome que comece com a letra *J* **E** tenham o campo de *cpf* não sendo nulo, **OU** apenas que tenham idade maior ou igual a 25.
 
 ## Criando um database
 
@@ -237,6 +250,7 @@ Selecionando todos os campos e todas as linhas da tabela.
 ```sql
 SELECT * FROM aluno;
 ```
+
 Selecionando apenas o campo *nome* de todas as linhas da tabela.
 
 ```sql
@@ -260,18 +274,115 @@ Com o *WHERE* podemos selecionar linhas especificas que atendam à uma condiçã
 
 Podemos utilizar os operadores lógicos visto anteriormente para criar uma condição, alguns exemplos são:
 
-Selecionando todos os campos das linhas que atendam a condição.
+Selecionando todos os campos das linhas que tenham na coluna *idade* um valor maior ou igual a 25.
 
 ```sql
 SELECT * FROM aluno WHERE idade >= 25;
 ```
 
-Selecionando múltiplos campos das linhas que atendam a condição.
+Seleciona todos os campos das linhas que não tenham na coluna *cpf* um valor nulo.
+
+```sql
+SELECT * FROM aluno WHERE cpf IS NOT NULL;
+```
+
+Selecionando múltiplos campos das linhas que tenham na coluna *nome*  qualquer nome que termine com *da Silva* por exemplo.
 
 ```sql
 SELECT nome AS "Nome do aluno",
   data_nascimento AS "Data de nascimento",
   ativo
   FROM aluno
-  WHERE nome = 'Jão';
+  WHERE nome LIKE '% da _ilva';
 ```
+
+## PRIMARY KEY
+
+O PRIMARY KEY é um campo (ou conjunto de campos) que possuem um identificador único para cada registro em uma tabela, permitindo que eles sejam identificados de forma precisa e inequívoca.
+
+Podemos criar um campo semelhante utilizando os comando `NOT NULL UNIQUE` como no código abaixo:
+
+```sql
+CREATE TABLE curso(
+  id INTEGER NOT NULL UNIQUE,
+  nome VARCHAR(255) NOT NULL
+);
+```
+
+Porem o correto é utilizar o *primary key*:
+
+```sql
+CREATE TABLE curso(
+  id INTEGER PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL
+);
+```
+
+Podemos também criar um conjunto de campos utilizando o comando abaixo:
+
+```sql
+CREATE TABLE aluno_curso(
+  aluno_id INTEGER,
+  curso_id INTEGER,
+  PRIMARY KEY (aluno_id, curso_id)
+)
+```
+
+## FOREIGN KEY
+
+Quando criamos referencias entre tabelas é possível que ocorra algumas inconsistências, por exemplo, cadastrar na tabela filha um ID que não existe na tabela pai. Então utilizamos uma chave estrangeira para garantir integridade da referencia de dados. Além disso, não é possível excluir o valor da tabela pai sem antes excluir os registros que o referenciam na tabela filha. A FOREIGN KEY pode ser um campo ou conjunto de campos.
+
+A sintaxe básica dessa chave é:
+
+```sql
+FOREIGN KEY (campo_tabela_filha) REFERENCES tabela_pai (campo_tabela_pai);
+```
+
+E abaixo temos um exemplo:
+
+```sql
+CREATE TABLE aluno_curso(
+  aluno_id INTEGER,
+  curso_id INTEGER,
+  PRIMARY KEY (aluno_id, curso_id),
+
+  FOREIGN KEY (aluno_id)
+  REFERENCES aluno (id),
+  FOREIGN KEY (curso_id)
+  REFERENCES curso (id)
+);
+```
+
+Criamos uma referencia do campo *id* da tabela *aluno* para o campo *aluno_id* da tabela *aluno_curso*, e o mesmo para o *curso_id*.
+
+## JOIN ON
+
+O JOIN permite juntar dados de duas ou mais tabelas relacionadas em uma unica consulta.
+
+A sintaxe básica é:
+
+```sql
+JOIN tabela_relacionada ON campo_tabela_relacionada = campo_tabela_referencia;
+```
+
+> A ordem do campo da tabela relacionada ou da tabela referencia não importa, ou seja, quem vem antes ou depois do sinal de igual não difere na consulta.
+
+Suponhamos que temos 3 tabelas, a *aluno*, *curso* e *aluno_curso* que relaciona o aluno com o curso, e, precisamos resgatar o campo do nome do aluno e o nome do curso. Para realizar esta consulta precisamos passar obrigatoriamente pela tabela *aluno_curso*, temos o código abaixo:
+
+```sql
+SELECT * 
+  FROM aluno
+  JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+  JOIN curso ON curso.id = aluno_curso.curso_id;
+```
+
+A consulta realizada acima trará todos os campos das 3 tabelas, porem precisamos apenas dos 2 campos mencionados anteriormente, então podemos resolver da seguinte forma:
+
+```sql
+SELECT aluno.nome AS "Nome do aluno",
+       curso.nome AS "Nome do Curso"
+  FROM aluno
+  JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+  JOIN curso       ON curso.id             = aluno_curso.curso_id;
+```
+
