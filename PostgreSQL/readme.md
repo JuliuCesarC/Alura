@@ -355,6 +355,38 @@ CREATE TABLE aluno_curso(
 
 Criamos uma referencia do campo *id* da tabela *aluno* para o campo *aluno_id* da tabela *aluno_curso*, e o mesmo para o *curso_id*.
 
+### DELETE/UPDATE CASCADE
+
+Como visto anteriormente ao criar uma chave estrangeira, não seria possível excluir uma linha da tabela pai que estivesse relacionada com a tabela com a FOREIGN KEY. Caso seja necessario uma maior liberdade para atualizar e excluir os dados, utilizaremos o **CASCADE**.
+
+> Quando omitimos a restrição, por padrão ela vira como `ON DELETE RESTRICT`, e o mesmo vale para o UPDATE.
+
+```sql
+CREATE TABLE aluno_curso(
+  aluno_id INTEGER,
+  curso_id INTEGER,
+  PRIMARY KEY (aluno_id, curso_id),
+
+  FOREIGN KEY (aluno_id)
+  REFERENCES aluno (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  FOREIGN KEY (curso_id)
+  REFERENCES curso (id)
+  ON UPDATE CASCADE  
+);
+```
+
+Da forma como a tabela foi criada, poderemos atualizar ambos os campos, mas apenas o campo do aluno poderá ser excluído na tabela pai sem nenhuma restrição.
+
+### DROP CASCADE
+
+Ao tentar excluir a tabela pai ocorrera um erro, pois mesmo que a restrição da chave estrangeira esteja como *CASCADE*, o comando de *DROP* também precisa estar. Exemplo da sintaxe:
+
+```SQL
+DROP TABLE tabela_pai CASCADE;
+```
+
 ## JOIN ON
 
 O JOIN permite juntar dados de duas ou mais tabelas relacionadas em uma unica consulta.
@@ -362,10 +394,11 @@ O JOIN permite juntar dados de duas ou mais tabelas relacionadas em uma unica co
 A sintaxe básica é:
 
 ```sql
-JOIN tabela_relacionada ON campo_tabela_relacionada = campo_tabela_referencia;
+FROM tabela_original
+  JOIN tabela_relacionada ON campo_tabela_relacionada = campo_tabela_original;
 ```
 
-> A ordem do campo da tabela relacionada ou da tabela referencia não importa, ou seja, quem vem antes ou depois do sinal de igual não difere na consulta.
+> A ordem do campo da tabela relacionada ou da tabela original não importa, ou seja, quem vem antes ou depois do sinal de igual não difere na consulta.
 
 Suponhamos que temos 3 tabelas, a *aluno*, *curso* e *aluno_curso* que relaciona o aluno com o curso, e, precisamos resgatar o campo do nome do aluno e o nome do curso. Para realizar esta consulta precisamos passar obrigatoriamente pela tabela *aluno_curso*, temos o código abaixo:
 
@@ -385,4 +418,52 @@ SELECT aluno.nome AS "Nome do aluno",
   JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
   JOIN curso       ON curso.id             = aluno_curso.curso_id;
 ```
+
+### LEFT JOIN
+
+O *LEFT* seleciona todos os dados da tabela original independente se ha algum dado correlacionado na tabela relacionada. Caso o dado não exista, o campo sera preenchido com *NULL*.
+
+```sql
+SELECT *
+     FROM aluno
+LEFT JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+LEFT JOIN curso ON curso.id = aluno_curso.curso_id;
+```
+
+### RIGHT JOIN
+
+O *RIGHT* é igual ao *LEFT*, porém traz o resultado inverso, selecionando todos os dados da tabela relacionada. Caso o dado não exista na tabela original, o campo sera preenchido com *NULL*.
+
+```sql
+SELECT aluno.nome AS "Nome do aluno",
+     curso.nome AS "Nome do Curso"
+      FROM aluno
+RIGHT JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+RIGHT JOIN curso ON curso.id = aluno_curso.curso_id;
+```
+
+### FULL JOIN
+
+O *FULL* é a junção do *LEFT* com o *RIGHT*, seleciona todos os dados das duas tabelas relacionadas. Caso algum dado não exista em uma das tabelas, o campo sera preenchido com *NULL*.
+
+```sql
+SELECT *
+     FROM aluno
+FULL JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+FULL JOIN curso ON curso.id = aluno_curso.curso_id;
+```
+
+### CROSS JOIN
+
+O *CROSS* tem um funcionamento bem diferente dos anteriores, ele ira relacionar todas as linhas da tabela original com a relacionada, e o resultado sera o produto do total de linhas de cada tabela. Por exemplo, a tabela_1 possui 3 linhas e a tabela_2 possui 4 linhas, o resultado da pesquisa será 12 linhas relacionadas.
+
+Como este método não precisa que as tabelas sejam relacionadas, a sintaxe é fica diferente, não sendo necessario o `JOIN ON`. Vejamos abaixo:
+
+```sql
+SELECT *
+  FROM aluno
+  CROSS JOIN curso;
+```
+
+> Como vemos,não foi necessario passar primeiro pela tabela *aluno_curso*, que relacionava a tabela *aluno* com a tabela *curso*.
 
