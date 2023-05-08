@@ -188,7 +188,7 @@ VALUES (
   24,
   '11111111111',
   1.68,
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus orci eu auctor congue. Phasellus eu auctor turpis. Mauris pharetra convallis diam, vel malesuada dolor mattis quis. Donec egestas leo ac quam tempus volutpat. Phasellus sollicitudin interdum quam et vestibulum.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   1785,
   TRUE,
   '7:10:00',
@@ -241,59 +241,6 @@ Deletamos o *aluno* cujo nome é *Roberto*. Para remover a tabela, basta digitar
 ```sql
 DELETE FROM aluno
 -- Remove a tabela.
-```
-
-## Filtros e seleção dados na tabela
-
-Selecionando todos os campos e todas as linhas da tabela.
-
-```sql
-SELECT * FROM aluno;
-```
-
-Selecionando apenas o campo *nome* de todas as linhas da tabela.
-
-```sql
-SELECT nome FROM aluno;
-```
-
-Selecionando múltiplos campos.
-
-```sql
-SELECT nome AS "Nome do aluno",
-  data_nascimento AS "Data de nascimento",
-  ativo
-  FROM aluno
-```
-
-> O comando `AS` serve para alterar o nome do campo. Caso o nome tenha espaços em branco é preciso utilizar as aspas duplas "".
-
-### WHERE
-
-Com o *WHERE* podemos selecionar linhas especificas que atendam à uma condição.
-
-Podemos utilizar os operadores lógicos visto anteriormente para criar uma condição, alguns exemplos são:
-
-Selecionando todos os campos das linhas que tenham na coluna *idade* um valor maior ou igual a 25.
-
-```sql
-SELECT * FROM aluno WHERE idade >= 25;
-```
-
-Seleciona todos os campos das linhas que não tenham na coluna *cpf* um valor nulo.
-
-```sql
-SELECT * FROM aluno WHERE cpf IS NOT NULL;
-```
-
-Selecionando múltiplos campos das linhas que tenham na coluna *nome*  qualquer nome que termine com *da Silva* por exemplo.
-
-```sql
-SELECT nome AS "Nome do aluno",
-  data_nascimento AS "Data de nascimento",
-  ativo
-  FROM aluno
-  WHERE nome LIKE '% da _ilva';
 ```
 
 ## PRIMARY KEY
@@ -387,7 +334,60 @@ Ao tentar excluir a tabela pai ocorrera um erro, pois mesmo que a restrição da
 DROP TABLE tabela_pai CASCADE;
 ```
 
-## JOIN ON
+## Filtros e seleção dados na tabela
+
+Selecionando todos os campos e todas as linhas da tabela.
+
+```sql
+SELECT * FROM aluno;
+```
+
+Selecionando apenas o campo *nome* de todas as linhas da tabela.
+
+```sql
+SELECT nome FROM aluno;
+```
+
+Selecionando múltiplos campos.
+
+```sql
+SELECT nome AS "Nome do aluno",
+  data_nascimento AS "Data de nascimento",
+  ativo
+  FROM aluno
+```
+
+> O comando `AS` serve para alterar o nome do campo. Caso o nome tenha espaços em branco é preciso utilizar as aspas duplas "".
+
+### WHERE
+
+Com o *WHERE* podemos selecionar linhas especificas que atendam à uma condição.
+
+Podemos utilizar os operadores lógicos visto anteriormente para criar uma condição, alguns exemplos são:
+
+Selecionando todos os campos das linhas que tenham na coluna *idade* um valor maior ou igual a 25.
+
+```sql
+SELECT * FROM aluno WHERE idade >= 25;
+```
+
+Seleciona todos os campos das linhas que não tenham na coluna *cpf* um valor nulo.
+
+```sql
+SELECT * FROM aluno WHERE cpf IS NOT NULL;
+```
+
+Selecionando múltiplos campos das linhas que tenham na coluna *nome*  qualquer nome que termine com *da Silva* por exemplo.
+
+```sql
+SELECT nome AS "Nome do aluno",
+  data_nascimento AS "Data de nascimento",
+  ativo
+  FROM aluno
+  WHERE nome LIKE '% da _ilva';
+```
+
+### JOIN ON
 
 O JOIN permite juntar dados de duas ou mais tabelas relacionadas em uma unica consulta.
 
@@ -467,3 +467,155 @@ SELECT *
 
 > Como vemos,não foi necessario passar primeiro pela tabela *aluno_curso*, que relacionava a tabela *aluno* com a tabela *curso*.
 
+### ORDER BY
+
+A ordenação na tabela ao fazer uma busca por exemplo, é a de inserção, ou seja, as linhas vem na ordem que foram inseridas. Para ordenar de outra maneira, utilizaremos o **ORDER BY**. Vejamos a sintaxe abaixo:
+
+```sql
+SELECT * FROM nome_tabela
+  ORDER BY nome_campo;
+```
+
+Podemos ordenar passando o nome do campo ou o *índice* do campo, por exemplo, o quarto campo de uma tabela é a matricula, podemos ordenar por ela informando o numero "4". Por padrão a ordem é crescente `ASC`, mas podemos informar `DESC` para decrescente.
+
+```sql
+SELECT * FROM aluno
+  ORDER BY nome, sobrenome DESC, matricula;
+```
+
+Ao efetuar uma busca em duas ou mais tabelas que tenham um nome igual para algum campo, ocorrera um erro de ambiguidade, que pode ser resolvido ao chamar o nome do campo através do nome da tabela `nome_tabela.nome_campo`.
+
+```sql
+SELECT  aluno.id AS ID,
+        aluno.matricula AS Matricula,
+        aluno.nome AS Nome,
+        aluno.sobrenome AS Sobrenome,
+        curso.nome AS Curso
+  FROM aluno
+  JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+  JOIN curso ON curso.id = aluno_curso.curso_id
+  ORDER BY curso.nome DESC, aluno.nome;
+```
+
+### LIMIT OFFSET
+
+O *LIMIT* como o nome sugere, serve para limitar a quantidade de registros que são retornados em uma consulta, e, o *OFFSET* serve para informar a partir de qual linha deve começar a busca.
+
+```sql
+SELECT * FROM aluno ORDER BY id
+  LIMIT 4
+  OFFSET 2;
+```
+
+Suponhamos uma tabela com 16 linhas, se informado um limite de 20 linhas, o que sera exibido são apenas as 16 linhas. Agora se for informado um offset de 20, sera retornado vazio, pois não existe nenhum item a partir da linha 20.
+
+Temos algumas vantagens ao utiliza-los, como evitar trabalhar com uma lista muito grande, efetuar uma busca mais rápida e principalmente para economizar dados do servidor.
+
+### Funções de agregação
+
+As funções agregadoras realizam cálculos em conjuntos de valores em uma coluna ou em um grupo de registros e retornam um único valor resultante. Existem diversas funções, porem veremos somente as mais comuns. Para ver a tabela completa acesse o link <a href="https://www.postgresql.org/docs/current/functions-aggregate.html">PostgreSQL funções agregadoras</a>.
+
+- `COUNT`: Retorna o número de linhas ou valores não nulos em uma coluna. Como parâmetro aceita o nome do campo ou o coringa __*__.
+
+- `SUM`: Calcula a soma dos valores em uma coluna numérica.
+
+- `AVG`: Calcula a média dos valores em uma coluna numérica.
+
+- `MAX`: Retorna o maior valor em uma coluna.
+
+- `MIN`: Retorna o menor valor em uma coluna.
+
+```sql
+SELECT  COUNT(*),
+        SUM(id),
+        ROUND(AVG(id), 2),
+        MAX(id),
+        MIN(id)
+  FROM aluno;
+```
+
+> O *ROUND* serve para arredondar o resultado da operação, a sintaxe é `ROUND(operação, casas_decimais)`.
+
+### DISTINCT
+
+A clausula *DISTINCT* é utilizada em consultas para evitar o retorno de dados que sejam repetidos. Porem, não é possível fazer nenhuma função de agregação com ele.
+
+Suponhamos uma lista com os produtos de um supermercado, e, seja necessario saber quantos produtos diferentes são vendidos, logo 5 marcas de um mesmo tipo de macarrão, não significa 5 itens diferentes a venda.
+
+```sql
+SELECT DISTINCT produto
+  FROM estoque
+  ORDER BY produto;
+```
+
+### GROUP BY
+
+A cláusula *GROUP BY* é semelhante a anterior, também combinando valores esmalhantes em determinadas colunas e os tratando como um grupo único. Mas além disso é possível agrupar os resultados de um ou mais campos e principalmente poder utilizar funções de agregação.
+
+Podemos utilizar o código abaixo para termos o mesmo resultado do *DISTINCT*.
+
+```sql
+SELECT produto FROM estoque
+  GROUP BY produto
+  ORDER BY produto;
+```
+
+> Assim como o *ORDER BY*, podemos informar não apenas o nome do campo mas também o índice da coluna para o *GROUP BY*.
+
+Agora voltando com o exemplo do supermercado, suponhamos que seja necessario saber a media do preço dos produtos semelhantes de uma mesma categoria. Por exemplo, a media de preço de todos os macarrões espaguete, dos molhos de tomate, etc. Temos então o código abaixo:
+
+```sql
+SELECT  produto AS "Nome do produto",
+        COUNT(marca) AS "Quantidade de marcas",
+        ROUND(AVG(preco), 2) AS "Preço médio"
+  FROM catalogo
+  GROUP BY categoria, produto
+  ORDER BY produto;
+```
+
+Adicionamos os campos *categoria* e *produto* para garantir que nenhuma deles repita um valor semelhante. Além do que foi proposto acima, também contamos a quantidade de marcas que vendem aquele produto com o `COUNT(marca)`.
+
+Outro exemplo utilizando tabelas relacionadas:
+
+```sql
+SELECT  curso.nome AS "Nome do curso",
+        COUNT(aluno.id) AS "Quantidade de alunos matriculados"
+  FROM aluno
+  JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+  JOIN curso ON curso.id = aluno_curso.curso_id
+  GROUP BY curso.nome
+  ORDER BY 1;
+```
+
+A sintaxe é muito proxima à utilizada para um *SELECT* em tabelas relacionadas, o que diferencia é a função agregadora `COUNT` e para esta função funcionar o `GROUP BY`.
+
+### HAVING
+
+O *HAVING* serve para utilizar filtros em consultas agrupadas.
+
+Quando efetuamos uma consulta com uma função agregadora, não é possível utilizar o *WHERE*, pois o *GROUP BY* não permite. Para contornar este problema utilizamos o *HAVING*.
+
+Vejamos um exemplo para selecionar todos os funcionários com o nome duplicado:
+
+```sql
+SELECT  nome AS "Nome do funcionário",
+        COUNT(id)
+  FROM funcionarios
+  GROUP BY nome
+  HAVING COUNT(id) > 1;
+```
+
+Agora um exemplo com tabelas relacionadas:
+
+```sql
+SELECT  curso.nome AS "Nome do curso",
+        COUNT(aluno.id) AS "Alunos matriculados"
+  FROM curso
+  LEFT JOIN aluno_curso ON aluno_curso.curso_id = curso.id
+  LEFT JOIN aluno ON aluno.id = aluno_curso.aluno_id
+  GROUP BY curso.nome
+  HAVING COUNT(aluno.id) = 0
+  ORDER BY 1 DESC;
+```
+
+Com o código acima, selecionamos todos os cursos que não possuam nenhum aluno matriculado.
