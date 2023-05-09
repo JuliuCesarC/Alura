@@ -167,22 +167,29 @@ CREATE TABLE aluno(
 
 ## Inserindo dados na tabela
 
-Agora para inserir dados na tabela **aluno** utilizaremos o código abaixo:
+O comando `INSERT INTO` junto com o `VALUES` servem para adicionar dados na tabela, e a sintaxe é:
 
 ```sql
-INSERT INTO aluno(
-  nome,
-  data_nascimento,
-  idade,
-  cpf,
-  altura,
-  observacao,
-  notas_acumuladas,
-  ativo,
-  horario_aulas,
-  matriculado_em
-)
-VALUES (
+INSERT INTO nome_tabela(nome_campo1, nome_campo2) 
+  VALUES('info_campo1', 'info_campo2');
+```
+
+É possível omitir os nomes dos campos se todos eles forem preenchidos no *VALUES*, caso algum campo fique vazio ou que seja gerado automaticamente, então é preciso informar o nome dos campos que serão preenchidos.
+
+Além disso, também podemos adicionar múltiplas linhas em um único *INSERT INTO*, e a sintaxe para isto ficaria:
+
+```sql
+INSERT INTO nome_tabela(nome_campo1, nome_campo2) 
+  VALUES  ('info_campo1', 'info_campo2'), 
+          ('info_campo1', 'info_campo2'),    
+          ('info_campo1', 'info_campo2');
+```
+
+Agora um exemplo descrevendo os campos e adicionando uma linha na tabela *aluno*:
+
+```sql
+INSERT INTO aluno(nome, data_nascimento, idade, cpf, altura, observacao, notas_acumuladas, ativo, horario_aulas, matriculado_em) 
+  VALUES (
   'Jão da Silva',
   '1999-04-08',
   24,
@@ -196,12 +203,6 @@ VALUES (
 );
 ```
 
-O comando `INSERT INTO` adiciona os dados na tabela, e comumente veremos primeiro sendo descrito os campos, e depois os valores. Mas é possível omitir os campos e adicionar apenas o valores, como em:
-
-```sql
-INSERT INTO aluno VALUES( ... );
-```
-
 ## Atualizando os campos
 
 Para atualizar os dados, utilizaremos o comando `UPDATE`. Com ele podemos alterar os campos de apenas uma linha, ou de toda a tabela.
@@ -210,7 +211,7 @@ Para atualizar os dados, utilizaremos o comando `UPDATE`. Com ele podemos altera
 UPDATE aluno
   SET nome = 'Jão Abreu da Silva',
   cpf = '44455226756',
-  observacao = 'Phasellus sollicitudin interdum quam et vestibulum. Pellentesque ligula odio, rhoncus eget imperdiet et.',
+  observacao = 'Phasellus sollicitudin interdum quam et vestibulum.',
   notas_acumuladas = 1821
   WHERE id = 1;
 ```
@@ -243,49 +244,65 @@ DELETE FROM aluno
 -- Remove a tabela.
 ```
 
-## PRIMARY KEY
+## Criando relações entre tabelas
 
-O PRIMARY KEY é um campo (ou conjunto de campos) que possuem um identificador único para cada registro em uma tabela, permitindo que eles sejam identificados de forma precisa e inequívoca.
+Podemos criar alguns tipos de relações entre tabelas, neste curso iremos abordar principalmente a "1 para muitos", "muitos para 1" e "muitos para muitos".
 
-Podemos criar um campo semelhante utilizando os comando `NOT NULL UNIQUE` como no código abaixo:
+Para criar uma relação, primeiro precisamos garantir que o campo a ser relacionado seja único, e após isso precisamos garantir que seja possível somente relacionar dados que existam em uma tabela, e que estes dados não possam ser duplicados. Para resolver estes problemas, temos as restrições *PRIMARY KEY* e a *FOREIGN KEY* que veremos posteriormente.
+
+Quando trabalhamos com "1 para muitos" e "muitos para 1", podemos simplesmente criar a relação entre as tabelas. Porem, quando trabalhamos com relacionamento de "muitos para muitos", precisamos de uma **tabela de junção**, que sera responsável por representar o relacionamento entre as tabelas. Ela nada mais faz do que indicar quais campos da *tabela_1* estão relacionados com a *tabela_n* e vice e versa.
+
+### Chave primaria
+
+A *PRIMARY KEY*  é uma restrição que pode ser adicionada a um campo (ou conjunto de campos) para que possuam um identificador único para cada registro em uma tabela, permitindo que eles sejam identificados de forma precisa e inequívoca.
+
+A sintaxe para esta restrição é:
 
 ```sql
-CREATE TABLE curso(
-  id INTEGER NOT NULL UNIQUE,
-  nome VARCHAR(255) NOT NULL
+CREATE TABLE nome_tabela(
+  nome_campo SERIAL PRIMARY KEY
 );
 ```
 
-Porem o correto é utilizar o *primary key*:
+Podemos criar um campo semelhante utilizando o `NOT NULL UNIQUE` no lugar do *PRIMARY KEY*, porem o correto é utilizar a chave primaria.
+
+Podemos também criar um conjunto de campos utilizando a sintaxe abaixo:
 
 ```sql
-CREATE TABLE curso(
-  id INTEGER PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL
-);
-```
-
-Podemos também criar um conjunto de campos utilizando o comando abaixo:
-
-```sql
-CREATE TABLE aluno_curso(
-  aluno_id INTEGER,
-  curso_id INTEGER,
-  PRIMARY KEY (aluno_id, curso_id)
+CREATE TABLE nome_tabela(
+  campo_id INTEGER,
+  campo2_id INTEGER,
+  PRIMARY KEY (campo_id, campo2_id)
 )
 ```
 
-## FOREIGN KEY
+### Chave estrangeira
 
-Quando criamos referencias entre tabelas é possível que ocorra algumas inconsistências, por exemplo, cadastrar na tabela filha um ID que não existe na tabela pai. Então utilizamos uma chave estrangeira para garantir integridade da referencia de dados. Além disso, não é possível excluir o valor da tabela pai sem antes excluir os registros que o referenciam na tabela filha. A FOREIGN KEY pode ser um campo ou conjunto de campos.
+A *FOREIGN KEY* é uma restrição que pode ser aplicada a um campo (ou conjunto de campos) para garantir a integridade referencial com um chave primaria de outra tabela.
 
-A sintaxe básica dessa chave é:
+A chave estrangeira garante que o dado a ser referenciado de outra tabela exista, e que não possa ser duplicado na tabela em que foi aplicada. Além disso, não é possível excluir o valor da tabela pai sem antes excluir os registros que o referenciam na tabela filha.
+
+A sintaxe desta restrição é:
 
 ```sql
-FOREIGN KEY (campo_tabela_filha) REFERENCES tabela_pai (campo_tabela_pai);
+FOREIGN KEY (campo_tabela) REFERENCES tabela_referencia (campo_tabela_referencia);
 ```
 
-E abaixo temos um exemplo:
+> Exista a sintaxe simplificada da restrição, omitindo o *FOREIGN KEY* e adicionando o *REFERENCES* na coluna desejada.
+
+Criando um exemplo de relação de "muitos para 1":
+
+```sql
+CREATE TABLE curso(
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  categoria_id INTEGER NOT NULL REFERENCES categoria(id)
+);
+```
+
+A relação entre *curso* e *categoria* é de "muitos para 1", pois muitos cursos podem estar em uma categoria, porem cada curso possui apenas uma.
+
+E para um exemplo de "muitos para muitos", temos abaixo uma tabela de junção:
 
 ```sql
 CREATE TABLE aluno_curso(
@@ -293,8 +310,7 @@ CREATE TABLE aluno_curso(
   curso_id INTEGER,
   PRIMARY KEY (aluno_id, curso_id),
 
-  FOREIGN KEY (aluno_id)
-  REFERENCES aluno (id),
+  FOREIGN KEY (aluno_id) REFERENCES aluno (id),
   FOREIGN KEY (curso_id)
   REFERENCES curso (id)
 );
@@ -304,9 +320,20 @@ Criamos uma referencia do campo *id* da tabela *aluno* para o campo *aluno_id* d
 
 ### DELETE/UPDATE CASCADE
 
-Como visto anteriormente ao criar uma chave estrangeira, não seria possível excluir uma linha da tabela pai que estivesse relacionada com a tabela com a FOREIGN KEY. Caso seja necessario uma maior liberdade para atualizar e excluir os dados, utilizaremos o **CASCADE**.
+Como visto anteriormente ao criar uma chave estrangeira, não seria possível excluir uma linha da tabela_pai que tenha algum campo relacionado na tabela_filha, ao qual possua a restrição *FOREIGN KEY*. Caso seja necessario uma maior liberdade para atualizar e excluir os dados, utilizaremos o **CASCADE**.
 
-> Quando omitimos a restrição, por padrão ela vira como `ON DELETE RESTRICT`, e o mesmo vale para o UPDATE.
+A sintaxe para o update e o delete ficaria:
+
+```sql
+ON DELETE CASCADE
+ON UPDATE CASCADE
+```
+
+Ao atualizar ou excluir os dados da tabela/linha referencia, automaticamente esses dados serão atualizados nas tabelas que possuam relação.
+
+> Quando omitimos a restrição, por padrão ela esta configurada como `ON DELETE RESTRICT`, e o mesmo vale para o UPDATE.
+
+Exemplo em uma tabela de junção:
 
 ```sql
 CREATE TABLE aluno_curso(
@@ -314,12 +341,10 @@ CREATE TABLE aluno_curso(
   curso_id INTEGER,
   PRIMARY KEY (aluno_id, curso_id),
 
-  FOREIGN KEY (aluno_id)
-  REFERENCES aluno (id)
+  FOREIGN KEY (aluno_id) REFERENCES aluno (id)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  FOREIGN KEY (curso_id)
-  REFERENCES curso (id)
+  FOREIGN KEY (curso_id) REFERENCES curso (id)
   ON UPDATE CASCADE  
 );
 ```
