@@ -361,56 +361,51 @@ DROP TABLE tabela_pai CASCADE;
 
 ## Filtros e seleção dados na tabela
 
-Selecionando todos os campos e todas as linhas da tabela.
+Para efetuar uma Query, utilizaremos os comandos `SELECT` e `FROM`. O *SELECT* sera responsável por selecionar os campos e o *FROM* por selecionar a tabela.
+
+A sintaxe fica:
+
+```sql
+SELECT nome_campo FROM nome_tabela;
+```
+
+Também é possível utilizar o resultado de uma query como tabela para uma outra query, e para fazer isso, no local do nome da tabela é adicionado uma query entre parenteses **( )**. Porem na maioria dos casos, é mais simples obter o resultado utilizando mais um *JOIN* ou buscando com o *HAVING*.
+
+Para selecionar todos os campos de uma tabela, existe um caractere especial responsável por isso, que é o asterisco __*__.
+
+Abaixo temos alguns exemplos de query's:
 
 ```sql
 SELECT * FROM aluno;
-```
 
-Selecionando apenas o campo *nome* de todas as linhas da tabela.
-
-```sql
 SELECT nome FROM aluno;
-```
 
-Selecionando múltiplos campos.
-
-```sql
-SELECT nome AS "Nome do aluno",
-  data_nascimento AS "Data de nascimento",
-  ativo
+SELECT  nome AS "Nome do aluno",
+        data_nascimento AS "Data de nascimento",
+        matriculado
   FROM aluno
 ```
 
-> O comando `AS` serve para alterar o nome do campo. Caso o nome tenha espaços em branco é preciso utilizar as aspas duplas "".
+O comando `AS` serve para alterar o nome do campo, e caso o nome tenha espaços em branco é preciso utilizar as aspas duplas "".
 
 ### WHERE
 
-Com o *WHERE* podemos selecionar linhas especificas que atendam à uma condição.
+O *WHERE* serve para filtrar dados na tabela. Utilizaremos ele junto com os operadores lógicos visto anteriormente para criar uma condição.
 
-Podemos utilizar os operadores lógicos visto anteriormente para criar uma condição, alguns exemplos são:
-
-Selecionando todos os campos das linhas que tenham na coluna *idade* um valor maior ou igual a 25.
+Alguns exemplos são:
 
 ```sql
 SELECT * FROM aluno WHERE idade >= 25;
-```
-
-Seleciona todos os campos das linhas que não tenham na coluna *cpf* um valor nulo.
-
-```sql
 SELECT * FROM aluno WHERE cpf IS NOT NULL;
-```
 
-Selecionando múltiplos campos das linhas que tenham na coluna *nome*  qualquer nome que termine com *da Silva* por exemplo.
-
-```sql
-SELECT nome AS "Nome do aluno",
-  data_nascimento AS "Data de nascimento",
-  ativo
+SELECT  nome AS "Nome do aluno",
+        data_nascimento AS "Data de nascimento",
+        matriculado
   FROM aluno
   WHERE nome LIKE '% da _ilva';
 ```
+
+Este ultimo exemplo seleciona múltiplos campos das linhas que tenham na coluna *nome*  qualquer texto que termine com *da Silva* por exemplo.
 
 ### JOIN ON
 
@@ -419,22 +414,24 @@ O JOIN permite juntar dados de duas ou mais tabelas relacionadas em uma unica co
 A sintaxe básica é:
 
 ```sql
-FROM tabela_original
+SELECT * FROM tabela_original
   JOIN tabela_relacionada ON campo_tabela_relacionada = campo_tabela_original;
 ```
 
 > A ordem do campo da tabela relacionada ou da tabela original não importa, ou seja, quem vem antes ou depois do sinal de igual não difere na consulta.
 
-Suponhamos que temos 3 tabelas, a *aluno*, *curso* e *aluno_curso* que relaciona o aluno com o curso, e, precisamos resgatar o campo do nome do aluno e o nome do curso. Para realizar esta consulta precisamos passar obrigatoriamente pela tabela *aluno_curso*, temos o código abaixo:
+Alguns exemplos são:
+
+Abaixo temos uma query que retorna todos os cursos cadastrados em cada categoria.
 
 ```sql
-SELECT * 
-  FROM aluno
-  JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
-  JOIN curso ON curso.id = aluno_curso.curso_id;
+SELECT  categoria.nome AS "Nome da categoria",
+        curso.nome AS "Cursos cadastrado na categoria"
+  FROM categoria
+  JOIN curso ON categoria.id = curso.categoria_id;
 ```
 
-A consulta realizada acima trará todos os campos das 3 tabelas, porem precisamos apenas dos 2 campos mencionados anteriormente, então podemos resolver da seguinte forma:
+Suponhamos que temos 3 tabelas, a *aluno*, *curso* e *aluno_curso*, e seja necessario buscar apenas o campo do nome do aluno e o nome do curso. Como a relação entre as 2 primeiras tabelas é de "Muitos para Muitos", então sera obrigatório passar pela tabela de junção *aluno_curso* para fazer esta consulta, temos o código abaixo:
 
 ```sql
 SELECT aluno.nome AS "Nome do aluno",
@@ -449,19 +446,17 @@ SELECT aluno.nome AS "Nome do aluno",
 O *LEFT* seleciona todos os dados da tabela original independente se ha algum dado correlacionado na tabela relacionada. Caso o dado não exista, o campo sera preenchido com *NULL*.
 
 ```sql
-SELECT *
-     FROM aluno
-LEFT JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
-LEFT JOIN curso ON curso.id = aluno_curso.curso_id;
+SELECT * FROM tabela_original
+  LEFT JOIN tabela_relacionada ON campo_relacionado = campo_original;
 ```
 
 ### RIGHT JOIN
 
-O *RIGHT* é igual ao *LEFT*, porém traz o resultado inverso, selecionando todos os dados da tabela relacionada. Caso o dado não exista na tabela original, o campo sera preenchido com *NULL*.
+O *RIGHT* é igual ao *LEFT*, porém traz o resultado inverso, selecionando todos os dados da tabela relacionada. Caso o dado não exista na tabela, o campo sera preenchido com *NULL*.
 
 ```sql
-SELECT aluno.nome AS "Nome do aluno",
-     curso.nome AS "Nome do Curso"
+SELECT  aluno.nome AS "Nome do aluno",
+        curso.nome AS "Nome do Curso"
       FROM aluno
 RIGHT JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
 RIGHT JOIN curso ON curso.id = aluno_curso.curso_id;
@@ -472,29 +467,27 @@ RIGHT JOIN curso ON curso.id = aluno_curso.curso_id;
 O *FULL* é a junção do *LEFT* com o *RIGHT*, seleciona todos os dados das duas tabelas relacionadas. Caso algum dado não exista em uma das tabelas, o campo sera preenchido com *NULL*.
 
 ```sql
-SELECT *
-     FROM aluno
-FULL JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
-FULL JOIN curso ON curso.id = aluno_curso.curso_id;
+SELECT * FROM aluno
+  FULL JOIN aluno_curso ON aluno_curso.aluno_id = aluno.id
+  FULL JOIN curso ON curso.id = aluno_curso.curso_id;
 ```
 
 ### CROSS JOIN
 
 O *CROSS* tem um funcionamento bem diferente dos anteriores, ele ira relacionar todas as linhas da tabela original com a relacionada, e o resultado sera o produto do total de linhas de cada tabela. Por exemplo, a tabela_1 possui 3 linhas e a tabela_2 possui 4 linhas, o resultado da pesquisa será 12 linhas relacionadas.
 
-Como este método não precisa que as tabelas sejam relacionadas, a sintaxe é fica diferente, não sendo necessario o `JOIN ON`. Vejamos abaixo:
+Como este método **não** precisa que as tabelas sejam relacionadas, a sintaxe fica diferente, não sendo necessario o `JOIN ON`. Vejamos abaixo:
 
 ```sql
-SELECT *
-  FROM aluno
-  CROSS JOIN curso;
+SELECT * FROM tabela_original
+  CROSS JOIN tabela_referencia;
 ```
 
-> Como vemos,não foi necessario passar primeiro pela tabela *aluno_curso*, que relacionava a tabela *aluno* com a tabela *curso*.
+> O *CROSS JOIN* pode ser utiliza mesmo em tabelas relacionadas.
 
 ### ORDER BY
 
-A ordenação na tabela ao fazer uma busca por exemplo, é a de inserção, ou seja, as linhas vem na ordem que foram inseridas. Para ordenar de outra maneira, utilizaremos o **ORDER BY**. Vejamos a sintaxe abaixo:
+O *ORDER BY* é utilizado para ordenar uma tabela de acordo com o campo (ou múltiplos campos).
 
 ```sql
 SELECT * FROM nome_tabela
@@ -524,7 +517,7 @@ SELECT  aluno.id AS ID,
 
 ### LIMIT OFFSET
 
-O *LIMIT* como o nome sugere, serve para limitar a quantidade de registros que são retornados em uma consulta, e, o *OFFSET* serve para informar a partir de qual linha deve começar a busca.
+O *LIMIT* como o nome sugere, serve para limitar a quantidade de registros que são retornados em uma consulta e o *OFFSET* serve para informar a partir de qual linha deve começar a busca.
 
 ```sql
 SELECT * FROM aluno ORDER BY id
@@ -534,13 +527,13 @@ SELECT * FROM aluno ORDER BY id
 
 Suponhamos uma tabela com 16 linhas, se informado um limite de 20 linhas, o que sera exibido são apenas as 16 linhas. Agora se for informado um offset de 20, sera retornado vazio, pois não existe nenhum item a partir da linha 20.
 
-Temos algumas vantagens ao utiliza-los, como evitar trabalhar com uma lista muito grande, efetuar uma busca mais rápida e principalmente para economizar dados do servidor.
+Temos algumas vantagens ao este limite, como evitar trabalhar com uma lista muito grande, efetuar uma busca mais rápida e principalmente para economizar dados do servidor.
 
 ### Funções de agregação
 
-As funções agregadoras realizam cálculos em conjuntos de valores em uma coluna ou em um grupo de registros e retornam um único valor resultante. Existem diversas funções, porem veremos somente as mais comuns. Para ver a tabela completa acesse o link <a href="https://www.postgresql.org/docs/current/functions-aggregate.html">PostgreSQL funções agregadoras</a>.
+As funções agregadoras realizam cálculos nas colunas, linhas e valores de uma tabela, retornando um único valor resultante. Existem diversas funções, porem veremos somente as mais comuns. Para ver a tabela completa acesse o link <a href="https://www.postgresql.org/docs/current/functions-aggregate.html">PostgreSQL funções agregadoras</a>.
 
-- `COUNT`: Retorna o número de linhas ou valores não nulos em uma coluna. Como parâmetro aceita o nome do campo ou o coringa __*__.
+- `COUNT`: Retorna o número de total de linhas em uma tabela ou coluna. Linhas que possuírem valores nulos serão desconsiderados. Como parâmetro aceita o nome do campo ou o coringa __*__.
 
 - `SUM`: Calcula a soma dos valores em uma coluna numérica.
 
@@ -551,12 +544,12 @@ As funções agregadoras realizam cálculos em conjuntos de valores em uma colun
 - `MIN`: Retorna o menor valor em uma coluna.
 
 ```sql
-SELECT  COUNT(*),
+SELECT  COUNT(*) AS "Numero de alunos matriculados",
         SUM(id),
         ROUND(AVG(id), 2),
-        MAX(id),
-        MIN(id)
-  FROM aluno;
+        MAX(id) AS "Ultimo aluno matriculado",
+        MIN(id) AS "Primeiro aluno matriculado"
+  FROM escola;
 ```
 
 > O *ROUND* serve para arredondar o resultado da operação, a sintaxe é `ROUND(operação, casas_decimais)`.
@@ -565,27 +558,29 @@ SELECT  COUNT(*),
 
 A clausula *DISTINCT* é utilizada em consultas para evitar o retorno de dados que sejam repetidos. Porem, não é possível fazer nenhuma função de agregação com ele.
 
-Suponhamos uma lista com os produtos de um supermercado, e, seja necessario saber quantos produtos diferentes são vendidos, logo 5 marcas de um mesmo tipo de macarrão, não significa 5 itens diferentes a venda.
+Suponhamos uma lista com os produtos de um supermercado, e, seja necessario saber quantos produtos diferentes são vendidos, logo 5 marcas de um mesmo tipo de macarrão, não significa 5 itens diferentes a venda. Então utilizaremos a clausula no campo produto, vejamos abaixo:
 
 ```sql
-SELECT DISTINCT produto
+SELECT DISTINCT produto AS "Nome do produto",
+                marca AS Marca
   FROM estoque
   ORDER BY produto;
 ```
 
 ### GROUP BY
 
-A cláusula *GROUP BY* é semelhante a anterior, também combinando valores esmalhantes em determinadas colunas e os tratando como um grupo único. Mas além disso é possível agrupar os resultados de um ou mais campos e principalmente poder utilizar funções de agregação.
+A cláusula *GROUP BY* é semelhante a anterior, também evita o retorno de dados que sejam repetidos e os trata como um grupo único. Mas o que o torna muito diferente, é a possibilidade de utilizar funções de agregação, e para casos de consultas em múltiplas tabelas com o *JOIN*, o uso é obrigatório.
 
-Podemos utilizar o código abaixo para termos o mesmo resultado do *DISTINCT*.
+A sintaxe desta clausula produzira o mesmo resultado que o *DISTINCT*:
 
 ```sql
-SELECT produto FROM estoque
+SELECT produto AS "Nome do produto"
+  FROM estoque
   GROUP BY produto
   ORDER BY produto;
 ```
 
-> Assim como o *ORDER BY*, podemos informar não apenas o nome do campo mas também o índice da coluna para o *GROUP BY*.
+> Assim como no *ORDER BY*, podemos informar não apenas o nome do campo mas também o índice da coluna para o *GROUP BY*.
 
 Agora voltando com o exemplo do supermercado, suponhamos que seja necessario saber a media do preço dos produtos semelhantes de uma mesma categoria. Por exemplo, a media de preço de todos os macarrões espaguete, dos molhos de tomate, etc. Temos então o código abaixo:
 
@@ -598,9 +593,9 @@ SELECT  produto AS "Nome do produto",
   ORDER BY produto;
 ```
 
-Adicionamos os campos *categoria* e *produto* para garantir que nenhuma deles repita um valor semelhante. Além do que foi proposto acima, também contamos a quantidade de marcas que vendem aquele produto com o `COUNT(marca)`.
+Adicionamos os campos *categoria* e *produto* para garantir que nenhum deles seja repetido. Além do que foi proposto acima, também contamos a quantidade de marcas que vendem aquele produto com o `COUNT(marca)`.
 
-Outro exemplo utilizando tabelas relacionadas:
+Outro exemplo utilizando tabelas de junção:
 
 ```sql
 SELECT  curso.nome AS "Nome do curso",
@@ -612,13 +607,18 @@ SELECT  curso.nome AS "Nome do curso",
   ORDER BY 1;
 ```
 
-A sintaxe é muito proxima à utilizada para um *SELECT* em tabelas relacionadas, o que diferencia é a função agregadora `COUNT` e para esta função funcionar o `GROUP BY`.
-
 ### HAVING
 
 O *HAVING* serve para utilizar filtros em consultas agrupadas.
 
-Quando efetuamos uma consulta com uma função agregadora, não é possível utilizar o *WHERE*, pois o *GROUP BY* não permite. Para contornar este problema utilizamos o *HAVING*.
+Não é possível trabalhar com o *WHERE* em uma consulta que possui a clausula *GROUP BY*, para ter o mesmo resultado é obrigatório o uso do *HAVING* no lugar.
+
+A sintaxe é:
+
+```sql
+SELECT campo1 FROM tabela GROUP BY campo1
+  HAVING condição;
+```
 
 Vejamos um exemplo para selecionar todos os funcionários com o nome duplicado:
 
