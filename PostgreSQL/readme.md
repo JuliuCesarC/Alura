@@ -1,5 +1,7 @@
 # Formação em SQL com PostgreSQL
 
+Durante os cursos utilizaremos as ferramentas **SQL Shell** e **pgAdmin 4**, sendo a segunda muito mais utilizada devido a ser mais semelhante a um editor de código.
+
 ## Tipos de dados
 
 O PostgreSQL possui diversos tipos de dados que serão armazenados, tipos numéricos, tipos de caracteres, datas, entre outros. Para ver com detalhe todos os tipos de dados acessar o link <a href="https://www.postgresql.org/docs/current/datatype.html">PostgreSQL data types</a>.
@@ -113,7 +115,7 @@ O exemplo acima seleciona todos os alunos que tenham um nome que comece com a le
 
 ## Criando um database
 
-Primeiramente selecionamos o servidor com o comando `SELECT NOW();`, e então utilizamos o:
+Para criar um database podemos utilizar a sintaxe abaixo. Lembrando que primeiro é preciso selecionar um servidor, no *SQL Shell* o comando é `SELECT NOW();`.
 
 ```sql
 CREATE DATABASE nome_do_database;
@@ -129,7 +131,7 @@ CREATE DATABASE nome_do_database
     CONNECTION LIMIT = -1;
 ```
 
-Ao remover o ponto e virgula do final da primeira linha de código, podemos apertar o *ENTER* para ir para proxima linha, assim sendo possíveis digitar todos os parâmetros sucessivamente. Na ultima linha de código basta adicionar novamente o ponto e virgula para finalizar o comando.
+No *SQL Shell*, ao remover o ponto e virgula do final da primeira linha de código, podemos apertar o *ENTER* para ir para proxima linha, assim sendo possíveis digitar todos os parâmetros sucessivamente. Na ultima linha de código basta adicionar novamente o ponto e virgula para finalizar o comando.
 
 ### Removendo um database
 
@@ -139,7 +141,7 @@ DROP DATABASE nome_do_database;
 
 ### Visualizando os databases
 
-Para visualizar todos os bancos de dados, podemos utilizar o:
+Para visualizar todos os bancos de dados no *SQL Shell*, podemos utilizar o:
 
 ```sql
 \l
@@ -147,7 +149,19 @@ Para visualizar todos os bancos de dados, podemos utilizar o:
 
 ## Criando um tabela
 
-Criaremos uma tabela simulando as informações de um aluno. Para criar uma tabela, utilizaremos o código abaixo:
+Existe uma enormidade de parâmetros que podem ser definidos ao criar uma tabela, e a sintaxe completa pode até assustar em uma primeira impressão, porém neste curso começaremos com o básico. Para ver a documentação completa acesse o <a href="https://www.postgresql.org/docs/current/sql-createtable.html">Link</a>.
+
+Para criar uma tabela temos a sintaxe básica abaixo:
+
+```sql
+CREATE TABLE nome_tabela( colunas )
+
+CREATE TABLE Squema.nome_tabela( colunas )
+```
+
+Toda tabela precisa ser associada a um *Schema*, porém quando omitimos esta informação, a tabela é criada dentro do schema padrão que se chama *Public*. Neste documento, utilizaremos apenas o schema padrão para executar os exercícios propostos.
+
+Criaremos uma tabela simulando as informações de um aluno com o código abaixo:
 
 ```sql
 CREATE TABLE aluno(
@@ -165,16 +179,16 @@ CREATE TABLE aluno(
 );
 ```
 
-## Inserindo dados na tabela
+### Inserindo dados na tabela
 
-O comando `INSERT INTO` junto com o `VALUES` servem para adicionar dados na tabela, e a sintaxe é:
+Para inserir dados em uma tabela, temos a sintaxe seguinte:
 
 ```sql
-INSERT INTO nome_tabela(nome_campo1, nome_campo2) 
-  VALUES('info_campo1', 'info_campo2');
+INSERT INTO nome_tabela(nome_campo1, nome_campo2, ...nome_campoN) 
+  VALUES('info_campo1', 'info_campo2', ..., 'info_campoN');
 ```
 
-É possível omitir os nomes dos campos se todos eles forem preenchidos no *VALUES*, caso algum campo fique vazio ou que seja gerado automaticamente, então é preciso informar o nome dos campos que serão preenchidos.
+É possível omitir todos os nomes dos campos após o `nome_tabela`, se todos eles forem preenchidos no *VALUES*, caso algum campo fique vazio ou que seja gerado automaticamente, então é preciso informar o nome dos campos que serão preenchidos.
 
 Além disso, também podemos adicionar múltiplas linhas em um único *INSERT INTO*, e a sintaxe para isto ficaria:
 
@@ -185,7 +199,7 @@ INSERT INTO nome_tabela(nome_campo1, nome_campo2)
           ('info_campo1', 'info_campo2');
 ```
 
-Agora um exemplo descrevendo os campos e adicionando uma linha na tabela *aluno*:
+Agora um exemplo onde inserimos dados na tabela *aluno*:
 
 ```sql
 INSERT INTO aluno(nome, data_nascimento, idade, cpf, altura, observacao, notas_acumuladas, ativo, horario_aulas, matriculado_em) 
@@ -203,9 +217,22 @@ INSERT INTO aluno(nome, data_nascimento, idade, cpf, altura, observacao, notas_a
 );
 ```
 
-## Atualizando os campos
+### Atualizando os campos
 
-Para atualizar os dados, utilizaremos o comando `UPDATE`. Com ele podemos alterar os campos de apenas uma linha, ou de toda a tabela.
+Para atualizar os dados, utilizaremos o comando `UPDATE`. Com ele podemos alterar os campos de apenas uma linha, ou de toda a tabela. Ficando a sintaxe:
+
+```sql
+UPDATE nome_tabela
+  SET nome_campo1 = 'Novo valor campo1', nome_campo2 = 'Novo valor campo2'
+  WHERE condição;
+
+UPDATE nome_tabela
+  SET nome_campo = 'Todos terão esta informação.';
+```
+
+No primeiro trecho de código, é alterado apenas os campos das linhas que atendem à condição. Já no segundo trecho, omitimos o *WHERE*, dessa forma o campo selecionado sera alterado em todas as linhas da tabela.
+
+> Lembrando que não é muito indicado alterar toda a tabela, pois isso pode acarretar em algumas inconsistências caso ocorra algum engano.
 
 ```sql
 UPDATE aluno
@@ -218,37 +245,42 @@ UPDATE aluno
 
 O código acima atualiza apenas as colunas desejadas do aluno cujo o *id* é igual a 1.
 
-Podemos também alterar as colunas de toda a tabela omitindo o `WHERE`, como abaixo:
+### Deletando uma linha da tabela
+
+Utilizaremos o comando `DELETE` para excluir uma linha da tabela. Sendo a sintaxe:
 
 ```sql
-UPDATE aluno
-  SET
-  observacao = 'Todos devem ter esta observação.';
+DELETE FROM nome_tabela
+  WHERE condição;
 ```
 
-> Lembrando que não é muito indicado alterar toda a tabela, pois isso pode acarretar em alguns problemas caso ocorra algum engano.
-
-## Deletando uma linha/tabela
-
-Utilizaremos o comando `DELETE` para excluir uma linha da tabela ou até mesmo a tabela.
+Agora um exemplo onde excluimos da tabela *aluno* a linha cujo o valor no campo *nome* é *Roberto*:
 
 ```sql
 DELETE FROM aluno
   WHERE nome = 'Roberto';
 ```
 
-Deletamos o *aluno* cujo nome é *Roberto*. Para remover a tabela, basta digitar a primeira linha de código.
+Lembrar sempre de executar o comando com o *WHERE*, pois ao executar apenas a primeira parte do código, todos os dados da tabela serão excluídos.
 
 ```sql
 DELETE FROM aluno
--- Remove a tabela.
+-- Remove todos os dados da tabela.
+```
+
+### Excluindo uma tabela
+
+Para excluir uma tabela, utilizaremos o mesmo `DROP` que foi utilizado no database, ficando a seguinte sintaxe:
+
+```sql
+DROP TABLE nome_tabela;
 ```
 
 ## Criando relações entre tabelas
 
 Podemos criar alguns tipos de relações entre tabelas, neste curso iremos abordar principalmente a "1 para muitos", "muitos para 1" e "muitos para muitos".
 
-Para criar uma relação, primeiro precisamos garantir que o campo a ser relacionado seja único, e após isso precisamos garantir que seja possível somente relacionar dados que existam em uma tabela, e que estes dados não possam ser duplicados. Para resolver estes problemas, temos as restrições *PRIMARY KEY* e a *FOREIGN KEY* que veremos posteriormente.
+Para criar uma relação, primeiro precisamos garantir que o campo a ser relacionado seja único e que exista em uma tabela, além de não poder ter um valor duplicado. Para resolver estes problemas, temos as restrições *PRIMARY KEY* e a *FOREIGN KEY* que veremos posteriormente.
 
 Quando trabalhamos com "1 para muitos" e "muitos para 1", podemos simplesmente criar a relação entre as tabelas. Porem, quando trabalhamos com relacionamento de "muitos para muitos", precisamos de uma **tabela de junção**, que sera responsável por representar o relacionamento entre as tabelas. Ela nada mais faz do que indicar quais campos da *tabela_1* estão relacionados com a *tabela_n* e vice e versa.
 
@@ -264,9 +296,9 @@ CREATE TABLE nome_tabela(
 );
 ```
 
-Podemos criar um campo semelhante utilizando o `NOT NULL UNIQUE` no lugar do *PRIMARY KEY*, porem o correto é utilizar a chave primaria.
+Podemos criar um campo semelhante utilizando o `NOT NULL UNIQUE` no lugar do *PRIMARY KEY*, porem para trabalhar com relações o mais indicado é utilizar a chave primaria.
 
-Podemos também criar um conjunto de campos utilizando a sintaxe abaixo:
+Também temos a sintaxe para criar um conjunto de campos:
 
 ```sql
 CREATE TABLE nome_tabela(
@@ -285,12 +317,13 @@ A chave estrangeira garante que o dado a ser referenciado de outra tabela exista
 A sintaxe desta restrição é:
 
 ```sql
+campo_tabela INTEGER,
 FOREIGN KEY (campo_tabela) REFERENCES tabela_referencia (campo_tabela_referencia);
 ```
 
-> Exista a sintaxe simplificada da restrição, omitindo o *FOREIGN KEY* e adicionando o *REFERENCES* na coluna desejada.
+> Exista a sintaxe simplificada da restrição, omitindo o *FOREIGN KEY* e adicionando apenas o *REFERENCES* na declaração do campo desejado. Com isso não é necessario primeiro criar o campo e depois declarar a restrição.
 
-Criando um exemplo de relação de "muitos para 1":
+Criando um exemplo de relação de "muitos para 1", utilizando a sintaxe simplificada da restrição:
 
 ```sql
 CREATE TABLE curso(
@@ -380,13 +413,13 @@ SELECT * FROM aluno;
 
 SELECT nome FROM aluno;
 
-SELECT  nome AS "Nome do aluno",
+SELECT  nome AS Nome_aluno,
         data_nascimento AS "Data de nascimento",
         matriculado
   FROM aluno
 ```
 
-O comando `AS` serve para alterar o nome do campo, e caso o nome tenha espaços em branco é preciso utilizar as aspas duplas "".
+O comando `AS` serve para alterar o nome do campo, e caso o nome tenha espaços em branco é preciso utilizar as aspas duplas " ".
 
 ### WHERE
 
@@ -756,7 +789,7 @@ ALTER VIEW vw_cursos_frontEnd
 RENAME Cursos TO "Nome dos cursos";
 ```
 
-Assim como em uma consulta normal, temos a possibilidade de utilizar um filtro na busca com o *WHERE* e/ou juntar tabelas com o *JOIN*. Em contra ponto temos uma perda de performance, pois efetuamos uma busca com o *VIEW*, e ao final é efetuado uma nova busca para o *WHERE*/*JOIN*.
+Assim como em uma consulta normal, temos a possibilidade de utilizar um filtro na busca com o *WHERE* e/ou juntar tabelas com o *JOIN*. Em contra ponto temos uma perda de performance, pois efetuamos uma busca com o *VIEW*, e ao final é efetuado uma nova busca para o *WHERE* / *JOIN*.
 
 ```sql
 SELECT * FROM vw_cursos_frontEnd
