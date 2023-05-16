@@ -704,7 +704,7 @@ O código acima calcula a idade de uma pessoa através do campo de data de nasci
 
 ### Funções matemáticas
 
-AS funções matemáticas são as que mais se diferenciam entre banco de dados SQL, e o PostgreSQL possui diversas funções, desde uma simples função para arredondar números até funções para calcular pontos geográficos (o que certamente não estudaremos neste curso), além dos óbvios operadores matemáticos básicos.
+AS funções matemáticas são as que mais se diferenciam entre banco de dados SQL, e o PostgreSQL possui diversas funções, desde uma simples função para arredondar números até funções para calcular pontos geográficos (o que certamente não estudaremos neste curso), além dos óbvios operadores matemáticos básicos. Para ter ver a lista completa acesse o <a href="https://www.postgresql.org/docs/current/functions-math.html">Link</a>.
 
 - FLOR() / CEIL() / ROUND() : arredonda um numero para baixo, para cima e para o numero inteiro mais proximo respectivamente. Ex: `Flor(99.999) -> 99`, `ceil(-33.8) -> -33`, `Round(72.4) -> 72`.
 
@@ -717,3 +717,54 @@ AS funções matemáticas são as que mais se diferenciam entre banco de dados S
 - LOG() / LOG(base, num) : calcula o logarítmico de um valor na base 10 e um valor na base informada. Ex: `LOG(100) -> 2`, `log(2, 16) -> 4`;
 
 - RANDOM() : retorna um valor aleatório de 0 a 1  com 15 casas decimais. Ex: `random() -> 0.28859140522409876`
+
+## Nomeando consultas com VIEW
+
+O *VIEW* é uma ferramenta do PostgreSQL que permite nomear consultas, armazenando estas como uma tabela virtual. Isto garante maior segurança, pois não é possível alterar ou inserir novos valores através de uma tabela virtual.
+
+Alguns dos benefícios mais nítidos são:
+
+- A possibilidade de encapsular consultas complexas, melhorando a legibilidade e facilitando a manutenção, pois basta alterar o *VIEW* que todas as consultas feitas com ele serão atualizadas.
+
+- Nomear consultas em si, tornando as consultas frequentes muito mais rápidas.
+
+- A segurança de trabalhar com tabelas virtuais, limitando o acesso de terceiro aos dados originais das tabelas.
+
+A sintaxe para criar um *VIEW* e para efetuar a consulta é:
+
+```sql
+CREATE VIEW vw_nome_da_view AS query;
+
+SELECT * FROM vw_nome_da_view;
+```
+
+> Por convenção, é utilizado o `vw` no inicio do nome de um VIEW.
+
+Abaixo temos um exemplo, onde criamos uma query que seleciona todos os cursos da categoria 1 (Front-end).
+
+```sql
+CREATE VIEW vw_cursos_frontEnd
+  AS SELECT curso.nome AS Cursos
+  FROM curso
+  WHERE categoria_id = 1;
+```
+
+É possível atualizar alguns parâmetros de um *VIEW* já criado com o *ALTER VIEW*, porem é bastante limitado. Para ver a documentação do ALTER acesse o <a href="https://www.postgresql.org/docs/current/sql-alterview.html">Link</a>. Abaixo temos um exemplo:
+
+```sql
+ALTER VIEW vw_cursos_frontEnd
+RENAME Cursos TO "Nome dos cursos";
+```
+
+Assim como em uma consulta normal, temos a possibilidade de utilizar um filtro na busca com o *WHERE* e/ou juntar tabelas com o *JOIN*. Em contra ponto temos uma perda de performance, pois efetuamos uma busca com o *VIEW*, e ao final é efetuado uma nova busca para o *WHERE*/*JOIN*.
+
+```sql
+SELECT * FROM vw_cursos_frontEnd
+  WHERE "Nome dos cursos" LIKE 'J%';
+
+SELECT  categoria.id AS Categoria_id,
+        vw_cursos_por_categoria.*
+  FROM vw_cursos_por_categoria
+  JOIN categoria ON categoria.nome = vw_cursos_por_categoria.categoria;
+-- Uma consulta por nome como é feito acima, é mais custosa do que por ID por exemplo.
+```
