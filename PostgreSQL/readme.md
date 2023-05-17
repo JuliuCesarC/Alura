@@ -115,15 +115,13 @@ O exemplo acima seleciona todos os alunos que tenham um nome que comece com a le
 
 ## Criando um database
 
-Para criar um database podemos utilizar a sintaxe abaixo. Lembrando que primeiro é preciso selecionar um servidor, no *SQL Shell* o comando é `SELECT NOW();`.
+Para esta aula veremos apenas as sintaxes mais básicas para criar um database, mas vale lembrar que existe diversos parâmetros que podemos informar ao criar o novo database. Acesse o <a href="https://www.postgresql.org/docs/current/sql-createdatabase.html">Link</a> para ver a lista completa. No *SQL Shell* primeiro é preciso selecionar um servidor com o comando `SELECT NOW();`. Já no *pgAdmin*, basta clicar com o botão direito do mouse em cima do *database* e selecionar a opção *create*.
+
+Abaixo temos a sintaxe mais básica, e em seguida outra informando alguns parâmetros:
 
 ```sql
 CREATE DATABASE nome_do_database;
-```
 
-É possível também passar outros parâmetros ao criar o database, por exemplo abaixo:
-
-```sql
 CREATE DATABASE nome_do_database
     WITH
     OWNER = postgres
@@ -131,7 +129,7 @@ CREATE DATABASE nome_do_database
     CONNECTION LIMIT = -1;
 ```
 
-No *SQL Shell*, ao remover o ponto e virgula do final da primeira linha de código, podemos apertar o *ENTER* para ir para proxima linha, assim sendo possíveis digitar todos os parâmetros sucessivamente. Na ultima linha de código basta adicionar novamente o ponto e virgula para finalizar o comando.
+Para utilizar estes comandos no *SQL Shell*, primeiro precisamos remover o ponto e virgula do final da primeira linha de código, para então podermos apertar o *ENTER* e ir para proxima linha, assim sendo possíveis digitar todos os parâmetros sucessivamente. Na ultima linha de código basta adicionar novamente o ponto e virgula para finalizar o comando.
 
 ### Removendo um database
 
@@ -677,127 +675,3 @@ SELECT  curso.nome AS "Nome do curso",
 ```
 
 Com o código acima, selecionamos todos os cursos que não possuam nenhum aluno matriculado.
-
-## Funções PostgreSQL
-
-Até o momento o que foi visto de SQL foram conteúdos mais genéricos, funcionando para qualquer banco de dados relacional. Porem agora veremos funções para manipular dados das tabelas, e isto varia para cada banco de dados, o que torna alguns mais viáveis que outros. Para acessar a documentação com todos os tipos de funções e operadores clique no link <a href="https://www.postgresql.org/docs/current/functions.html">PostgreSQL Functions and Operators</a>.
-
-### Funções de String
-
-Existem diversas funções para manipular valores do tipo string, veremos algumas delas, mas para acessar a lista completa, acesse o <a href="https://www.postgresql.org/docs/current/functions-string.html">Link</a>.
-
-- || : concatena textos, caso alguns dos campos seja nulo, o resultado sera nulo. Exemplo: `'Jão' || ' ' || 'Silva'`.
-
-- CONCAT() : concatena textos, valores nulos serão ignorados. Exemplo: `CONCAT('Jão', NULL, ' ', 'Silva')`.
-
-- UPPER()/LOWER() : transforma o texto para maiúsculo ou minusculo.
-
-- TRIM() : remove espaços no começo e final da string.
-
-- CHAR_LENGTH() : calcula o comprimento em caracteres da string.
-
-- BIT_LENGTH() : calcula o tamanho em bytes da string.
-
-- POSITION(IN): pesquisa em qual posição começa os caracteres dentro da string. Exemplo: `POSITION ('GMAIL' IN 'A palavra GMAIL começa na posição')` -> 11.
-
-- SUBSTRING( FROM FOR ) : seleciona um pedaço de texto dentro da string, cuja posição é informada através do *FROM* e do *FOR*. Caso informado apenas o *FROM*, seleciona a partir do valor até o final da string, e caso informado apenas o *FOR*, seleciona do começo da string até o valor escolhido. Exemplos:
-
-```sql
-SELECT SUBSTRING ('Lorem ipsum dolor sit amet.' FROM 4 FOR 12);
-SELECT SUBSTRING ('Lorem ipsum dolor sit amet.' FROM 15);
-SELECT SUBSTRING ('Lorem ipsum dolor sit amet.' FOR 9);
-```
-
-### Funções de data
-
-Grande parte das funções de data trabalham com **timestamp**, que nada mais é do que as informações de "ano-mês-dia hora:minutos:segundos.milissegundos". Apenas com esse campos ja é podemos extrair diversas informações, como nome do dia da semana, nome do mês, numero da semana do ano e varias outras, além de também ser possível somar ou subtrair 2 ou mais timestamp. Para ver a lista completa de funções de data, acesse o <a href="https://www.postgresql.org/docs/current/functions-datetime.html">Link</a>.
-
-- NOW() : traz o timestamp atual. Exemplo: `NOW()::DATE` selecionamos o timestamp atual e convertemos para o tipo de data, onde sera informado apenas o ano/mês/dia.
-
-- EXTRACT( FROM ) : extrai informações de um timestamp. Exemplo: `EXTRACT(year FROM NOW())`, `EXTRACT(week FROM '2001-02-16 20:38:40')`.
-
-- TO_CHAR() : transforma um timestamp para um formato informado. Exemplo:
-
-```sql
-to_char(NOW(), 'DD/MM/YYYY')
-to_char(NOW(), 'HH12:MI Month')
-```
-
-No primeiro exemplo é convertido para o formato de dia/mês/ano (que é o formato utilizado no Brasil), e no segundo exemplo é convertido para horas:minutos no formato de 12H e ao lado o nome do mês. Para ver a tabela completa com todos os tipos de formatos aceitos no *to_char* acesse o <a href="https://www.postgresql.org/docs/current/functions-formatting.html#FUNCTIONS-FORMATTING-DATETIME-TABLE">Link</a>.
-
-- AGE() : a função *age* é utilizada para saber a idade de algo epenas informando uma data, trazendo como resultado quantos anos, meses e dias se passaram a partir da data. Exemplo:
-
-```sql
-SELECT nome,
-    EXTRACT(year FROM AGE(data_nascimento)) AS Idade
-  FROM pessoa;
-```
-
-O código acima calcula a idade de uma pessoa através do campo de data de nascimento. Utilizamos o *EXTRACT* pois somente a idade em anos era necessária.
-
-### Funções matemáticas
-
-AS funções matemáticas são as que mais se diferenciam entre banco de dados SQL, e o PostgreSQL possui diversas funções, desde uma simples função para arredondar números até funções para calcular pontos geográficos (o que certamente não estudaremos neste curso), além dos óbvios operadores matemáticos básicos. Para ter ver a lista completa acesse o <a href="https://www.postgresql.org/docs/current/functions-math.html">Link</a>.
-
-- FLOR() / CEIL() / ROUND() : arredonda um numero para baixo, para cima e para o numero inteiro mais proximo respectivamente. Ex: `Flor(99.999) -> 99`, `ceil(-33.8) -> -33`, `Round(72.4) -> 72`.
-
-- PI() : valor aproximado de pi com 15 casas decimais. Ex: `pi() -> 3.141592653589793`
-
-- TRUNC() : seleciona apenas o numero inteiro, ou quantas casas decimais forem informadas. Ex: `trunc(89.34568) -> 89`, `Trunc(pi(), 4) -> 3.1415`.
-
-- POWER(x, n) : calcula a potencia de X elevado a N. Ex: `power(3, 3) -> 27`, `power(2, 4) -> 16`.
-
-- LOG() / LOG(base, num) : calcula o logarítmico de um valor na base 10 e um valor na base informada. Ex: `LOG(100) -> 2`, `log(2, 16) -> 4`;
-
-- RANDOM() : retorna um valor aleatório de 0 a 1  com 15 casas decimais. Ex: `random() -> 0.28859140522409876`
-
-## Nomeando consultas com VIEW
-
-O *VIEW* é uma ferramenta do PostgreSQL que permite nomear consultas, armazenando estas como uma tabela virtual. Isto garante maior segurança, pois não é possível alterar ou inserir novos valores através de uma tabela virtual.
-
-Alguns dos benefícios mais nítidos são:
-
-- A possibilidade de encapsular consultas complexas, melhorando a legibilidade e facilitando a manutenção, pois basta alterar o *VIEW* que todas as consultas feitas com ele serão atualizadas.
-
-- Nomear consultas em si, tornando as consultas frequentes muito mais rápidas.
-
-- A segurança de trabalhar com tabelas virtuais, limitando o acesso de terceiro aos dados originais das tabelas.
-
-A sintaxe para criar um *VIEW* e para efetuar a consulta é:
-
-```sql
-CREATE VIEW vw_nome_da_view AS query;
-
-SELECT * FROM vw_nome_da_view;
-```
-
-> Por convenção, é utilizado o `vw` no inicio do nome de um VIEW.
-
-Abaixo temos um exemplo, onde criamos uma query que seleciona todos os cursos da categoria 1 (Front-end).
-
-```sql
-CREATE VIEW vw_cursos_frontEnd
-  AS SELECT curso.nome AS Cursos
-  FROM curso
-  WHERE categoria_id = 1;
-```
-
-É possível atualizar alguns parâmetros de um *VIEW* já criado com o *ALTER VIEW*, porem é bastante limitado. Para ver a documentação do ALTER acesse o <a href="https://www.postgresql.org/docs/current/sql-alterview.html">Link</a>. Abaixo temos um exemplo:
-
-```sql
-ALTER VIEW vw_cursos_frontEnd
-RENAME Cursos TO "Nome dos cursos";
-```
-
-Assim como em uma consulta normal, temos a possibilidade de utilizar um filtro na busca com o *WHERE* e/ou juntar tabelas com o *JOIN*. Em contra ponto temos uma perda de performance, pois efetuamos uma busca com o *VIEW*, e ao final é efetuado uma nova busca para o *WHERE* / *JOIN*.
-
-```sql
-SELECT * FROM vw_cursos_frontEnd
-  WHERE "Nome dos cursos" LIKE 'J%';
-
-SELECT  categoria.id AS Categoria_id,
-        vw_cursos_por_categoria.*
-  FROM vw_cursos_por_categoria
-  JOIN categoria ON categoria.nome = vw_cursos_por_categoria.categoria;
--- Uma consulta por nome como é feito acima, é mais custosa do que por ID por exemplo.
-```
