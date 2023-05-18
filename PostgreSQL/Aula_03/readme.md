@@ -2,6 +2,16 @@
 
 Majoritariamente nesta aula, utilizaremos a ferramente **pgAdmin**, e caso seja utilizado outra, sera informado.
 
+## DDL e DML
+
+A diferença entre os dois esta relacionada principalmente com a finalidade de cada um, pois a primeira vista pode parecer que os 2 possuem funcionalidades semelhantes e intercambiáveis. O que com uma breve leitura já é possível perceber a grande distinção entre os dois.
+
+O *DML* (Data Manipulation Language) tem como intuito manipular e gerenciar os dados de dentro das tabelas. Sendo principais instruções o `SELECT`, `INSERT`, `UPDATE` e `DELETE`. As operações afetam os dados dentro das tabelas, mas não modificam a estrutura do banco de dados.
+
+Já o *DDL* (Data Definition Language) lida com a criação, alteração e exclusão de estruturas de banco de dados. Sendo as principais instruções o `CREATE`, `ALTER` e `DROP`. Suas operações são utilizadas para definir a estrutura do banco de dados, como criar tabelas, alterar colunas, adicionar restrições, criar índices e outras operações relacionadas à modelagem do banco de dados.
+
+Em resumo, compreender os 2 é essencial para melhorar o gerenciamento e manipulação dos dados e da estrutura do banco de dados, pois as operações de ambos se misturam no código, e é fácil se perder sobre o que cada um esta modificando.
+
 ## Funções PostgreSQL
 
 Até o momento o que foi visto de SQL foram conteúdos mais genéricos, funcionando para qualquer banco de dados relacional. Porem agora veremos funções para manipular dados das tabelas, e isto varia para cada banco de dados, o que torna alguns mais viáveis que outros. Para acessar a documentação com todos os tipos de funções e operadores clique no link <a href="https://www.postgresql.org/docs/current/functions.html">PostgreSQL Functions and Operators</a>.
@@ -153,3 +163,45 @@ DROP TABLE academico.pessoa_curso;
 
 SELECT * FROM academico.pessoa;
 ```
+
+## ALTER TABLE
+
+O comando *ALTER TABLE* tem como intuito alterar o objeto tabela, e assim como o comando *CREATE TABLE*, ele possui uma enormidade de parâmetros que podem ser utilizados para atualizar a tabela. Acesse a documentação através do <a href="https://www.postgresql.org/docs/current/sql-altertable.html">Link</a>. Abaixo teremos alguns exemplos de sua utilização:
+
+- Alterando o nome da tabela, mudando o schema que a tabela pertence e renomeando a coluna respectivamente:
+
+```sql
+ALTER TABLE academico.nova_tabela RENAME TO aluno_formado;
+ALTER TABLE academico.aluno_formado SET SCHEMA formado;
+ALTER TABLE formado.aluno_formado RENAME nome TO nome_completo;
+```
+
+- Adicionando uma coluna, removendo uma coluna e alterando o tipo da coluna respectivamente:
+
+```sql
+ALTER TABLE formado.aluno_formado ADD COLUMN campo_teste INTEGER;
+ALTER TABLE formado.aluno_formado ALTER COLUMN nome_completo TYPE VARCHAR(315);
+ALTER TABLE formado.aluno_formado DROP COLUMN campo_teste;
+```
+
+Ao criar uma nova coluna em uma tabela que ja possuí dados inseridos, a coluna por inteiro tera o valor *NULL*. Logo para este caso, não é possível criar essa nova coluna com a restrição *NOT NULL*.
+
+- Criando uma nova coluna do tipo inteiro e com restrição *não nulo* em uma tabela que ainda não possui linhas:
+
+```sql
+ALTER TABLE formado.aluno_formado 
+  ADD COLUMN matricula INTEGER,
+  ALTER COLUMN matricula SET NOT NULL;
+```
+
+Caso seja necessario criar um campo *não nulo* em uma tabela que ja possua informação, podemos criar o campo sem a restrição e atualizar todos os valores nulos, para depois então adicionar a restrição.
+
+- Adicionando uma chave estrangeira para a coluna criada acima:
+
+```sql
+ALTER TABLE formado.aluno_formado 
+  ADD CONSTRAINT restricao_matricula 
+  FOREIGN KEY (matricula) REFERENCES academico.formado (id);
+```
+
+> Pelo que pude entender do *ADD CONSTRAINT*, é necessario adicionar um nome para a restrição, ao qual no exemplo acima é *restricao_matricula*.
