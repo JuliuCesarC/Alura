@@ -138,7 +138,7 @@ SELECT  categoria.id AS Categoria_id,
 
 ## SCHEMA
 
-Um schema é uma estrutura que permite organizar e agrupar objetos do banco de dados, como tabelas, views, funções e outros objetos relacionados, utilizando namespaces lógicos que facilitem a compreensão da desta estrutura. Um database pode conter diversos Schemas, e cada Schema pode conter diversas tabelas (ou objetos de banco de dados), o que permite que haja tabelas com o mesmo nome em schemas diferentes sem haver conflito.
+Um schema é uma estrutura que permite organizar e agrupar objetos do banco de dados, como tabelas, views, funções e outros objetos relacionados, utilizando namespaces lógicos que facilitem a compreensão da desta estrutura. Um database pode conter diversos Schemas, e cada Schema pode conter diversas tabelas (ou objetos de banco de dados), o que permite que haja tabelas com o mesmo nome em schemas diferentes sem haver conflito. É possível relacionar tabelas de schemas diferentes e também preencher uma tabela com dados de outra tabela em outro schema.
 
 Como visto em outra aula, todo objeto de banco de dados precisa ser associado à um Schema. Logo, ao criar um objeto sem informar qual schema ele pertencerá, implicitamente ele sera associado ao schema padrão do PostgreSQL, que é o *public*.
 
@@ -205,3 +205,51 @@ ALTER TABLE formado.aluno_formado
 ```
 
 > Pelo que pude entender do *ADD CONSTRAINT*, é necessario adicionar um nome para a restrição, ao qual no exemplo acima é *restricao_matricula*.
+
+## Adicionando dados através de uma query
+
+Com SQL podemos utilizar uma consulta em uma tabela para preencher outra tabela com esses dados. É preciso se atentar ao fato de que os tipos tem que ser iguais, e a ondem dos campos precisam ser as mesmas.
+
+Suponhamos o exemplo onde seja necessario guardar as informações de 2 colunas de uma tabela, podemos então criar uma tabela temporária e adicionar os dados necessários. Vejamos:
+
+```sql
+CREATE TEMPORARY TABLE cursos_programacao(
+  id_curso INTEGER PRIMARY KEY,
+  nome_curso VARCHAR(255) NOT NULL
+);
+
+INSERT INTO cursos_programacao
+SELECT curso.id, curso.nome FROM academico.curso
+  JOIN academico.categoria ON categoria.id = curso.categoria_id
+  WHERE curso.categoria_id = 2
+```
+
+> O Schema precisa ser informado quando estamos referenciando a tabela em si, onde estamos selecionando a coluna, basta o nome da tabela junto com o nome da coluna.
+
+No exemplo acima, inserimos dados na tabela *cursos_programacao* com o comando `INSERT INTO` normalmente, porem substituímos o *VALUES* pela query.
+
+## Importando e exportando dados de uma tabela
+
+Iremos ver como importar e exportar dados através da ferramenta *pgAdmin* e posteriormente veremos o comando que pode ser executado no *SQL Shell*. Os tipos de arquivos aceitos nas duas operações são o **CSV**, **binário** e **texto**. Começaremos com a exportação, e abaixo temos a descrição detalhada da operação.
+
+Para exportar informações primeiro é necessario selecionar uma tabela para inserir esses dados. No *pgAdmin* na aba da esquerda temos o banco de dados, e ao selecionar um database temos dentro dele os objetos do banco de dados, sendo uma dessas opção a **Schema**, que armazena os objetos relacionados da tabela, e uma das ultimas opções temos a **Tables**, que armazena todas as tabelas do schema. Ao clicar com o botão direito do mouse em cima de uma tabela, sera aberto uma caixa de dialogo com diversas opções, e dentre elas a opção **Import/Export Data**, e ao clicar nesta opção a janela para as duas operações sera aberta.
+
+> Caso o caminho do *pgAdmin* ainda não tenha sido selecionado nas preferencias, pode ocorrer o erro de `Binary Path`. Nesta pasta temos o arquivo com a resolução para este erro.
+
+Na primeira tabPage **General**, temos as opções:
+
+- `Import/Export` : seleciona qual a operação desejada.
+- `Filename` : caminho onde sera exportado ou importado o arquivo.
+- `Format` : seleciona o formato para operação, sendo o mais comum o **CSV**.
+- `Encoding` : seleciona o tipo de codificação do texto, o padrão sendo **UTF-8**.
+
+Na segunda tabPage **Options**, temos as opções:
+
+- `OID` : o "Object Identifier Types" é utilizado internamente pelo PostgreSQL, são tipos de dados especiais que representam identificadores de objetos no banco de dados, como chaves primarias.
+- `Header` : indica se a primeira linha é um cabeçalho.
+- `Delimiter` : caractere que separa os valores. Por padrão é a virgula.
+- `Quote` : delimitador do campo. Por padrão é aspas duplas.
+
+Na terceira tabPage **Columns**, temos a opção:
+
+- `Columns to export` : mostra as colunas que serão exportadas.
