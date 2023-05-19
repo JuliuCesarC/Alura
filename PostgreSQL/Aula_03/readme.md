@@ -228,13 +228,103 @@ SELECT curso.id, curso.nome FROM academico.curso
 
 No exemplo acima, inserimos dados na tabela *cursos_programacao* com o comando `INSERT INTO` normalmente, porem substituímos o *VALUES* pela query.
 
+## Atualizando dados através de outra tabela
+
+Semelhante com a função acima, também podemos atualizar dados de uma tabela com os dados de outra tabela. Temos a sintaxe:
+
+```sql
+UPDATE tabela1 SET campo_tabela1 = campo_tabela2
+  FROM tabela2 WHERE condição;
+```
+
+O *campo_tabela1* é a coluna que recebera os dados, e o *campo_tabela2* é a coluna de onde os dados serão copiados.
+
+Abaixo temos um exemplo onde é atualizado a coluna *nome* da tabela *cursos* através da coluna *nome_cursos* da tabela *cursos_basicos*.
+
+```sql
+UPDATE formado.cursos SET nome = nome_cursos
+  FROM formado.cursos_basicos WHERE cursos.id = cursos_basicos.id;
+```
+
+Mesmo não havendo referencia com uma chave estrangeira entre as tabelas, ainda sim podemos criar uma condição onde o *id* da tabela *cursos* seja igual ao *id* da tabela *cursos_basicos*. Com isso, na linha que o *id* coincidir, devera ser atualizado o campo *nome* com os dados do campo *nome_cursos*.
+
+## Deletando dados através de outra tabela
+
+Com o *DELETE* a sintaxe é um pouco diferente, vejamos:
+
+```sql
+DELETE FROM tabela1
+  USING tabela2
+  WHERE condição;
+```
+
+Suponhamos uma loja de material de construção que queira remover do catalogo todos os parafusos *philips* de uma marca X. Temos então a tabela *catalogo* com todos os produtos vendidos, e a tabela *marcaX* contendo todos os produtos da marca x. Podemos executar o comando:
+
+```sql
+DELETE FROM catalogo
+  USING marcaX
+  WHERE catalogo.produto_id = marcaX.id
+  AND marcaX.nome LIKE 'philips%';
+```
+
+Com o comando acima, removemos do catalogo todos os produtos da marca X que comessem com o nome *'philips'*.
+
+## Segurança
+
+Devido a grande possibilidade de haver enganos com o nome do campo digitado, ou o filtro de busca, se recomenda como boa pratica **realizar um SELECT antes de efetuar um DELETE ou um UPDATE**. Ou seja, evitar escrever diretamente uma operação tão arriscada como o DELETE sem antes testar, e acabar descobrindo algum erro somente apos executar o comando. Por isso crie um SELECT como se estivesse efetuando um DELETE, e após confirmar que era o campo desejado, substitua o código. Por exemplo:
+
+```sql
+SELECT nome FROM formado.cursos WHERE id = 7;
+
+DELETE FROM formado.cursos WHERE id = 7;
+```
+
+Conferido que o a linha desejada é mesmo a de id igual a 7, então basta substituir o SELECT pelo DELETE.
+
+## Transações ACID
+
+Uma transação no PostgreSQL, é uma sequência de operações de banco de dados que são tratadas como uma unidade lógica e indivisível. Uma transação garante que um conjunto de operações seja executado com sucesso e de forma consistente, mantendo a integridade dos dados.
+
+O conceito de transações no PostgreSQL é baseado nas propriedades ACID, que são:
+
+- Atomicidade (Atomicity): uma transação é tratada como um átomo indivisível, ou seja, os comando ou serão executados todos, ou não serão executados nenhum, e caso ocorra algum erro durante a execução da transação, todas as alterações serão desfeitas em um processo chamado rollback.
+
+- Consistência (Consistency): uma transação garante que o banco de dados esteja em um estado consistente antes e após sua execução. Isso significa que todas as restrições e regras de integridade definidas no esquema do banco de dados devem ser obedecidas durante a transação.
+
+- Isolamento (Isolation): a propriedade de isolamento garante que os efeitos de uma transação em execução sejam invisíveis para outras transações concorrentes até que a transação seja concluída ("comitada"). Isso evita que alterações parciais ou inconsistentes sejam vistas por outras transações.
+
+- Durabilidade (Durability): após o término de uma transação bem-sucedida (commit), todas as alterações feitas durante a transação são permanentes e persistirão, mesmo em caso de falha do sistema ou reinicialização do banco de dados. As alterações são gravadas de forma durável nos meios de armazenamento.
+
+O PostgreSQL cria transações implicitamente em diversas operações, porém é possível criar transações de maneira manual. Para esta tarefa temos os seguintes comando
+
+- `BEGIN`: é utilizado para iniciar uma transação no PostgreSQL. Após o início da transação, todas as operações subsequentes são tratadas como parte desta transação até que seja emitido um comando COMMIT ou ROLLBACK.
+
+- `COMMIT`: é usado para confirmar as alterações feitas dentro de uma transação e torná-las permanentes no banco de dados. Após o COMMIT, as alterações se tornam visíveis para outras transações.
+
+- `ROLLBACK`: serve para desfazer as alterações feitas dentro de uma transação e cancelar a transação. Restaura o banco de dados ao estado anterior à transação.
+
+Vejamos os exemplos abaixo:
+
+```sql
+BEGIN;
+DELETE FROM formado.cursos_basicos WHERE id = 8;
+COMMIT;
+
+BEGIN;
+UPDATE formado.cursos SET nome = 'TypeScript intermediário'
+  WHERE id = 4;
+ROLLBACK;
+```
+
+Toda transação começa com o BEGIN, então executamos os comandos desejados, e caso tudo ocorra corretamente, efetuamos um COMMIT, caso não um ROLLBACK.
+
 ## Importando e exportando dados de uma tabela
 
 Iremos ver como importar e exportar dados através da ferramenta *pgAdmin* e posteriormente veremos o comando que pode ser executado no *SQL Shell*. Os tipos de arquivos aceitos nas duas operações são o **CSV**, **binário** e **texto**. Começaremos com a exportação, e abaixo temos a descrição detalhada da operação.
 
-Para exportar informações primeiro é necessario selecionar uma tabela para inserir esses dados. No *pgAdmin* na aba da esquerda temos o banco de dados, e ao selecionar um database temos dentro dele os objetos do banco de dados, sendo uma dessas opção a **Schema**, que armazena os objetos relacionados da tabela, e uma das ultimas opções temos a **Tables**, que armazena todas as tabelas do schema. Ao clicar com o botão direito do mouse em cima de uma tabela, sera aberto uma caixa de dialogo com diversas opções, e dentre elas a opção **Import/Export Data**, e ao clicar nesta opção a janela para as duas operações sera aberta.
+Para importar/exportar informações, primeiro é necessario selecionar uma tabela para executar a operação. No *pgAdmin* na aba da esquerda temos o banco de dados, e ao selecionar um database temos dentro dele os objetos do banco de dados, sendo uma dessas opção a **Schema**, que armazena os objetos relacionados à tabela, e uma das ultimas opções é a **Tables**, que armazena todas as tabelas do schema. Ao clicar com o botão direito do mouse em cima de uma tabela, sera aberto uma caixa de dialogo com diversas opções, e dentre elas a opção **Import/Export Data**, e ao clicar nesta opção a janela para as duas operações sera aberta.
 
-> Caso o caminho do *pgAdmin* ainda não tenha sido selecionado nas preferencias, pode ocorrer o erro de `Binary Path`. Nesta pasta temos o arquivo com a resolução para este erro.
+> Caso o caminho do PostgreSQL no *pgAdmin* ainda não tenha sido selecionado nas preferencias, pode ocorrer o erro de `Binary Path`. Na mesma pasta deste documento temos o arquivo com a solução para esse problema.
 
 Na primeira tabPage **General**, temos as opções:
 
@@ -253,3 +343,21 @@ Na segunda tabPage **Options**, temos as opções:
 Na terceira tabPage **Columns**, temos a opção:
 
 - `Columns to export` : mostra as colunas que serão exportadas.
+
+Após conferir todos os parâmetros, basta clicar em **Ok** para confirmar a operação.
+
+Agora veremos os códigos para executar as operações no *SQL Shell*, que também é o mesmo código que o *pgAdmin* rodou por baixo dos panos:
+
+```sql
+--Export
+COPY formado.export_cursos (id, nome) 
+  TO 'C:/Users/User/Desktop/CURSO_~1/Alura/POSTGR~1/Aula_03/EXPORT~1.CSV'
+  DELIMITER ',' CSV ENCODING 'UTF8' QUOTE '\"' ESCAPE '''';""
+
+--Import
+copy formado.export_cursos (id, nome) 
+  FROM 'C:/Users/Cesar/Desktop/CURSO_~1/Alura/POSTGR~1/Aula_03/EXPORT~1.CSV'
+  DELIMITER ',' CSV HEADER ENCODING 'UTF8' QUOTE '\"' ESCAPE '''';""
+```
+
+> Como visto nos códigos acima, é muito mais simples efetuar as mesmas tarefas pela ferramenta *pgAdmin*, com todos os parâmetros já visíveis na janela.
