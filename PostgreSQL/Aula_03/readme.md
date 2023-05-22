@@ -269,7 +269,7 @@ DELETE FROM catalogo
 
 Com o comando acima, removemos do catalogo todos os produtos da marca X que comessem com o nome *'philips'*.
 
-## Segurança
+## Dicas de segurança
 
 Devido a grande possibilidade de haver enganos com o nome do campo digitado, ou o filtro de busca, se recomenda como boa pratica **realizar um SELECT antes de efetuar um DELETE ou um UPDATE**. Ou seja, evitar escrever diretamente uma operação tão arriscada como o DELETE sem antes testar, e acabar descobrindo algum erro somente apos executar o comando. Por isso crie um SELECT como se estivesse efetuando um DELETE, e após confirmar que era o campo desejado, substitua o código. Por exemplo:
 
@@ -361,3 +361,77 @@ copy formado.export_cursos (id, nome)
 ```
 
 > Como visto nos códigos acima, é muito mais simples efetuar as mesmas tarefas pela ferramenta *pgAdmin*, com todos os parâmetros já visíveis na janela.
+
+## Sequencias
+
+O PostgreSQL possui um objeto chamado *SEQUENCE*, que gera valores numéricos sequenciais. Já vimos anteriormente o tipo SERIAL que pode ser utilizado em uma coluna, este tipo é uma sequencia também. Porém podemos criar uma sequencia manualmente utilizando o comando `CREATE SEQUENCE`. Ele possui alguns parâmetros na sua criação, para acessar a documentação clique no <a href="https://www.postgresql.org/docs/current/sql-createsequence.html">Link</a>. Vejamos a sintaxe:
+
+```sql
+CREATE SEQUENCE nome_sequencia;
+```
+
+Para manipular esta sequencia temos 3 principais métodos (<a href="https://www.postgresql.org/docs/current/functions-sequence.html">Sequence Manipulation Functions</a>), vejamos abaixo:
+
+- `NEXTVAL(name)` : avança a sequencia para o proximo valor e retorna esse valor.
+
+- `CURRVAL(name)` : retorna o valor atual da sequencia.
+
+- `SETVAL(name, value)` : seta um valor para a sequencia.
+
+```sql
+CREATE SEQUENCE sequencia;
+
+SELECT NEXTVAL('sequencia') -> 1
+SELECT CURRVAL('sequencia') -> 1
+SELECT SETVAL('sequencia', 13)
+SELECT NEXTVAL('sequencia') -> 14
+```
+
+> O nome dentro do método precisa estar entre aspas simples.
+
+Agora vejamos um exemplo:
+
+```sql
+CREATE SEQUENCE sequencia_id;
+
+DROP TABLE auto_s;
+CREATE TABLE auto_s(
+  id INTEGER PRIMARY KEY DEFAULT NEXTVAL('sequencia_id'),
+  nome VARCHAR(255) NOT NULL
+);
+```
+
+O parâmetro *DEFAULT* define para o campo que caso não seja informando um valor, então por padrão sera o proximo valor da sequencia, que é definido pelo *NEXTVAL*.
+
+### Quebrando a sequencia
+
+Quando estamos trabalhando com sequencias em uma coluna de uma tabela, é preciso se atentar ao fato de ser possível quebrar essa sequencia (o mesmo vale para o SERIAL). Para compreender melhor esse problema, criaremos um exemplo baseado na tabela criada acima:
+
+```sql
+INSERT INTO auto_s(nome) VALUES('Jão');
+INSERT INTO auto_s(id, nome) VALUES(2, 'Jenfiner');
+INSERT INTO auto_s(nome) VALUES('Lusca');
+```
+
+O problema ocorre, por que na segunda linha adicionamos explicitamente um valor para o *id*, com isso a sequencia não avança com o *NEXTVAL*. Então na terceira linha tentamos adicionar um novo valor sem informar o *id*, a sequencia avança e tenta adicionar uma linha com o "id = 2", porem ele ja existe, então o comando gera um erro e não conseguimos adicionar um valor. Somente se for tentando outra vez é que sera adicionado a nova linha.
+
+## Criando tipos
+
+Até o momento definimos o tipo de uma coluna diretamente na sua declaração, o que serve para grande parte dos casos. Porem podemos criar um tipo com todas as características desejadas e apos definir o campo com sendo deste tipo. Isso pode ser muito util por exemplo quando é necessario repetir em varias tabelas um mesmo tipo, mas existe outras utilidades para o `CREATE TYPE`, e para acessar a documentação acesse o <a href="https://www.postgresql.org/docs/current/sql-createtype.html">Link</a>. Agora vejamos um exemplo:
+
+```sql
+CREATE TYPE tp_status AS ENUM ('open', 'closed', 'new');
+
+CREATE TABLE pull_request(
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  status tp_status
+);
+
+INSERT INTO pull_request(title, status) 
+  VALUES('Integrating Google Sign-In', 'closed');
+INSERT INTO pull_request(title, status) 
+  VALUES('error google sign-In', 'new pull');
+```
+
+O exemplo acima cria um tipo chamado *tp_status* que é um ENUM, então aplica este tipo no campo *status* da mesma forma que outros tipo como SERIAL ou VARCHAR. Apos a criação da tabela, tentamos inserir dados 2 vezes, a primeira bem sucedida, e a segunda com um erro no campo *status*, pois "new pull" não esta incluso nos valores definidor no tipo ENUM.
