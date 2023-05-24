@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,8 @@ public class ContaService {
   private Set<Conta> contas = new HashSet<>();
 
   public Set<Conta> listarContasAbertas() {
-    return contas;
+    Connection conn = connectionDB.getConnection();
+    return new ContaDAO(conn).listar();
   }
 
   public BigDecimal consultarSaldo(Integer numeroDaConta) {
@@ -36,26 +38,8 @@ public class ContaService {
       throw new RegraDeNegocioException("Já existe outra conta aberta com o mesmo número!");
     }
 
-    String sql = "INSERT INTO conta(numero,saldo,cliente_nome,cliente_cpf,cliente_email)" +
-      "VALUES(?,?,?,?,?)";
-
     Connection connection = connectionDB.getConnection();
-
-
-    try {
-      PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-      preparedStatement.setInt(1, conta.getNumero());
-      preparedStatement.setBigDecimal(2, BigDecimal.ZERO);
-      preparedStatement.setString(3, dadosDaConta.dadosCliente().nome());
-      preparedStatement.setString(4, dadosDaConta.dadosCliente().cpf());
-      preparedStatement.setString(5, dadosDaConta.dadosCliente().email());
-      
-      preparedStatement.execute();
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
-
+    new ContaDAO(connection).salvar(dadosDaConta);
   }
 
   public void realizarSaque(Integer numeroDaConta, BigDecimal valor) {
