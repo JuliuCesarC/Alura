@@ -21,14 +21,14 @@ public class ConnectionDBFactory {
     }
   }
 //  O HikariCP cria uma lista de conexões com o banco de dados que ficam a dispozição para serem utilizadas. Caso alguma conexão seja utilizada, ao final do prosseço ela volta para a lista, sem a necessidade de fechar essa conexão.
-  private HikariDataSource createDataSource(){
-    HikariConfig config = new HikariConfig();
-    
-    config.setJdbcUrl("jdbc:mysql://localhost:3306/byte_bank");
-    config.setUsername("Cesar");
-    config.setPassword(Password.getPassword());
-    config.setMaximumPoolSize(10);
-    
-    return new HikariDataSource(config);
-  }
+//  private HikariDataSource createDataSource(){
+//    HikariConfig config = new HikariConfig();
+//    
+//    config.setJdbcUrl("jdbc:mysql://localhost:3306/byte_bank");
+//    config.setUsername("Cesar");
+//    config.setPassword(Password.getPassword());
+//    config.setMaximumPoolSize(2);
+//    
+//    return new HikariDataSource(config);
+//  }
 }

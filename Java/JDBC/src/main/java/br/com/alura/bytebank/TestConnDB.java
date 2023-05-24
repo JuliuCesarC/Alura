@@ -1,7 +1,11 @@
 package br.com.alura.bytebank;
 
+import br.com.alura.bytebank.domain.conta.Conta;
+
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TestConnDB {
   public static void main(String[] args) {
@@ -25,13 +29,7 @@ public class TestConnDB {
 
         System.out.println("numero: " + numero + ", nome: " + nome);
       }
-
-
-//      PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectP);
-//
-//      preparedStatement.get(1, conta.getNumero());
-//
-//      preparedStatement.execute();
+    
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
