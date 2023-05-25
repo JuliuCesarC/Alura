@@ -15,28 +15,31 @@ public class BytebankApplication {
 
   public static void main(String[] args) {
     var opcao = exibirMenu();
-    while (opcao != 8) {
+    while (opcao != 9) {
       try {
         switch (opcao) {
           case 1:
             listarContas();
             break;
           case 2:
-            abrirConta();
+            listarContasDesativadas();
             break;
           case 3:
-            encerrarConta();
+            abrirConta();
             break;
           case 4:
-            consultarSaldo();
+            encerrarConta();
             break;
           case 5:
-            realizarSaque();
+            consultarSaldo();
             break;
           case 6:
-            realizarDeposito();
+            realizarSaque();
             break;
           case 7:
+            realizarDeposito();
+            break;
+          case 8:
             realizarTransferencia();
             break;
         }
@@ -55,13 +58,14 @@ public class BytebankApplication {
     System.out.println("""
       BYTEBANK - ESCOLHA UMA OPÇÃO:
       1 - Listar contas abertas
-      2 - Abertura de conta
-      3 - Encerramento de conta
-      4 - Consultar saldo de uma conta
-      5 - Realizar saque em uma conta
-      6 - Realizar depósito em uma conta
-      7 - Realizar transferência
-      8 - Sair
+      2 - Listar contas desativadas
+      3 - Abertura de conta
+      4 - Encerramento de conta
+      5 - Consultar saldo de uma conta
+      6 - Realizar saque em uma conta
+      7 - Realizar depósito em uma conta
+      8 - Realizar transferência
+      9 - Sair
       """);
     return teclado.nextInt();
   }
@@ -69,6 +73,14 @@ public class BytebankApplication {
   private static void listarContas() {
     System.out.println("Contas cadastradas:");
     var contas = service.listarContasAbertas();
+    contas.stream().forEach(System.out::println);
+
+    System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
+    teclado.next();
+  }  
+  private static void listarContasDesativadas() {
+    System.out.println("Contas desativadas:");
+    var contas = service.listarContasDesativas();
     contas.stream().forEach(System.out::println);
 
     System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
@@ -99,7 +111,7 @@ public class BytebankApplication {
     System.out.println("Digite o número da conta:");
     var numeroDaConta = teclado.nextInt();
 
-    service.encerrar(numeroDaConta);
+    service.encerrarLogico(numeroDaConta);
 
     System.out.println("Conta encerrada com sucesso!");
     System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
