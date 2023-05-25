@@ -5,7 +5,6 @@ import br.com.alura.bytebank.domain.cliente.DadosCadastroCliente;
 import br.com.alura.bytebank.domain.conta.ContaService;
 import br.com.alura.bytebank.domain.conta.DadosAberturaConta;
 
-import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class BytebankApplication {
@@ -50,24 +49,23 @@ public class BytebankApplication {
       }
       opcao = exibirMenu();
     }
-
     System.out.println("Finalizando a aplicação.");
   }
 
   private static int exibirMenu() {
     System.out.println("""
-      BYTEBANK - ESCOLHA UMA OPÇÃO:
-      1 - Listar contas abertas
-      2 - Listar contas desativadas
-      3 - Abertura de conta
-      4 - Encerramento de conta
-      5 - Consultar saldo de uma conta
-      6 - Realizar saque em uma conta
-      7 - Realizar depósito em uma conta
-      8 - Realizar transferência
-      9 - Sair
-      """);
-    return teclado.nextInt();
+        BYTEBANK - ESCOLHA UMA OPÇÃO:
+        1 - Listar contas abertas
+        2 - Listar contas desativadas
+        3 - Abertura de conta
+        4 - Encerramento de conta
+        5 - Consultar saldo de uma conta
+        6 - Realizar saque em uma conta
+        7 - Realizar depósito em uma conta
+        8 - Realizar transferência
+        9 - Sair
+        """);
+    return Integer.valueOf(teclado.nextLine());
   }
 
   private static void listarContas() {
@@ -76,15 +74,16 @@ public class BytebankApplication {
     contas.stream().forEach(System.out::println);
 
     System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
-    teclado.next();
-  }  
+    teclado.nextLine();
+  }
+
   private static void listarContasDesativadas() {
     System.out.println("Contas desativadas:");
     var contas = service.listarContasDesativas();
     contas.stream().forEach(System.out::println);
 
     System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
-    teclado.next();
+    teclado.nextLine();
   }
 
   private static void abrirConta() {
@@ -104,7 +103,7 @@ public class BytebankApplication {
 
     System.out.println("Conta aberta com sucesso!");
     System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
-    teclado.next();
+    teclado.nextLine();
   }
 
   private static void encerrarConta() {
@@ -154,15 +153,15 @@ public class BytebankApplication {
     System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
     teclado.next();
   }
-  
-  private static void realizarTransferencia(){
+
+  private static void realizarTransferencia() {
     System.out.println("Digite o número da conta origem:");
     var contaOrigem = teclado.nextInt();
     System.out.println("Digite o número da conta destino:");
     var contaDestino = teclado.nextInt();
     System.out.println("Digite o valor a ser transferido:");
     var valor = teclado.nextBigDecimal();
-    
+
     service.realizarTransferencia(contaOrigem, contaDestino, valor);
 
     System.out.println("Transferência realizada com sucesso!");

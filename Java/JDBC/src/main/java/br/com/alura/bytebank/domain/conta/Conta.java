@@ -40,7 +40,7 @@ public class Conta {
   public String toString() {
     return "Conta{" +
       "numero='" + numero + '\'' +
-      ", saldo=" + saldo +
+      ", saldo=R$" + saldo +
       ", ativa=" + contaAtiva +
       ", titular=" + titular +
       '}';

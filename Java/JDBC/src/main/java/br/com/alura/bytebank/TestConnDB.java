@@ -1,11 +1,6 @@
 package br.com.alura.bytebank;
 
-import br.com.alura.bytebank.domain.conta.Conta;
-
-import java.math.BigDecimal;
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
 
 public class TestConnDB {
   public static void main(String[] args) {
