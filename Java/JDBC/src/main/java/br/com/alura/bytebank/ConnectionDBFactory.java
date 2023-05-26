@@ -9,8 +9,7 @@ public class ConnectionDBFactory {
     try {
       String url = "jdbc:mysql://localhost:3306/byte_bank?user=Cesar&password="
         + Password.getPassword();
-      return DriverManager
-        .getConnection(url);
+      return DriverManager.getConnection(url);
     } catch (SQLException err) {
       throw new RuntimeException(err);
     }
