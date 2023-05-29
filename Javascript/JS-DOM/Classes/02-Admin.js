@@ -8,6 +8,9 @@ export default class Admin extends User{
   createCourse(name, vacancy){
     return `Curso de ${name} criado com ${vacancy} vagas.`
   }
+  showInfos() {
+    return `${this.name}, ${this.role}`;
+  } 
 }
 
 // const newAdmin = new Admin('Lucilene', 'lulu@gmail.com', '1956-05-27')

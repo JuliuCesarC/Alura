@@ -7,3 +7,8 @@ console.log(createUser.showInfos());
 
 // Ao tentar acessar um campo privado como abaixo, o código sequer compila, pois não é possível acessar uma propriedade privada por fora da classe.
 // console.log("Campo privado 'nome': " + createUser.#name);
+
+const newAdmin = new Admin("Jenfiner", "jeje@gmail.com", "1984-11-22")
+console.log(newAdmin.name);
+newAdmin.name = 'Marco';
+console.log(newAdmin.name);
