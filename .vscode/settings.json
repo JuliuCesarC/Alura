@@ -11,5 +11,6 @@
         "tipamos",
         "tipar",
         "unica"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }

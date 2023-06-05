@@ -3,6 +3,19 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ApiRestApplication",
+            "request": "launch",
+            "mainClass": "com.api.api_rest.ApiRestApplication",
+            "projectName": "api_rest"
+        },
+        {
+            "type": "java",
+            "name": "ApiRestApplication",
+            "request": "launch",
+            "mainClass": "com.api.apiRest.ApiRestApplication"
+        },
+        {
+            "type": "java",
             "name": "App",
             "request": "launch",
             "mainClass": "com.cesar.App"

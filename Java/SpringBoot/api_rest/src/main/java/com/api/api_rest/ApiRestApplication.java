@@ -1,4 +1,4 @@
-package com.api.apiRest;
+package com.api.api_rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
