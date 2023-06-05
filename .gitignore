@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 passwords.txt
+passwords.csv
 
 # Editor directories and files
 .vscode/*
