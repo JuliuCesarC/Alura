@@ -1,4 +1,4 @@
-package com.api.api_rest.endereco;
+package com.api.api_rest.domain.endereco;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

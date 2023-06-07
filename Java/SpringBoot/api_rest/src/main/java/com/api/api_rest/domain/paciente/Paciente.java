@@ -1,6 +1,6 @@
-package com.api.api_rest.paciente;
+package com.api.api_rest.domain.paciente;
 
-import com.api.api_rest.endereco.Endereco;
+import com.api.api_rest.domain.endereco.Endereco;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.api.api_rest.medico.DadosDetalhamentoMedico;
-import com.api.api_rest.paciente.DadosAtualizaPaciente;
-import com.api.api_rest.paciente.DadosCadastroPaciente;
-import com.api.api_rest.paciente.DadosDetalhamentoPaciente;
-import com.api.api_rest.paciente.DadosListagemPaciente;
-import com.api.api_rest.paciente.Paciente;
-import com.api.api_rest.paciente.PacienteRepository;
+import com.api.api_rest.domain.medico.DadosDetalhamentoMedico;
+import com.api.api_rest.domain.paciente.DadosAtualizaPaciente;
+import com.api.api_rest.domain.paciente.DadosCadastroPaciente;
+import com.api.api_rest.domain.paciente.DadosDetalhamentoPaciente;
+import com.api.api_rest.domain.paciente.DadosListagemPaciente;
+import com.api.api_rest.domain.paciente.Paciente;
+import com.api.api_rest.domain.paciente.PacienteRepository;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

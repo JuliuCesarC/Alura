@@ -1,4 +1,4 @@
-package com.api.api_rest.paciente;
+package com.api.api_rest.domain.paciente;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
