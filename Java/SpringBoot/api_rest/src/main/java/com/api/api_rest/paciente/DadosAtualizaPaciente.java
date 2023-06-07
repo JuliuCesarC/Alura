@@ -1,4 +1,4 @@
-package com.api.api_rest.controller;
+package com.api.api_rest.paciente;
 
 import com.api.api_rest.endereco.DadosEndereco;
 

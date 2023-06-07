@@ -1,6 +1,5 @@
 package com.api.api_rest.paciente;
 
-import com.api.api_rest.controller.DadosAtualizaPaciente;
 import com.api.api_rest.endereco.Endereco;
 
 import jakarta.persistence.Embedded;
