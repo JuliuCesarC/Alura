@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import com.api.api_rest.domain.medico.MedicoRepository;
 import jakarta.validation.Valid;
 
 @RestController
+
 @RequestMapping("medicos")
 public class MedicoController {
 
@@ -33,6 +36,7 @@ public class MedicoController {
   private MedicoRepository repository;
 
   @PostMapping
+  @Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
   @Transactional
   public ResponseEntity cadastrarMedico(@RequestBody @Valid DadosCadastroMedico dados,
       UriComponentsBuilder uriBuilder) {
@@ -52,6 +56,7 @@ public class MedicoController {
   }
 
   @PutMapping
+  @Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
   @Transactional
   public ResponseEntity atualizarMedico(@RequestBody @Valid DadosAtualizaMedico dados) {
     var medico = repository.getReferenceById(dados.id());
@@ -65,6 +70,7 @@ public class MedicoController {
   @DeleteMapping("/{id}")
   // Para definirmos uma parâmetro dinâmico na rota, utilizamos as chaves "{
   // nomeDoParâmetro }".
+  @Secured("ROLE_ADMIN")
   @Transactional
   public ResponseEntity excluirMedico(@PathVariable Long id) {
     var medico = repository.getReferenceById(id);

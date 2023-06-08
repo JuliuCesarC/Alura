@@ -1,6 +1,7 @@
 package com.api.api_rest.infra.security;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +43,13 @@ public class SecurityFilter extends OncePerRequestFilter {
   }
 
   private String recuperarToken(HttpServletRequest request) {
+    // Código para exibir no console todos os campos do cabeçalho da requisição e seus respectivos valores.
+    // Enumeration<String> headerNames = request.getHeaderNames();
+    // while (headerNames.hasMoreElements()) {
+    //     String headerName = headerNames.nextElement();
+    //     System.out.println(headerName + ": " + request.getHeader(headerName));
+    // }
+    
     var authorizationHeader = request.getHeader("Authorization");
     if (authorizationHeader != null) {
       return authorizationHeader.replace("Bearer ", "");
