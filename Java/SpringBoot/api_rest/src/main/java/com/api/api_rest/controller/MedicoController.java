@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,6 @@ import com.api.api_rest.domain.medico.MedicoRepository;
 import jakarta.validation.Valid;
 
 @RestController
-
 @RequestMapping("medicos")
 public class MedicoController {
 
@@ -75,11 +73,12 @@ public class MedicoController {
   public ResponseEntity excluirMedico(@PathVariable Long id) {
     var medico = repository.getReferenceById(id);
     medico.desativarMedico();
-
+    
     return ResponseEntity.noContent().build();
   }
-
+  
   @GetMapping("/{id}")
+  @Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
   public ResponseEntity detalharMedico(@PathVariable Long id) {
     var medico = repository.getReferenceById(id);
     return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
