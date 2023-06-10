@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.api.api_rest.domain.medico.DadosDetalhamentoMedico;
 import com.api.api_rest.domain.paciente.DadosAtualizaPaciente;
 import com.api.api_rest.domain.paciente.DadosCadastroPaciente;
 import com.api.api_rest.domain.paciente.DadosDetalhamentoPaciente;
@@ -35,7 +34,8 @@ public class PacienteController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity cadastrarPaciente(@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder) {
+  public ResponseEntity cadastrarPaciente(@RequestBody @Valid DadosCadastroPaciente dados,
+      UriComponentsBuilder uriBuilder) {
     var paciente = new Paciente(dados);
     repository.save(paciente);
 
@@ -45,7 +45,8 @@ public class PacienteController {
   }
 
   @GetMapping
-  public ResponseEntity<Page<DadosListagemPaciente>> listarPaciente(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+  public ResponseEntity<Page<DadosListagemPaciente>> listarPaciente(
+      @PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
     var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemPaciente::new);
     return ResponseEntity.ok(page);
   }

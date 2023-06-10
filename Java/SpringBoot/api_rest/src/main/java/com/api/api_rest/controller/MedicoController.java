@@ -73,10 +73,10 @@ public class MedicoController {
   public ResponseEntity excluirMedico(@PathVariable Long id) {
     var medico = repository.getReferenceById(id);
     medico.desativarMedico();
-    
+
     return ResponseEntity.noContent().build();
   }
-  
+
   @GetMapping("/{id}")
   @Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
   public ResponseEntity detalharMedico(@PathVariable Long id) {
