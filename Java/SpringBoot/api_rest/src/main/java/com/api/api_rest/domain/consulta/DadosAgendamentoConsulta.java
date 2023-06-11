@@ -2,6 +2,7 @@ package com.api.api_rest.domain.consulta;
 
 import java.time.LocalDateTime;
 
+import com.api.api_rest.domain.medico.Especialidade;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -13,8 +14,10 @@ public record DadosAgendamentoConsulta(
 
     @NotNull Long idPaciente,
 
-    @NotNull @Future @JsonFormat(pattern = "dd/MM/yyyy HH:mm") @JsonAlias( {
-        "dataConsulta", "data_consulta" }) LocalDateTime data
+    @NotNull @Future @JsonFormat(pattern = "dd/MM/yyyy HH:mm") @JsonAlias({"dataConsulta", "data_consulta" }) 
+    LocalDateTime data,
+
+    Especialidade especialidade
 
   ){
 }
