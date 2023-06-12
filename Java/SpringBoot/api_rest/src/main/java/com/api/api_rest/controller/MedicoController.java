@@ -24,10 +24,12 @@ import com.api.api_rest.domain.medico.DadosListagemMedico;
 import com.api.api_rest.domain.medico.Medico;
 import com.api.api_rest.domain.medico.MedicoRepository;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("medicos")
+@SecurityRequirement(name = "bearer-key")
 public class MedicoController {
 
   @Autowired

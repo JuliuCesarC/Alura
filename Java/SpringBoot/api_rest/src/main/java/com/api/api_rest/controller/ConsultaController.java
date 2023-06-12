@@ -12,11 +12,13 @@ import com.api.api_rest.domain.consulta.AgendaDeConsultas;
 import com.api.api_rest.domain.consulta.DadosAgendamentoConsulta;
 import com.api.api_rest.domain.consulta.DadosCancelamentoConsulta;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("consultas")
+@SecurityRequirement(name = "bearer-key")
 public class ConsultaController {
 
   @Autowired

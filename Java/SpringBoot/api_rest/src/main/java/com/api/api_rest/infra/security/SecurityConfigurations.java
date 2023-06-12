@@ -33,6 +33,7 @@ public class SecurityConfigurations {
   req
   .requestMatchers(HttpMethod.POST, "/login").permitAll()
   // .requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN")
+  .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()  
   .anyRequest().authenticated();
   })
   .addFilterBefore(securityFilter,
