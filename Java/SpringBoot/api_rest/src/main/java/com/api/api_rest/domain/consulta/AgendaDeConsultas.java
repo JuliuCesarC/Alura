@@ -1,9 +1,13 @@
 package com.api.api_rest.domain.consulta;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.api_rest.domain.ValidacaoException;
+import com.api.api_rest.domain.consulta.validacoes.agendar.ValidadorAgendamentoDeConsulta;
+import com.api.api_rest.domain.consulta.validacoes.cancelar.ValidadorCancelamentoDeConsulta;
 import com.api.api_rest.domain.medico.Medico;
 import com.api.api_rest.domain.medico.MedicoRepository;
 import com.api.api_rest.domain.paciente.PacienteRepository;
@@ -22,7 +26,13 @@ public class AgendaDeConsultas {
   @Autowired
   private PacienteRepository pacienteRepository;
 
-  public void agendar(DadosAgendamentoConsulta dados) {
+  @Autowired
+  private List<ValidadorAgendamentoDeConsulta> validadoresAgendar;
+
+  @Autowired
+  private List<ValidadorCancelamentoDeConsulta> validadoresCancelar;
+
+  public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
     if (!pacienteRepository.existsById(dados.idPaciente())) {
       throw new ValidacaoException("Id do paciente não encontrado, ou paciente não cadastrado.");
     }
@@ -30,14 +40,17 @@ public class AgendaDeConsultas {
       throw new ValidacaoException("Id do medico não encontrado.");
     }
 
+    validadoresAgendar.forEach(v -> v.validar(dados));
+
     var paciente = pacienteRepository.findById(dados.idPaciente()).get();
     var medico = escolherMedico(dados);
-
+    if (medico == null) {
+      throw new ValidacaoException("Não existe médico disponível neste horário");
+    }
     var consulta = new Consulta(null, medico, paciente, dados.data(), null);
 
-    System.out.println("\nConsulta: " + consulta);
-    // consultaRepository.save(consulta);
-
+    consultaRepository.save(consulta);
+    return new DadosDetalhamentoConsulta(consulta);
   }
 
   public void cancelar(@Valid DadosCancelamentoConsulta dados) {
@@ -45,8 +58,10 @@ public class AgendaDeConsultas {
       throw new ValidacaoException("Id da consulta não encontrado.");
     }
 
+    validadoresCancelar.forEach(v -> v.validar(dados));
+
     var consulta = consultaRepository.getReferenceById(dados.id());
-    consulta.cancelar(dados.motivo());
+    consulta.cancelar(dados.motivoDoCancelamento());
   }
 
   private Medico escolherMedico(DadosAgendamentoConsulta dados) {

@@ -1,4 +1,6 @@
 /* -------------------- flyway_schema_history -------------------- */
+create table flyway_schema_history;
+
 SELECT * from flyway_schema_history;
 
 DELETE FROM flyway_schema_history WHERE success = 0;
@@ -30,6 +32,8 @@ delete from usuarios where id > 0;
 SELECT motivo_cancelamento FROM consultas;
 
 SELECT * FROM consultas;
+
+update consultas set motivo_cancelamento = null Where id = 7;
 
 /* -------------------- query_api -------------------- */
 select * from medicos
