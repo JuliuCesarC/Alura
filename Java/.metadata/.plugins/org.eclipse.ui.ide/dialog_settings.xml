@@ -6,6 +6,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\Cesar\Desktop\Curso_Dev\Alura\Java\SpringBoot\api_rest"/>
 			<item value="C:\Users\Cesar\Desktop\EstoCode"/>
 			<item value="C:\Users\Cesar\Desktop\TesteJava"/>
 			<item value="C:\Users\Cesar\Desktop\Curso_Dev\Alura\Java\JDBC"/>

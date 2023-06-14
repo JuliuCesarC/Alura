@@ -40,7 +40,7 @@ public class Medico {
     this.especialidade = dados.especialidade();
     this.endereco = new Endereco(dados.endereco());
   }
-
+  
   public void atualizarInformacoesMedico(@Valid DadosAtualizaMedico dados) {
     if (dados.nome() != null) {
       this.nome = dados.nome();      

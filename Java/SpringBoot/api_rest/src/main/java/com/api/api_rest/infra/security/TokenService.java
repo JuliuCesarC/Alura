@@ -3,7 +3,6 @@ package com.api.api_rest.infra.security;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class TokenService {
       var algoritimo = Algorithm.HMAC256(secret);
       return JWT.create()
           .withIssuer(ISSUER)
-          .withSubject(usuario.getLogin())
+          .withSubject(usuario.getUsername())
           .withExpiresAt(dataExpiracao())
           .sign(algoritimo);
     } catch (JWTCreationException exception) {
