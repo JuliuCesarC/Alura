@@ -4,6 +4,7 @@ INDEX VERSION 1.132+C:\Users\Cesar\Desktop\Curso_Dev\Alura\Java\.metadata\.plugi
 720216857.index
 824184466.index
 906062959.index
+1505026065.index
 2703807186.index
 1810288636.index
 1828528890.index
@@ -72,6 +73,7 @@ INDEX VERSION 1.132+C:\Users\Cesar\Desktop\Curso_Dev\Alura\Java\.metadata\.plugi
 3984978332.index
 3540258639.index
 3072224381.index
+3413725848.index
 4191828472.index
 2479131973.index
 3417190022.index
@@ -97,6 +99,7 @@ INDEX VERSION 1.132+C:\Users\Cesar\Desktop\Curso_Dev\Alura\Java\.metadata\.plugi
 1290428236.index
 710373854.index
 4012536643.index
+1606031569.index
 3204844625.index
 432077260.index
 3245475122.index
