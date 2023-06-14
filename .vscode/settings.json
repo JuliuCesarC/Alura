@@ -4,13 +4,15 @@
         "Desserialização",
         "Desserializar",
         "FILESTREAM",
+        "Initializr",
         "INNEREXCEPTION",
         "IOEXCEPTION",
         "Nacimento",
         "Serialização",
         "tipamos",
         "tipar",
-        "unica"
+        "unica",
+        "Voll"
     ],
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "automatic",
