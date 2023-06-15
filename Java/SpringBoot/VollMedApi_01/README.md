@@ -83,3 +83,49 @@ public record DadosCadastroMedico(String nome, String email, String telefone, St
 > *Especialidade* é uma classe **ENUM**, que representa as especialidades de um médico da clinica.
 
 ### DTO para o endereço
+
+Assim como foi criado um DTO para os dados do cadastro de médico, vamos criar um para os dados do endereço, pois além de ser diversos campos, eles serão utilizados em outras classes, e, por esse motivo ele sera criado no pacote `VollMedApi_01.endereco`.
+
+```java
+public record DadosEndereco(String logradouro, String bairro, String cep, String cidade, String uf, String complemento, String numero) {}
+```
+
+Pronto, com isso já é possível imprimir no terminal as informações enviadas para o método `cadastrarMedico()`.
+
+## Salvando informações no banco de dados
+
+Primeiramente precisaremos de algumas novas dependências, que podem ser procuradas no repositório Maven, ou mais fácil ainda é utilizando a ferramenta **Spring Initializr** vista anteriormente. Para isso iremos seguir o passo a passo, primeiramente precisamos selecionar as opções de *projeto*, *linguagem* e *java* sendo respectivamente: **Maven**, **Java** e **17**.
+
+Agora basta selecionar as dependências (ao segurar a tecla `CTRL` e clicar no item desejado, a lista de dependências não é fechada, facilitando a seleção de múltiplos itens). As quatro dependências são:
+
+- **Spring Data JPA**
+
+- **MySQL Driver**
+
+- **Spring Validation**
+
+- **Flyway Migration**
+
+Então iremos clicar na opção `Explore`, que exibira a estrutura de arquivos do projeto, e também ja virá com o arquivo `pom.xml` selecionado. Logo basta descer até a tag *dependencies* e copiar as dependências selecionadas, colando elas no *pom.xml* do nosso projeto.
+
+Para algumas IDEs é preciso ir até a seção do *Maven* e clicar para recarregar o projeto, assim baixando as novas dependências, mas no VS Code com o pacote Java Pack, isso ocorre automaticamente após salvas as alterações no arquivo *pom.xml*.
+
+### Configurando a conexão com o banco de dados
+
+Após instalar o *Spring Data JPA* a aplicação sempre tentara criar uma conexão com o banco de dados ao ser iniciada, o que ocorrera um erro pois ainda não configuramos essa conexão.
+
+Para esta e diversas outras configurações, é utilizado o arquivo `application.properties`. Iremos configurar o *url*, o *username* e o *password*.
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost/nome_database
+spring.datasource.username=root
+spring.datasource.password=*****
+```
+
+> O url é referente à url de conexão com o database do MySQL, seguido do usuário e a senha também do MySQL.
+
+### Entidade JPA
+
+Para salvar e posteriormente trazer informações do bando de dados, precisamos criar uma entidade que ira representar uma tabela no MySQL. Essa entidade é chamada de JPA (Java Persistence API).
+
+O Spring Boot ja possui embutido no projeto um provedor de persistência de dados, bastando assim apenas adicionar algumas anotações em cima da classe que sera a entidade JPA.
