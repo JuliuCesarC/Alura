@@ -92,9 +92,9 @@ public record DadosEndereco(String logradouro, String bairro, String cep, String
 
 Pronto, com isso já é possível imprimir no terminal as informações enviadas para o método `cadastrarMedico()`.
 
-## Salvando informações no banco de dados
+## Adicionando dependências para conexão com o banco de dados
 
-Primeiramente precisaremos de algumas novas dependências, que podem ser procuradas no repositório Maven, ou mais fácil ainda é utilizando a ferramenta **Spring Initializr** vista anteriormente. Para isso iremos seguir o passo a passo, primeiramente precisamos selecionar as opções de *projeto*, *linguagem* e *java* sendo respectivamente: **Maven**, **Java** e **17**.
+Para criar uma conexão e posteriormente salvarmos informação no bando de dados, precisaremos de algumas novas bibliotecas, que podem ser procuradas no repositório Maven, ou ainda mais fácil utilizando a ferramenta **Spring Initializr** vista anteriormente. Primeiramente precisamos selecionar as opções de *projeto*, *linguagem* e *java* sendo respectivamente: **Maven**, **Java** e **17**.
 
 Agora basta selecionar as dependências (ao segurar a tecla `CTRL` e clicar no item desejado, a lista de dependências não é fechada, facilitando a seleção de múltiplos itens). As quatro dependências são:
 
@@ -124,8 +124,79 @@ spring.datasource.password=*****
 
 > O url é referente à url de conexão com o database do MySQL, seguido do usuário e a senha também do MySQL.
 
-### Entidade JPA
+## Entidade JPA
 
 Para salvar e posteriormente trazer informações do bando de dados, precisamos criar uma entidade que ira representar uma tabela no MySQL. Essa entidade é chamada de JPA (Java Persistence API).
 
-O Spring Boot ja possui embutido no projeto um provedor de persistência de dados, bastando assim apenas adicionar algumas anotações em cima da classe que sera a entidade JPA.
+O Spring Boot ja possui embutido um provedor de persistência de dados, bastando assim apenas adicionar algumas anotações em cima da classe que sera a entidade JPA.
+
+As anotações que faremos na classe serão o `@Table` que indica qual tabela no banco de dados que esse JPA ira trabalhar, e a `@Entity` que indica que esta classe sera a responsável pela entidade JPA da tabela selecionada com o *Table*.
+
+```java
+@Table(name = "medicos")
+@Entity(name = "Medico")
+public class Medico {}
+```
+
+> É possível omitir o nome na anotação *Entity*, isso fara o Spring inferir que o nome da entidade é o mesmo nome da classe.
+
+### Adicionando os campos
+
+A classe JPA precisa ter os mesmos campos e com os mesmos nomes das colunas na tabela do MySQL. Focaremos apenas no 3 campos que precisam de anotação, que são o **id** que precisa da anotação `@Id` indicando que ele sera a chave primaria da tabela, além da anotação `@GeneratedValue` já que esse valor sera atribuído automaticamente, o campo **especialidade** que precisa da `@Enumerated` pois ele é uma classe ENUM, e por ultimo o **endereco** que precisa da anotação `@Embedded`.
+
+Explicando um pouco melhor o *Embedded*, ele é utilizado para incorporar um objeto complexo dentro de uma entidade. Utilizamos eles para evitar criar uma nova tabela para as informações de endereço, pois podemos incorporar essas informações na entidade *Medico*. Com isso eles serão tratados como um único valor no banco de dados.
+
+```java
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+
+@Enumerated(EnumType.STRING)
+private Especialidade especialidade;
+
+@Embedded
+private Endereco endereco;
+```
+
+### Criando a entidade Endereço
+
+Para que a entidade *Medico* e outras próximas possam utilizar a classe endereço, sera necessario criar uma entidade para ela. A forma como vamos cria-la é semelhante a de *Medico*, mas possui algumas diferenças.
+
+Em cima da classe, ao invés de ter as anotações de tabelas, teremos a anotação `@Embeddable`, que indica que essa classe sera incorporada em outras entidades.
+
+```java
+@Embeddable
+public class Endereco {}
+```
+
+E os campos serão atribuídos da mesma forma de qualquer classe `private String logradouro;`.
+
+## Diminuindo verbosidade com o Lombok
+
+Uma das bibliotecas que foram adicionadas no projeto foi o Lombok, que cria métodos em tempo de execução apenas fazendo anotações em cima da classe.
+
+Para que nossa primeira entidade JPA esteja completa, precisamos de alguns métodos sejam implementados. As anotações do Lombok que utilizaremos são o `@Getter` para adicionar os getters para cada campo, `@NoArgsConstructor` para adicionar o construtor padrão sem nenhum parâmetro que é obrigatório para uma classe JPA, `@AllArgsConstructor` para adicionar um construtor com todos os parâmeros da classe e `@EqualsAndHashCode` para adicionar os métodos equals e hashCode.
+
+O *EqualsAndHashCode é mais utilizado no campo identificador da tabela, pois ele é um campo único que não pode pode ter seu valor repetido com nenhum outro na tabela.
+
+```java
+@Table(name = "medicos")
+@Entity(name = "Medico")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class Medico {}
+```
+
+> Ao passar o parâmetro *of* para a anotação *EqualsAndHashCode*, informamos qual o único campo que deve receber os métodos equals e hashCode.
+
+O mesmo vale para a classe endereço, precisamos fazer algumas anotações.
+
+```java
+@Embeddable
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Endereco {}
+```
