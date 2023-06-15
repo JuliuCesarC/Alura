@@ -52,12 +52,12 @@ saldo NUMERIC(10, 2)
 
 Assim como em uma linguagem de programação temos os operadores lógicos, no SQL também temos, sendo alguns deles:
 
-- `>`: maior que
-- `<`: menor que
-- `=`: igual a
-- `>=`: maior igual
-- `<=`: menor igual
-- `!=` ou `<>`: diferente de
+- `>` : maior que
+- `<` : menor que
+- `=` : igual a
+- `>=` : maior igual
+- `<=` : menor igual
+- `!=` ou `<>` : diferente de
 
 ### Operadores específicos do SQL
 

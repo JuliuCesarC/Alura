@@ -15,6 +15,7 @@ DESC medicos;
 Update medicos set ativo = 1 where id > 0;
 
 /* -------------------- pacientes -------------------- */
+
 select * from pacientes;
 
 /* -------------------- usuarios -------------------- */

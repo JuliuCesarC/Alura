@@ -47,7 +47,7 @@ Voltando agora para a pasta `src/main/resources`, temos o seguinte estrutura:
 
 ## Primeiro paço
 
-Um dos primeiros arquivos que sera criado é um *controller*, onde iremos criar as rotas, e com ela podemos começar a interagir com a aplicação. Começaremos com o arquivo `MedicoController` que ficara na raiz do projeto no pacote `VollMedApi_01.controller`.
+Um dos primeiros arquivos que sera criado é um *controller*, onde iremos criar as rotas, e com ela podemos começar a interagir com a aplicação. Começaremos com o arquivo `MedicoController` que ficara na raiz do projeto no pacote `VollMedApi*01.controller`.
 
 ### Carregando a classe
 
@@ -74,7 +74,7 @@ public void cadastrarMedico(@RequestBody String dados) {
 
 Por padrão é utilizado o formato **JSON** para transferência de informações em requisições http, porem não é interessante trabalhar com o json "cru", criando funções para procurar os campos e os valores no meio da string. O Spring Boot ja disponibiliza um serializador de json, e com a nova classe **Record**, podemos criar um **DTO** (Data Transfer Object) que representará os campos e os valores que serão enviados e devolvidos nas requisições.
 
-Durante o projeto sera criado alguns DTOs, e cada um deles deve ficar no pacote de seu domínio. Este tera o nome `DadosCadastroMedico` e sera criado no pacote `VollMedApi_01.medico`.
+Durante o projeto sera criado alguns DTOs, e cada um deles deve ficar no pacote de seu domínio. Este tera o nome `DadosCadastroMedico` e sera criado no pacote `VollMedApi*01.medico`.
 
 ```java
 public record DadosCadastroMedico(String nome, String email, String telefone, String crm, Especialidade especialidade, DadosEndereco endereco) {}
@@ -84,7 +84,7 @@ public record DadosCadastroMedico(String nome, String email, String telefone, St
 
 ### DTO para o endereço
 
-Assim como foi criado um DTO para os dados do cadastro de médico, vamos criar um para os dados do endereço, pois além de ser diversos campos, eles serão utilizados em outras classes, e, por esse motivo ele sera criado no pacote `VollMedApi_01.endereco`.
+Assim como foi criado um DTO para os dados do cadastro de médico, vamos criar um para os dados do endereço, pois além de ser diversos campos, eles serão utilizados em outras classes, e, por esse motivo ele sera criado no pacote `VollMedApi*01.endereco`.
 
 ```java
 public record DadosEndereco(String logradouro, String bairro, String cep, String cidade, String uf, String complemento, String numero) {}
@@ -117,12 +117,14 @@ Após instalar o *Spring Data JPA* a aplicação sempre tentara criar uma conex�
 Para esta e diversas outras configurações, é utilizado o arquivo `application.properties`. Iremos configurar o *url*, o *username* e o *password*.
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost/nome_database
+spring.datasource.url=jdbc:mysql://localhost/nome*database
 spring.datasource.username=root
 spring.datasource.password=*****
 ```
 
 > O url é referente à url de conexão com o database do MySQL, seguido do usuário e a senha também do MySQL.
+
+Lembrar de criar o database com o mesmo nome do informando na url no MySQL, caso contrario o programa sempre apresentara um erro durante a execução.
 
 ## Entidade JPA
 
@@ -177,7 +179,7 @@ Uma das bibliotecas que foram adicionadas no projeto foi o Lombok, que cria mét
 
 Para que nossa primeira entidade JPA esteja completa, precisamos de alguns métodos sejam implementados. As anotações do Lombok que utilizaremos são o `@Getter` para adicionar os getters para cada campo, `@NoArgsConstructor` para adicionar o construtor padrão sem nenhum parâmetro que é obrigatório para uma classe JPA, `@AllArgsConstructor` para adicionar um construtor com todos os parâmeros da classe e `@EqualsAndHashCode` para adicionar os métodos equals e hashCode.
 
-O *EqualsAndHashCode é mais utilizado no campo identificador da tabela, pois ele é um campo único que não pode pode ter seu valor repetido com nenhum outro na tabela.
+O \*EqualsAndHashCode é mais utilizado no campo identificador da tabela, pois ele é um campo único que não pode pode ter seu valor repetido com nenhum outro na tabela.
 
 ```java
 @Table(name = "medicos")
@@ -199,4 +201,74 @@ O mesmo vale para a classe endereço, precisamos fazer algumas anotações.
 @NoArgsConstructor
 @AllArgsConstructor
 public class Endereco {}
+```
+
+## Criando o repository
+
+Normalmente para acessar o banco de dados utilizamos classes DAO (Data Access Object), e criamos métodos para efetuar o **CRUD** da aplicação. Porém com o Spring Boot temos um mecanismo que simplifica essa tarefa, que é a interface `JpaRepository`.
+
+Para criar um repository da classe médico, iremos adicionar no pacote `VollMedApi*01.medico` a interface `MedicoRepository`. Devemos também estender da interface `JpaRepository`, informando qual o nome da entidade que sera mapeada no banco de dados, e o tipo do identificador da entidade.
+
+```java
+public interface MedicoRepository extends JpaRepository<Medico, Long>{}
+```
+
+## Salvando informações no banco de dados
+
+Agora que temos o repository criado, vamos utiliza-lo na classe controller apenas adicionando uma propriedade do tipo `MedicoRepository`. Porém não sera nos a colocar as informações na propriedade, e sim o Spring. Com a anotação `@Autowired` o Spring faz a **injeção de dependência** automaticamente, pois ele conhece a classe *MedicoRepository* ja que ela estende de uma interface do próprio Spring.
+
+```java
+@Autowired
+private MedicoRepository repository;
+```
+
+O JpaRepository ja possui grande parte dos métodos que são utilizados para o CRUD, com exceção apenas para métodos mais complexos ou específicos para o caso. Começaremos com o `save`, que como o nome sugere, ira salvas o dados no DB.
+
+```java
+@PostMapping
+@Transactional
+public void cadastrarMedico(@RequestBody DadosCadastroMedico dados) {
+  repository.save(new Medico(dados));
+}
+```
+
+Além disso, como esse é um método que vai alterar informações no banco de dados, precisamos de uma transação ativa durante a execução do métodos, para isso utilizamos a anotação `@Transactional`.
+
+## Migrations com Flyway
+
+Ao tentar cadastrar um médico recebemos um erro 500, por que não foi possível encontrar a tabela, isso se deve ao fato de que ainda não criamos as tabelas. E como boa pratica não é recomendado criar manualmente essas tabelas, e sim utilizar uma *migration*, pois com elas temos melhor controle sobre o banco de dados e um histórico de evolução do database.
+
+**OBS**: Qualquer alteração no database deve ser feito através de uma **migration**. Sempre que for criar uma nova migration, parar a aplicação.
+
+Um das bibliotecas adicionadas ao projeto foi o Flyway, que ja possui uma certa integração com o Spring Boot facilitando a tarefa. Voltando para a pasta `src/main/resources`, vamos adicionar o pacote `db/migration`, e dentro desta pasta iremos criar as migrations. O Flyway possui um padrão de nomenclatura para as migrations, que é `V1__nome-descritivo.sql`, e a cada novo item alteramos a versão (V1, V2), além de que é preciso saliente que são 2 underlines apos a versão.
+
+A primeira migration tem o nome `V1__create-table-medicos.sql` e contem o código:
+
+```sql
+create table medicos(
+  id bigint not null auto*increment,
+  nome varchar(100) not null,
+  email varchar(100) not null unique,
+  crm varchar(6) not null unique,
+  especialidade varchar(100) not null,
+  logradouro varchar(100) not null,
+  bairro varchar(100) not null,
+  cep varchar(9) not null,
+  complemento varchar(100),
+  numero varchar(20),
+  uf char(2) not null,
+  cidade varchar(100) not null,
+
+  primary key(id)
+);
+```
+
+### Histórico e erros nas migrations
+
+O Flyway cria no DB uma tabela chamada `flyway_schema_history`, que é um histórico que armazena algumas informações de cada migration executada. Uma delas a coluna `success`, que armazena 1 para uma migration executada corretamente e 0 caso não.
+
+Digamos então que ao tentar executar a aplicação e ocorra algum erro na migration, por exemplo se o código sql estiver incorreto, a aplicação ira parar e será gravado no historio na coluna *success* o valor 0. Isso impedira que a aplicação seja iniciada até que o erro no database seja corrigido (caso exista) e a linha referente ao erro no historio do Flyway seja removida. Podemos utilizar o comando sql abaixo para remover o valor do histórico:
+
+```sql
+DELETE FROM flyway_schema_history WHERE success = 0;
 ```
