@@ -33,13 +33,13 @@ Existes diversas formas e boas praticas para criar a estrutura de pastas de um p
 
 - **domain** : responsável pelo domínio, como o Médico, Pacientem Consulta, entre outros.
 
-> Dentro do pacote *domain.medico* por exemplo, teremos a entidade Medico, os DTOs, e alguns outros arquivos referentes ao domínio da entidade médico.
+> Dentro do pacote _domain.medico_ por exemplo, teremos a entidade Medico, os DTOs, e alguns outros arquivos referentes ao domínio da entidade médico.
 
 - **infra** : responsável pela infraestrutura da api, como a parte de segurança, a parte de tratamento de exceções e outras configurações.
 
 Voltando agora para a pasta `src/main/resources`, temos o seguinte estrutura:
 
-- **db.migration** : responsável pos armazenas as *migrations*.
+- **db.migration** : responsável pos armazenas as _migrations_.
 
 > Migration são os comando sql que faram as alterações no banco de dados, como criar novas tabelas, altera colunas, adicionar colunas, ou seja, tudo que precise alterar o banco de dados sera feito através de uma migration.
 
@@ -47,7 +47,7 @@ Voltando agora para a pasta `src/main/resources`, temos o seguinte estrutura:
 
 ## Primeiro paço
 
-Um dos primeiros arquivos que sera criado é um *controller*, onde iremos criar as rotas, e com ela podemos começar a interagir com a aplicação. Começaremos com o arquivo `MedicoController` que ficara na raiz do projeto no pacote `VollMedApi*01.controller`.
+Um dos primeiros arquivos que sera criado é um _controller_, onde iremos criar as rotas, e com ela podemos começar a interagir com a aplicação. Começaremos com o arquivo `MedicoController` que ficara na raiz do projeto no pacote `VollMedApi*01.controller`.
 
 ### Carregando a classe
 
@@ -80,7 +80,7 @@ Durante o projeto sera criado alguns DTOs, e cada um deles deve ficar no pacote 
 public record DadosCadastroMedico(String nome, String email, String telefone, String crm, Especialidade especialidade, DadosEndereco endereco) {}
 ```
 
-> *Especialidade* é uma classe **ENUM**, que representa as especialidades de um médico da clinica.
+> _Especialidade_ é uma classe **ENUM**, que representa as especialidades de um médico da clinica.
 
 ### DTO para o endereço
 
@@ -94,7 +94,7 @@ Pronto, com isso já é possível imprimir no terminal as informações enviadas
 
 ## Adicionando dependências para conexão com o banco de dados
 
-Para criar uma conexão e posteriormente salvarmos informação no bando de dados, precisaremos de algumas novas bibliotecas, que podem ser procuradas no repositório Maven, ou ainda mais fácil utilizando a ferramenta **Spring Initializr** vista anteriormente. Primeiramente precisamos selecionar as opções de *projeto*, *linguagem* e *java* sendo respectivamente: **Maven**, **Java** e **17**.
+Para criar uma conexão e posteriormente salvarmos informação no bando de dados, precisaremos de algumas novas bibliotecas, que podem ser procuradas no repositório Maven, ou ainda mais fácil utilizando a ferramenta **Spring Initializr** vista anteriormente. Primeiramente precisamos selecionar as opções de _projeto_, _linguagem_ e _java_ sendo respectivamente: **Maven**, **Java** e **17**.
 
 Agora basta selecionar as dependências (ao segurar a tecla `CTRL` e clicar no item desejado, a lista de dependências não é fechada, facilitando a seleção de múltiplos itens). As quatro dependências são:
 
@@ -106,15 +106,15 @@ Agora basta selecionar as dependências (ao segurar a tecla `CTRL` e clicar no i
 
 - **Flyway Migration**
 
-Então iremos clicar na opção `Explore`, que exibira a estrutura de arquivos do projeto, e também ja virá com o arquivo `pom.xml` selecionado. Logo basta descer até a tag *dependencies* e copiar as dependências selecionadas, colando elas no *pom.xml* do nosso projeto.
+Então iremos clicar na opção `Explore`, que exibira a estrutura de arquivos do projeto, e também ja virá com o arquivo `pom.xml` selecionado. Logo basta descer até a tag _dependencies_ e copiar as dependências selecionadas, colando elas no _pom.xml_ do nosso projeto.
 
-Para algumas IDEs é preciso ir até a seção do *Maven* e clicar para recarregar o projeto, assim baixando as novas dependências, mas no VS Code com o pacote Java Pack, isso ocorre automaticamente após salvas as alterações no arquivo *pom.xml*.
+Para algumas IDEs é preciso ir até a seção do _Maven_ e clicar para recarregar o projeto, assim baixando as novas dependências, mas no VS Code com o pacote Java Pack, isso ocorre automaticamente após salvas as alterações no arquivo _pom.xml_.
 
 ### Configurando a conexão com o banco de dados
 
-Após instalar o *Spring Data JPA* a aplicação sempre tentara criar uma conexão com o banco de dados ao ser iniciada, o que ocorrera um erro pois ainda não configuramos essa conexão.
+Após instalar o _Spring Data JPA_ a aplicação sempre tentara criar uma conexão com o banco de dados ao ser iniciada, o que ocorrera um erro pois ainda não configuramos essa conexão.
 
-Para esta e diversas outras configurações, é utilizado o arquivo `application.properties`. Iremos configurar o *url*, o *username* e o *password*.
+Para esta e diversas outras configurações, é utilizado o arquivo `application.properties`. Iremos configurar o _url_, o _username_ e o _password_.
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost/nome*database
@@ -132,7 +132,7 @@ Para salvar e posteriormente trazer informações do bando de dados, precisamos 
 
 O Spring Boot ja possui embutido um provedor de persistência de dados, bastando assim apenas adicionar algumas anotações em cima da classe que sera a entidade JPA.
 
-As anotações que faremos na classe serão o `@Table` que indica qual tabela no banco de dados que esse JPA ira trabalhar, e a `@Entity` que indica que esta classe sera a responsável pela entidade JPA da tabela selecionada com o *Table*.
+As anotações que faremos na classe serão o `@Table` que indica qual tabela no banco de dados que esse JPA ira trabalhar, e a `@Entity` que indica que esta classe sera a responsável pela entidade JPA da tabela selecionada com o _Table_.
 
 ```java
 @Table(name = "medicos")
@@ -140,13 +140,13 @@ As anotações que faremos na classe serão o `@Table` que indica qual tabela no
 public class Medico {}
 ```
 
-> É possível omitir o nome na anotação *Entity*, isso fara o Spring inferir que o nome da entidade é o mesmo nome da classe.
+> É possível omitir o nome na anotação _Entity_, isso fara o Spring inferir que o nome da entidade é o mesmo nome da classe.
 
 ### Adicionando os campos
 
 A classe JPA precisa ter os mesmos campos e com os mesmos nomes das colunas na tabela do MySQL. Focaremos apenas no 3 campos que precisam de anotação, que são o **id** que precisa da anotação `@Id` indicando que ele sera a chave primaria da tabela, além da anotação `@GeneratedValue` já que esse valor sera atribuído automaticamente, o campo **especialidade** que precisa da `@Enumerated` pois ele é uma classe ENUM, e por ultimo o **endereco** que precisa da anotação `@Embedded`.
 
-Explicando um pouco melhor o *Embedded*, ele é utilizado para incorporar um objeto complexo dentro de uma entidade. Utilizamos eles para evitar criar uma nova tabela para as informações de endereço, pois podemos incorporar essas informações na entidade *Medico*. Com isso eles serão tratados como um único valor no banco de dados.
+Explicando um pouco melhor o _Embedded_, ele é utilizado para incorporar um objeto complexo dentro de uma entidade. Utilizamos eles para evitar criar uma nova tabela para as informações de endereço, pois podemos incorporar essas informações na entidade _Medico_. Com isso eles serão tratados como um único valor no banco de dados.
 
 ```java
 @Id
@@ -162,7 +162,7 @@ private Endereco endereco;
 
 ### Criando a entidade Endereço
 
-Para que a entidade *Medico* e outras próximas possam utilizar a classe endereço, sera necessario criar uma entidade para ela. A forma como vamos cria-la é semelhante a de *Medico*, mas possui algumas diferenças.
+Para que a entidade _Medico_ e outras próximas possam utilizar a classe endereço, sera necessario criar uma entidade para ela. A forma como vamos cria-la é semelhante a de _Medico_, mas possui algumas diferenças.
 
 Em cima da classe, ao invés de ter as anotações de tabelas, teremos a anotação `@Embeddable`, que indica que essa classe sera incorporada em outras entidades.
 
@@ -191,7 +191,7 @@ O \*EqualsAndHashCode é mais utilizado no campo identificador da tabela, pois e
 public class Medico {}
 ```
 
-> Ao passar o parâmetro *of* para a anotação *EqualsAndHashCode*, informamos qual o único campo que deve receber os métodos equals e hashCode.
+> Ao passar o parâmetro _of_ para a anotação _EqualsAndHashCode_, informamos qual o único campo que deve receber os métodos equals e hashCode.
 
 O mesmo vale para a classe endereço, precisamos fazer algumas anotações.
 
@@ -215,7 +215,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long>{}
 
 ## Salvando informações no banco de dados
 
-Agora que temos o repository criado, vamos utiliza-lo na classe controller apenas adicionando uma propriedade do tipo `MedicoRepository`. Porém não sera nos a colocar as informações na propriedade, e sim o Spring. Com a anotação `@Autowired` o Spring faz a **injeção de dependência** automaticamente, pois ele conhece a classe *MedicoRepository* ja que ela estende de uma interface do próprio Spring.
+Agora que temos o repository criado, vamos utiliza-lo na classe controller apenas adicionando uma propriedade do tipo `MedicoRepository`. Porém não sera nos a colocar as informações na propriedade, e sim o Spring. Com a anotação `@Autowired` o Spring faz a **injeção de dependência** automaticamente, pois ele conhece a classe _MedicoRepository_ ja que ela estende de uma interface do próprio Spring.
 
 ```java
 @Autowired
@@ -236,7 +236,7 @@ Além disso, como esse é um método que vai alterar informações no banco de d
 
 ## Migrations com Flyway
 
-Ao tentar cadastrar um médico recebemos um erro 500, por que não foi possível encontrar a tabela, isso se deve ao fato de que ainda não criamos as tabelas. E como boa pratica não é recomendado criar manualmente essas tabelas, e sim utilizar uma *migration*, pois com elas temos melhor controle sobre o banco de dados e um histórico de evolução do database.
+Ao tentar cadastrar um médico recebemos um erro 500, por que não foi possível encontrar a tabela, isso se deve ao fato de que ainda não criamos as tabelas. E como boa pratica não é recomendado criar manualmente essas tabelas, e sim utilizar uma _migration_, pois com elas temos melhor controle sobre o banco de dados e um histórico de evolução do database.
 
 **OBS**: Qualquer alteração no database deve ser feito através de uma **migration**. Sempre que for criar uma nova migration, parar a aplicação.
 
@@ -267,7 +267,7 @@ create table medicos(
 
 O Flyway cria no DB uma tabela chamada `flyway_schema_history`, que é um histórico que armazena algumas informações de cada migration executada. Uma delas a coluna `success`, que armazena 1 para uma migration executada corretamente e 0 caso não.
 
-Digamos então que ao tentar executar a aplicação e ocorra algum erro na migration, por exemplo se o código sql estiver incorreto, a aplicação ira parar e será gravado no historio na coluna *success* o valor 0. Isso impedira que a aplicação seja iniciada até que o erro no database seja corrigido (caso exista) e a linha referente ao erro no historio do Flyway seja removida. Podemos utilizar o comando sql abaixo para remover o valor do histórico:
+Digamos então que ao tentar executar a aplicação e ocorra algum erro na migration, por exemplo se o código sql estiver incorreto, a aplicação ira parar e será gravado no historio na coluna _success_ o valor 0. Isso impedira que a aplicação seja iniciada até que o erro no database seja corrigido (caso exista) e a linha referente ao erro no historio do Flyway seja removida. Podemos utilizar o comando sql abaixo para remover o valor do histórico:
 
 ```sql
 DELETE FROM flyway_schema_history WHERE success = 0;
@@ -291,8 +291,36 @@ A classe DTO que representa o cadastro de médicos é a `DadosCadastroMedico`, e
 
 - `@Future` : valida se a data informada esta no futuro
 
-- `@Size(min = , max = )` : o campo precisa estar entre o mínimo e o máximo informado. Pode ser aplicado em *string*, *collection*, *map* e *array*.
+- `@Size(min = , max = )` : o campo precisa estar entre o mínimo e o máximo informado. Pode ser aplicado em _string_, _collection_, _map_ e _array_.
 
 Lembrando que existem parâmetros que podemos informar para cada anotações, como o `message` onde podemos informar uma mensagem caso o campo em questão não passe na validação.
 
 Observação, para exibir a mensagem é preciso criar um classe para lidar com as exceções, sendo ela do tipo `MethodArgumentNotValidException`. Neste artigo temos um exemplo de como aplicar o processo [Link](https://www.baeldung.com/spring-boot-bean-validation).
+
+```java
+@NotBlank(message = "Nome é obrigatório") String nome,
+@NotBlank @Email String email,
+@NotBlank String telefone,
+@NotBlank @Pattern(regexp = "\\d{4,6}") String crm,
+@NotNull Especialidade especialidade,
+@NotNull @Valid DadosEndereco endereco
+```
+
+E assim como no DTO de cadastro de médico, precisamos validar as informações de endereço, por esse motivo colocamos o `@Valid` no campo _endereco_.
+
+```java
+@NotBlank String logradouro,
+@NotBlank String bairro,
+@NotBlank @Pattern(regexp = "\\d{8}") String cep,
+@NotBlank String cidade,
+@NotBlank String uf,
+String complemento,
+String numero
+```
+
+Por fim precisamos adicionar a anotação `@Valid` no parâmetro do método cadastrar no _MedicoController_.
+
+```java
+public void cadastrarMedico(@RequestBody @Valid DadosCadastroMedico dados){}
+```
+
