@@ -10,6 +10,7 @@
         "INNEREXCEPTION",
         "IOEXCEPTION",
         "Nacimento",
+        "Pageable",
         "Serialização",
         "tipamos",
         "tipar",
