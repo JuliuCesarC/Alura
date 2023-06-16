@@ -272,3 +272,27 @@ Digamos então que ao tentar executar a aplicação e ocorra algum erro na migra
 ```sql
 DELETE FROM flyway_schema_history WHERE success = 0;
 ```
+
+## Validações com o Bean Validation
+
+Até este ponto ja conseguimos cadastrar um médico salvando suas informações no DB, mas assim como qualquer formulário precisamos validar essas informações, e para isso utilizaremos a biblioteca Spring Validation que adicionamos no projeto anteriormente. Ela funciona adicionando anotações em cima da propriedade que desejamos efetuar a validação, e geralmente utilizamos na classe DTO.
+
+A classe DTO que representa o cadastro de médicos é a `DadosCadastroMedico`, e é nela que iremos adicionar as anotações. Existem diversas opções de validação para um campo, e para saber os detalhes de cada um basta pesquisar a documentação. Mas veremos algumas das mais comuns e algumas especificas para o projeto.
+
+- `@NotBlank` : a string não pode esta vazia ou conter apenas espaços
+
+- `@NotNull` : o campo não pode ser nulo
+
+- `@Email` : possui um padrão de email
+
+- `@Pattern(regexp = "")` : define um padrão para o campo de acordo com um regex informado. Por exemplo o regex `"\\d{8}"` indica que o campo deve conter apenas números e um total de 8 dígitos.
+
+- `@Valid` : valida os campos de outro DTO
+
+- `@Future` : valida se a data informada esta no futuro
+
+- `@Size(min = , max = )` : o campo precisa estar entre o mínimo e o máximo informado. Pode ser aplicado em *string*, *collection*, *map* e *array*.
+
+Lembrando que existem parâmetros que podemos informar para cada anotações, como o `message` onde podemos informar uma mensagem caso o campo em questão não passe na validação.
+
+Observação, para exibir a mensagem é preciso criar um classe para lidar com as exceções, sendo ela do tipo `MethodArgumentNotValidException`. Neste artigo temos um exemplo de como aplicar o processo [Link](https://www.baeldung.com/spring-boot-bean-validation).

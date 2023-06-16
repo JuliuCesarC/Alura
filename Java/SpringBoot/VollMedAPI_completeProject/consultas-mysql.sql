@@ -36,6 +36,8 @@ SELECT * FROM consultas;
 
 update consultas set motivo_cancelamento = null Where id = 7;
 
+select * from consultas where motivo_cancelamento != null;
+
 /* -------------------- query_api -------------------- */
 select * from medicos
   where
