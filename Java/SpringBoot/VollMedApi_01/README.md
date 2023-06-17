@@ -391,9 +391,168 @@ Lembrando que o nome do campo no `sort` deve ser o mesmo da entidade JPA que est
 
 De acordo com a clinica, somente os campos de **nome**, **telefone** e **endereço** podem ser alterados, os demais campos não podem. Além das informações dos campos que serão alterados, precisamos do **id** do médico para efetuar a alteração, porem o nosso método para listar médico não esta retornando o id, o que impediria um front-end de escolher qual médico sera alterado. Começaremos então alterando o método listar.
 
-Uma alteração nos campos de um DTO são feitas com muita facilidade, basta adicionar o campo na classe e no construtor, sendo o campo id do tipo `Long`. Com apenas isso o método listas ja esta retornando o id.
+As alterações em um DTO são feitas com muita facilidade, no nosso caso basta adicionar o campo na classe e no construtor, sendo o campo id do tipo `Long`. Com apenas isso o método *listar* ja esta retornando o id.
 
 Agora para criar o método de atualizar, teremos algo muito semelhante ao cadastrar, vamos receber algumas informações pelo corpo da requisição, precisamos de um DTO especifico para a atualização, iremos adicionar novas informações no banco de dados e também precisamos da anotação `@Transactional`, ja que sera feito alterações no DB.
 
 ```java
+@PutMapping
+@Transactional
+public void atualizar(@RequestBody @Valid DadosAtualizacaoMedico dados) {
+  var medico = repository.getReferenceById(dados.id());
+  medico.atualizarInformacoes(dados);
+}
 ```
+
+Recebemos os dados do médico vindo pelo corpo da requisição com o `@RequestBody`, e utilizamos o DTO `DadosAtualizacaoMedico` para validar os dados, então utilizamos o *repository* do JPA com o método `getReferenceById` que retornar a entidade que contem o ID informado, então armazenamos a entidade na variável *medico*, e chamamos o método `atualizarInformacoes` passando o DTO como parâmetro. Com apenas isso o método esta pronto.
+
+Mas fica a pergunta, como fazemos para salvar essa nova entidade no banco de dados? Não é necessario. Quando é aberto uma transação, o próprio Spring Boot identifica que uma entidade foi carregada a alguns atributos dessa entidade alterados, e ao final da transação ele automaticamente faz o update.
+
+Claro, para que o método funcione precisamos criar o DTO, o método *atualizarInformacoes* na entidade *Medico*, e mesmo para a classe  *Endereco*.
+
+### DTO atualizar medico
+
+```java
+public record DadosAtualizacaoMedico(
+  @NotNull Long id,
+  String nome,
+  String telefone,
+  DadosEndereco endereco) {
+    }
+```
+
+### Método atualizar informações médico
+
+```java
+public void atualizarInformacoes(DadosAtualizacaoMedico dados) {
+  if (dados.nome() != null) {
+    this.nome = dados.nome();
+  }
+  if (dados.telefone() != null) {
+    this.telefone = dados.telefone();
+  }
+  if (dados.endereco() != null) {
+    this.endereco.atualizarInformacoes(dados.endereco());
+  }
+}
+```
+
+### Método atualizar informações endereço
+
+```java
+public void atualizarInformacoes(DadosEndereco dados) {
+  if (dados.logradouro() != null) {
+    this.logradouro = dados.logradouro();
+  }
+  if (dados.bairro() != null) {
+    this.bairro = dados.bairro();
+  }
+  if (dados.cep() != null) {
+    this.cep = dados.cep();
+  }
+  if (dados.uf() != null) {
+    this.uf = dados.uf();
+  }
+  if (dados.cidade() != null) {
+    this.cidade = dados.cidade();
+  }
+  if (dados.numero() != null) {
+    this.numero = dados.numero();
+  }
+  if (dados.complemento() != null) {
+    this.complemento = dados.complemento();
+  }
+}
+```
+
+## Sub rotas
+
+Antes de seguirmos para o próximo método, vamos entender um pouco como criar um rota dentro de uma rota principal. Até o momento adicionamos algumas anotações como `@GetMapping` ou `@PostMapping` para identificar o verbo do método, porem também podemos passar como parâmetro uma sub rota. Por exemplo o controller abaixo:
+
+```java
+@RestController
+@RequestMapping("filmes")
+public class FilmesController {
+  @GetMapping("/comedia")
+  public Page<DadosListagemFilme> listarFilmesComedia(Pageable paginacao) { ... }
+
+  @GetMapping("/acao")
+  public Page<DadosListagemFilme> listarFilmesAcao(Pageable paginacao) { ... }
+
+  @GetMapping("/suspense")
+  public Page<DadosListagemFilme> listarFilmesSuspense(Pageable paginacao) { ... }
+
+  @GetMapping("/nome/{nome}")
+  public Page<DadosListagemFilme> procurarFilmePorNome(@PathVariable String nome) { ... }
+}
+```
+
+Com as sub rotas podemos ter vários métodos com o mesmo verbo, porem cada um apontando para uma rota diferente, todos pertencendo a uma mesma rota principal. Além também de ser possível passar parâmetros dinâmicos através da rota, como feito em `/{nome}`, utilizamos as chaves "{ }" para informar ao método que sera recebido informações através da rota. Lembrando que é preciso fazer a anotação `@PathVariable` para que o Spring atribua as informações no parâmetro.
+
+## Exclusão logica
+
+Vamos adicionar uma funcionalidade para excluir o médico, porem não vamos realmente remover o médico do banco de dados, vamos apenas marca-lo como desativado, e isso é chamado de **Exclusão Logica**. Excluir de fato uma entidade no banco de dados pode ocasionar alguns problemas, principalmente se ela possuir relações com outras informações. Por exemplo no caso da clinica fictícia Voll Med, muito provavelmente ela ira armazenar o histórico do médico, e ela não poderia excluir essas informações até mesmo por questões de contrato.
+
+Então vamos começar por criar o método `excluirMedico`, ele ira receber apenas a informação do ID do médico. Porem não vamos enviar essa informação pelo corpo da requisição, e sim diretamente pela URL. Por exemplo para excluir o médico de ID 5 vamos utilizar a URL `http://localhost:8080/medicos/5`. Para capturar essa informação iremos criar uma nova rota com um parâmetro dinâmico, isso diretamente na anotação do verbo do método.
+
+```java
+@DeleteMapping("/{id}")
+@Transactional
+public void excluirMedico(@PathVariable Long id) {
+  var medico = repository.getReferenceById(id);
+  medico.excluir();
+}
+```
+
+Para criar o parâmetro dinâmico utilizamos as chaves com um nome no meio, ficando então `/{id}`, com isso e com a anotação `@PathVariable` qualquer informação que chegar na rota `/medicos/alguma_coisa` sera atribuído na variável *id* (obviamente se for possível converter para o tipo do parâmetro no método). Após isso chamamos o método `getReferenceById` do repository para carregar a entidade, e então executamos o método `excluir` da própria entidade. Lembrando novamente que apos abrir uma transação e alterar algum atributo de uma entidade, o Spring automaticamente faz o update no banco de dados.
+
+Agora resta criar a propriedade `ativo` na entidade *Medico* e no banco de dados, além de também adicionar o método `excluir`. Ja no método *listar*, sera preciso mudar para retornar apenas os médicos ativos.
+
+### Adicionando campo *ativo* e o método *excluir* na entidade Medico
+
+```java
+public class Medico {
+  // código omitido
+  private Boolean ativo;
+
+  public Medico(DadosCadastroMedico dados) {
+    this.ativo = true;
+    // código omitido
+  }
+  public void excluir() {
+    this.ativo = false;
+  }
+}
+```
+
+Sempre ao criar um médico ele estará como ativo, então não tem por que adicionar esse campo no DTO.
+
+### Nova migration para o campo *ativo*
+
+```sql
+ALTER TABLE medicos ADD ativo TINYINT;
+UPDATE medicos SET ativo = 1;
+ALTER TABLE medicos CHANGE ativo ativo TINYINT NOT NULL;
+```
+
+O campo *ativo* não pode ser nulo, porem ao adicionar uma nova coluna em uma tabela existente, todos as linhas já existentes ficaram como nulo neste campo, por isso na segunda linha utilizamos o `UPDATE` para alterar todas as colunas para TRUE. O `CHANGE` do MySQL permite alterar diversas informações de uma coluna da tabela, e um delas é o nome, por isso colocamos 2 vezes o mesmo nome `ativo ativo`, o primeiro é o nome antigo e o segundo o novo nome, logo se não é preciso alterar o nome, repetimos ele. Por fim adicionamos a constraint `NOT NULL`.
+
+### Método *listar* exibe apenas médicos ativos
+
+Agora no método listar, vamos retornar apenas os médicos que tiverem o ativo igual a TRUE. Para resolver isso sem criar consultas personalizadas, podemos utilizar as **consultas derivadas**, que com apenas o nome do método cria uma consulta especifica, e apesar de ser simples de entender, existem diversas formar de montar a consulta. O artigo que vou deixar o link explica alguns casos e como montar a consulta [Derived Query Methods](https://www.baeldung.com/spring-data-derived-queries).
+
+```java
+return repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
+```
+
+Como este não é um método padrão do repository, vamos precisar adicionar ele na classe `MedicoRepository`.
+
+```java
+Page<Medico> findAllByAtivoTrue(Pageable paginacao);
+```
+
+É necessario apenas assinar o método, o Spring identifica o nome e cria a query. O próprio nome ja é sugestivo, mas o que ele esta buscando são todos as entidades que possuem a coluna `ativo` marcado como TRUE.
+
+## Conclusão
+
+Por fim todos os métodos do CRUD foram aplicados, e concluímos as tarefas para o Curso 1. Também era necessario criar todos os mesmos métodos para a entidade `Paciente`, mas como ela é basicamente igual a de `Medico`, não sera necessario explicar ponto a ponto como foi feito.
