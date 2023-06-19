@@ -183,3 +183,43 @@ private record DadosErroValidacao(String campo, String mensagem) {
 O DTO precisa conter apenas o campo e sua mensagem. O construtor sera chamado la no `stream` e passado como parâmetro um objeto do tipo `FieldError`. Esse objeto contem os métodos `getField` e `getDefaultMessage`, que utilizamos para chamar o construtor padrão.
 
 Pronto, agora o método cadastrar médico retorna uma resposta padronizada contendo apenas os campos e os erros.
+
+## Segurança com Spring Security
+
+O Spring possui um modulo especifico para tratar de segurança, que é o **Spring Security**. Esse pacote tem 3 grandes objetivos, que são:
+
+- **Autenticação** : disponibiliza uma gama de opções customizáveis para autenticar o usuário, como por exemplo se vai ser feito através de um formulário, token (como o JWT), baseado em terceiros (como OAuth), algum protocolo, etc. Ele possui uma boa flexibilidade em como vamos gerenciar esse processo de autenticação.
+
+- **Autorização** : disponibiliza configurações para como lidar com permissões e acessos concedidos a um usuário autenticado. Podemos configurar com base em permissão especificas, como por exemplo bloquear perfis com permissão *A* de acessar métodos de permissão *B*. Podemos também ter controle de acesso através de URL, baseado em método e baseado em anotação.
+
+- **Proteção contra ataques** : disponibiliza alguns recursos para proteger a aplicação de uma variedade de ataques comuns, sendo alguns deles o Cross-Site Scripting (XSS), clickjacking, Cross-Site Request Forgery (CSRF), Injeção de SQL, entre outros. Ele utiliza alguns mecanismos de defesa, como a validação e sanitização de entrada, prevenção de CSRF por meio de tokens, tratamento adequado de erros de segurança e configurações de segurança personalizadas.
+
+No caso desse projeto o que vamos fazer é o controle de acesso e autenticação, pois até o momento ele poderia ser acessado por qualquer um que soubesse da url (caso a api estivesse hospedada em um servidor). E devemos nos atentar ao fato de que esse controle de acesso deve levar em consideração que uma api é **Stateless**, ou seja, ela não guarda estado, não existe uma seção aberta, o que difere de uma aplicação web que é **Stateful**, onde precisa guardar as informações do usuário logado.
+
+A solução que vamos utilizar sera a de tokens com o **JWT**. Mas o que é um token? Abaixo temos um exemplo:
+
+```java
+var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+```
+
+Um token nada mais é que uma string que contem algumas informações que passaram por um algoritmo de encriptação, e utilizamos o mesmo algoritmo também para validar o token.
+
+Agora veremos como sera o funcionamento da api com o JWT:
+
+1. Usuário envia as informações para o login : dentro a api teremos uma rota para o login, onde a aplicação ira consultar no banco de dados se o usuário realmente esta cadastrado.
+
+2. Api retorna o token : caso os dados sejam validados então a aplicação cria e retorna um token do JWT.
+
+3. Novas requisições devem enviar o token : agora o front end que ira consumir a api deve enviar no cabeçalho da requisição o token JWT para validar da operação.
+
+4. Api executa o método : caso o token seja valido, a aplicação executa o método em questão.
+
+### Adicionando o pacote Security
+
+Primeiramente precisamos adicionar a nova dependência, e podemos utilizar o mesmo método do curso anterior onde utilizamos a ferramenta *Spring Initializr* para copiar as dependências e colar elas no arquivo `pom.xml`. Esse pacote adicionar 2 novas dependências, a *starter-security* e a *security-test*.
+
+A partir deste momento todos os métodos da aplicação foram bloqueados, sendo apenas possível executar um método ao efetuar o login. Caso esteja utilizando uma ferramente como o **Insomnia** ou **Postman**, sera exibido apenas um erro de acesso negado, mas ao tentar executar através da web, sera aberto uma janela de login do próprio Spring Security, onde geralmente o usuário padrão é `user` e a senha é uma que ele imprime no console sempre que a api é iniciada.
+
+## \ AVISO /
+
+A partir deste momento serão necessários diversos passos até chegarmos no resultado mínimo esperado, com esse meio tempo sendo muito dificultado o teste da api ou das funcionalidades implementadas. Mas basta aplicar todos os passos que o projeto funcionara. Iremos seguir uma sequencia de quais tarefas serão feitas primeiro, porem diversas funcionalidades podem ser executadas antes ou depois.
