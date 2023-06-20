@@ -1,4 +1,4 @@
-package com.api.api_rest.infra.security;
+package med.voll.VollMedApi_02.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfigurations {
 
   @Autowired
@@ -30,8 +28,6 @@ public class SecurityConfigurations {
         .authorizeHttpRequests(req -> {
           req
               .requestMatchers(HttpMethod.POST, "/login").permitAll()
-              // .requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN")
-              .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
               .anyRequest().authenticated();
         })
         .addFilterBefore(securityFilter,
@@ -48,4 +44,5 @@ public class SecurityConfigurations {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
+
 }

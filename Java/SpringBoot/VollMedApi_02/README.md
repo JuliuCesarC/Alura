@@ -223,3 +223,93 @@ A partir deste momento todos os métodos da aplicação foram bloqueados, sendo 
 ## \ AVISO /
 
 A partir deste momento serão necessários diversos passos até chegarmos no resultado mínimo esperado, com esse meio tempo sendo muito dificultado o teste da api ou das funcionalidades implementadas. Mas basta aplicar todos os passos que o projeto funcionara. Iremos seguir uma sequencia de quais tarefas serão feitas primeiro, porem diversas funcionalidades podem ser executadas antes ou depois.
+
+## Domínio Usuário
+
+Para ser validado se o usuário possui ou não cadastro no sistema, sera necessario uma tabela para armazenar tais informações. Primeiramente vamos criar a entidade `Usuario` dentro do pacote `domain.usuario`. Esta classe precisa apenas de 3 campos, o **id**, o **login** e a **senha**, e também as anotações para indicar a tabela no banco de dados, entidade, entre outros.
+
+```java
+@Table(name = "usuarios")
+@Entity(name = "Usuario")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class Usuario {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String login;
+  private String senha;
+}
+```
+
+### Migration usuarios
+
+O proximo passo é criar uma migration para adicionar a tabela *usuarios* no banco de dados.
+
+```sql
+create table usuarios(
+  id bigint not null auto_increment,
+  login varchar(100) not null,
+  senha varchar(255) not null,
+  primary key(id)
+);
+```
+
+### Usuário repository
+
+Criaremos o repository para acessar o banco de dados.
+
+```java
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {}
+```
+
+### Classe de serviço de autenticação
+
+Agora precisamos criar uma classe que ira utilizar o Repository para buscar as informações do usuário no bando de dados. Ela sera carregada automaticamente pelo Spring, pois ele possui um comportamento padrão de buscar por estes arquivos de configuração, bastando ele seguir um certo padrão para poder ser encontrado.
+
+Ainda dentro do domínio do usuário, vamos adicionar o arquivo `AutenticacaoService` que sera uma classe de serviço, então adicionaremos a anotação `@Service` em cima da classe, porem para que o Spring Security saiba que essa sera uma classe de serviço de autenticação, precisamos implementar a interface `UserDetailsService`. O único método que a interface pede para implementar é o `loadUserByUsername`, que ira buscar no banco de dados as informações do usuário.
+
+```java
+@Service
+public class AutenticacaoService implements UserDetailsService {
+  @Autowired
+  private UsuarioRepository repository;
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return repository.findByLogin(username);
+  }
+}
+```
+
+> Lembrando que é preciso adicionar o `@Autowired` para que seja feita a injeção de dependência da classe Repository.
+
+Sempre que o cliente tentar efetuar o login, o Spring Security automaticamente ira chamar este método. O processo e as configurações de login do usuário serão feitos em seguida, mas primeiro vamos adicionar o método `findByLogin` na classe *UsuarioRepository*.
+
+### Busca usuário através do login
+
+Para este método vamos utilizar novamente as *consultas derivadas*, onde é preciso apenas assinar o método na classe repository, que o Spring compreende o funcionamento do método apenas pelo nome. Por exemplo o método `findByLogin`, ele deixa claro o intuito de fazer uma busca através da coluna *login*.
+
+```java
+UserDetails findByLogin(String login);
+```
+
+## Configurações de segurança
+
+Como visto anteriormente, o Spring Security cria um formulário para autenticar o usuário, mas como vamos utilizar os tokens, precisamos fazer algumas configurações de segurança. Geralmente utilizamos o arquivo *application.properties*, porem como esta é uma configuração mais complexa, que envolve algumas classes, então vamos criar um arquivo separado para concentrar essas configurações.
+
+Dentro do pacote `infra.security` vamos adicionar a classe `SecurityConfigurations`. Acima da classe iremos adicionar as anotações `@Configuration` pois ele é um arquivo de configuração, e a `@EnableWebSecurity` para indicar ao Spring Security que vamos personalizar algumas configurações de segurança.
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfigurations {}
+```
+
+### Aplicação Stateless
+
+A primeira configuração que vamos fazer é de mudar para uma aplicação stateless, onde não guardamos a seção do usuário.
+
+Agora vamos adicionar um método que sera responsável pela configuração de autenticação que sera stateless, ou seja, não guarda estado.
