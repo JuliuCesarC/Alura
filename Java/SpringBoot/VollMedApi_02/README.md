@@ -310,6 +310,140 @@ public class SecurityConfigurations {}
 
 ### Aplicação Stateless
 
-A primeira configuração que vamos fazer é de mudar para uma aplicação stateless, onde não guardamos a seção do usuário.
+A primeira configuração que vamos fazer é de mudar para uma aplicação stateless, onde não guardamos a seção do usuário. Como esta classe esta sendo carregada pelo security, precisamos retornar um objeto desse pacote, que é o `SecurityFilterChain` e o nome do método sera `securityFilterChain` (o nome não é importante para o security). Quando esse método for chamado, ele recebera um objeto do tipo `HttpSecurity`, logo vamos assinar ele como parâmetro.
 
-Agora vamos adicionar um método que sera responsável pela configuração de autenticação que sera stateless, ou seja, não guarda estado.
+```java
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  return http.csrf(csrf -> csrf.disable())
+      .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .build();
+}
+```
+
+> Os nomes dos parâmetros da função anônima não são importantes, podendo ser alterado. Por exemplo poderíamos mudar o nome do *csrf* para `(CrossSiteRequestForgery -> CrossSiteRequestForgery.disable())`
+
+Utilizamos o objeto `http` com o método `csrf` para configurar este tipo de segurança, dentro dele utilizamos uma função anônima com o operador de seta `->` para desabilitar a proteção contra esse tipo de ataque, pois o próprio token é uma proteção contra ataques CSRF. Em seguida encadeamos o `sessionManagement` que serve para configurar a politica de seção, e dentro dele chamamos o `sessionCreationPolicy` para criar uma politica do tipo `STATELESS`. Por fim utilizamos o `build` para construir o objeto *SecurityFilterChain*. Explicaremos o `@Bean` logo abaixo.
+
+### Funcionamento do método securityFilterChain
+
+Até o momento basicamente construímos o método sem explicar muito, o que pode deixar algumas duvidas. Como esse método ira funcionar? Será que devemos chamar esse método em alguma outra classe?
+
+Esta é uma classe de configuração e que ira servir apenas para o Spring Security, não sendo necessario instanciar nada ou chamar algum método. Como visto anteriormente adicionamos a anotação `@EnableWebSecurity` que serve para o security carregar esta classe. Porem não basta apenas que ele carregue o arquivo, é preciso **expor o retorno** de cada método, e isso é feito através do `@Bean` que ira expor para o security o objeto retornado, por exemplo o `SecurityFilterChain`. Então quando o Spring Security precisar do objeto `SecurityFilterChain` ele ira chamar nosso método, assim aplicando as configurações que criamos.
+
+IMPORTANTE: agora que adicionamos esse arquivo de configuração todas as rotas da api estão abertas, pois desativamos o comportamento padrão do Spring Security. Em seguida vamos criar a rota para login, para ai então começarmos a trabalhar com o JWT.
+
+## Spring Boot 3.1 / DEPRECATED
+
+A partir da versão 3.1 do Spring foi alterado a forma como é declarado as configurações de segurança, agora com os métodos recebendo uma função anônima como parâmetro (algo semelhante aos callbacks do javascript). O método *securityFilterChain* acima já esta em conformidade com a nova forma, mas vamos olhar como seria na forma antiga.
+
+```java
+// DEPRECATED 
+return http.csrf().disable()
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and().build();
+```
+
+Anteriormente era encadeado tanto o método como as suas configuração. Com a nova forma encadeamos apenas os métodos principais, e as configurações especificas são feitas dentro da função anônima, podendo também ser configurado diversos parâmetro na mesma função. Com isso se torna mais legível para saber qual configuração é de que método.
+
+## Controller para rota de login
+
+Antes de seguirmos para o token JWT precisamos criar uma rota para o login, onde o usuario podera enviar suas informações para poder receber o token de autenticação. Dentro o pacote `controller` vamos adicionar o arquivo `AutenticacaoController`.
+
+```java
+@RestController
+@RequestMapping("/login")
+public class AutenticacaoController {}
+```
+
+E em seguida vamos criar o método `efetuarLogin`.
+
+```java
+@PostMapping
+public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {}
+```
+
+Esse DTO ainda não foi criado, então vamos adicionar ele no pacote `usuario`
+
+```java
+public record DadosAutenticacao(String login, String senha) {}
+```
+
+Agora que temos as informações do usuário no DTO precisamos efetuar a autenticação, então vamos chamar o método `loadUserByUsername` que criamos anteriormente. Porem não chamamos a classe `AutenticacaoService` diretamente, vamos utilizar uma função do Spring Security, e ela sim por baixo dos panos vai executar o método em questão. A classe que é responsável por disparar o método de autenticação é a `AuthenticationManager`, e para utilizar ela no controller, vamos criar uma propriedade com esse tipo.
+
+```java
+@Autowired
+private AuthenticationManager manager;
+
+@PostMapping
+public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+  var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+  var authentication = manager.authenticate(authenticationToken);
+
+  return ResponseEntity.ok().build();
+}
+```
+
+Na propriedade `manager` temos o método `authenticate` que recebe como parâmetro um token com os dados de login, que é basicamente um DTO padrão do Security para este tipo de função. Devido a isso na primeira linha utilizamos o `new UsernamePasswordAuthenticationToken()` para converter o nosso DTO no token que o security utiliza. Logo em seguida executamos o método *authenticate* passando então o token. Por fim retornamos um objeto *ResponseEntity* só para testarmos se o método funcionou como esperado, pois logo faremos algumas alterações.
+
+### Erro ao iniciar a aplicação
+
+Apos criarmos o controller teremos o seguinte erro na aplicação `APPLICATION FAILED TO START`, que ocorreu devido a aplicação não ter conseguido encontrar um objeto do tipo `AuthenticationManager` e por consequência não conseguir injetar ele na propriedade do controller. Isso é devido a aplicação não conseguir injetar automaticamente um objeto do tipo *AuthenticationManager*, mesmo sendo uma classe do Spring. Dessa forma sera necessario criar uma configuração para que a aplicação consiga acessar essa dependência.
+
+Como o método em questão é uma configuração de segurança, vamos cria-lo na classe `SecurityConfigurations`. O método precisa retornar um objeto do tipo `AuthenticationManager` e recebe como parâmetro um do tipo `AuthenticationConfiguration`. Agora basta chamar o método `getAuthenticationManager` que sabe como criar a classe `AuthenticationManager` que iremos utilizar no controller. Lembrando de fazer a anotação `@Bean`, pois é ela que vai disponibilizar o objeto para o Security usar e/ou para injetar como dependência.
+
+```java
+@Bean
+public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws 
+Exception {
+  return configuration.getAuthenticationManager();
+}
+```
+
+Pronto, com isso a aplicação ja deve funcionar normalmente.
+
+## Adicionando usuário na tabela
+
+Apesar de a aplicação estar funcionando normalmente, ao fazer uma requisição para a rota de login o que iremos receber é o erro 403 FORBIDDEN, ou seja proibido. Porem o que de fato aconteceu é que não temos nenhum usuário cadastrado no banco de dados, e com isso qualquer requisição sera de fato não autorizada. Logo para que o cliente seja autenticado, precisamos cadastrar eles no banco de dados.
+
+Podemo tanto criar uma rota para cadastrar novos usuários ou apenas fazer isso diretamente no banco de dados (no terminal, ou utilizando uma ferramenta como o MySQL Workbench). Os campos necessários para cadastrar o usuário são o de email e senha, porem por questão de segurança não inserimos abertamente a senha na tabela, e sim a senha encriptada. O macarismo de criptográfica que vamos utilizar é o Bcrypt, e sera necessario fazer uma configuração para informar ao Security que a senha no banco de dados esta nesse formato. Apenas como um exemplo, a senha `123456` ficaria:
+
+```text
+$2a$12$4cUTdbDXiUKe0rmgFSGw/uofYL0rRFXEJoqZCn/pH8IfWQ/KQsm4i
+```
+
+### Configurando encoder Bcrypt
+
+Na classe `SecurityConfigurations` vamos adicionar mais um método que retorna um objeto do tipo `PasswordEncoder`, e dentro dele vamos retornar uma instancia da classe `BCryptPasswordEncoder`. Com isso o configuramos o Security para utilizar o encoder do Bcrypt.
+
+```java
+@Bean
+public PasswordEncoder passwordEncoder() {
+  return new BCryptPasswordEncoder();
+}
+```
+
+## Implementando uma interface UserDetails
+
+Apesar da classe *Usuario* estar sendo carregada pelo Spring, ela não esta pelo Spring Security, logo ela não sabe quais os campos da classe, nem os parâmetros dela. A solução disponibilizada pelo security é implementar a interface `UserDetails`, e com ela vem diversos métodos que podem ser utilizados para fazer configurações como se a conta deve expirar, se ela pode ser bloqueada, se ela esta ativa, entre outros.
+
+Como nesse projeto não temos exigência para as configurações implementadas com a interface, vamos assinalar todos como **true** com exceção de 3 métodos, o `getUsername`, `getPassword` e `getAuthorities`, onde os 2 primeiros devem retornar seus respectivos campos. Já o terceiro é um caso a parte, o security espera que nesse método seja retornado uma lista com os "cargos" do usuário, que seria a autoridade do usuário para acessar os métodos da api, porem neste projeto não vamos ter rotas específicas para determinados cargos, todos os métodos podem ser acessados por qualquer usuário.
+
+Neste curso não vamos implementar os cargos, mas ao final desse documento vou adicionar essa funcionalidade. Mas por agora precisamos dar um jeito de retornar uma lista de autoridades para o método, pois é obrigatório para o security, o que pode ser feito é criar uma lista passando apenas um tipo de cargo. Com isso temo os 3 métodos.
+
+```java
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+  return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+}
+@Override
+public String getPassword() {
+  return senha;
+}
+@Override
+public String getUsername() {
+  return login;
+}
+```
+
+No método `getAuthorities` retornamos uma lista da classe `SimpleGrantedAuthority`, que recebe como parâmetro o cargo. Por padrão o cargo possui o prefixo `ROLE_` e em seguida a autoridade, que pode ser qualquer uma escolhida.
