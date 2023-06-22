@@ -447,3 +447,102 @@ public String getUsername() {
 ```
 
 No método `getAuthorities` retornamos uma lista da classe `SimpleGrantedAuthority`, que recebe como parâmetro o cargo. Por padrão o cargo possui o prefixo `ROLE_` e em seguida a autoridade, que pode ser qualquer uma escolhida.
+
+## Token JWT
+
+Ao executar o método de login vamos receber o código 200 OK, porem o que realmente deveríamos retornar é o token JWT para que o usuário se autentique nas outras rotas. Para gerar os tokens nesse formato precisamos adicionar uma nova biblioteca, que sera a **Auth0**. Essa biblioteca é disponibilizada pela empresa de mesmo nome, e tem o foco em criar soluções para autenticação em aplicações. Porem existem diversas outras bibliotecas semelhantes, no site `jwt.io` na opção *Libraries* vamos abrir um pagina com diversas bibliotecas que podemos escolher, mas é preciso se atentar na linguagem selecionada.
+
+No card da biblioteca temos uma opção `View Repo`, onde seremos direcionados ao repositório no github. No arquivo readme temos varias explicações sobre o projeto, vamos copiar a dependência e colocar no nosso arquivo *pom.xml*. Pronto com isso ja instalamos o auth0 no projeto, mas ainda iremos utilizar o repositório para outras consultas.
+
+### Gerando o token JWT
+
+Vamos criar uma classe especifica para lidar com os tokens, e utiliza-la na rota de login, pois temos trechos de códigos um pouco mais complexos para essa tarefa, o que tornaria a classe controller muito verbosa e adicionando muitas responsabilidades a ela.
+
+Dentro do pacote `infra.security` vamos criar a classe `TokenService` e acima dela adicionar a anotação `@Service`. O primeiro método deve retornar o tipo *string* e dentro dele é que vamos utilizar a nova biblioteca. De volta ao repositório do pacote, temos o tópico **Create a JWT** e abaixo dele um trecho de código de exemplo, vamos copia-lo e colar no método.
+
+```java
+public String gerarToken() {
+  try {
+    var algoritmo = Algorithm.RSA256(rsaPublicKey, rsaPrivateKey);
+    String token = JWT.create()
+        .withIssuer("auth0")
+        .sign(algoritmo);
+  } catch (JWTCreationException exception){
+    // Invalid Signing configuration / Couldn't convert Claims.
+  }
+}
+```
+
+Vamos entender o funcionamento do código e adaptar o que necessario. Primeiramente devemos selecionar um algoritmo de criptografia, no exemplo foi escolhido o *RSA256* mas vamos utilizar o **HMAC256**, que recebe uma senha para assinar o token, deve ser uma senha forte e de preferencia não ficar exposta diretamente no código. Em seguida podemos retornar diretamente o token sem a necessidade da variável, e então chamamos o JWT com o método `create` para começar a criar o token. Após esse método, devemos encadear algumas configurações que iram adicionar informações no token, e algumas delas são:
+
+- **Issuer** : adiciona no token o proprietário da api que o gerou
+
+- **Subject** : adiciona o email do usuário no token
+
+- **ExpiresAt** : adiciona o horário que o token expira
+
+- **Claim** : adiciona qualquer informação de chave-valor. Por exemplo o código `.withClaim("id", usuario.getId())` adiciona ao token a informação do id do usuário
+
+```java
+public String gerarToken(Usuario usuario) {
+  try {
+    var algoritmo = Algorithm.HMAC256(secret);
+    return JWT.create()
+        .withIssuer("API Voll.med")
+        .withSubject(usuario.getLogin())
+        .withExpiresAt(dataExpiracao())
+        .sign(algoritmo);
+  } catch (JWTCreationException exception) {
+    throw new RuntimeException("erro ao gerar token jwt", exception);
+  }
+}
+```
+
+Como precisamos das informações do usuario, foi assinado ele como parâmetro do método. No algoritmo adicionamos a propriedade `secret`, que busca a informação da senha no arquivo *application.properties*. Ja na configuração de expiração chamamos um método da própria classe que estipula um tempo máximo de 2 horas de duração do token.
+
+```java
+@Value("${api.security.token.secret}")
+private String secret;
+
+// CÓDIGO OMITIDO
+
+private Instant dataExpiracao() {
+  return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+}
+```
+
+Com a anotação `@Value` o Spring nos permite ler alguma informação no arquivo `application.properties`, que além de configurações de projeto, podemos adicionar campos personalizados. Como passamos a chave `${api.security.token.secret}` como parâmetro,  ele ira procurar no arquivo o valor inserido nessa chave. Logo precisamos configurar essas informações no arquivo.
+
+```properties
+api.security.token.secret=${JWT_SECRET:123456}
+```
+
+> O nome da chave pode ser qualquer coisa, mas é interessante ser descritivo e obrigatoriamente conter o mesmo nome na anotação que ira utiliza-la.
+
+Quado passamos o `${JWT_SECRET}` informamos que devera ser procurado na variável de ambiente da maquina esse valor (variável essa que deve ter o nome JWT_SECRET), mas como ainda estamos em tempo de produção podemos passar um valor caso a variável não seja encontrada, por isso adicionamos o `:123456`.
+
+### Controller retornando token
+
+Agora voltamos para a classe controller e vamos criar uma propriedade da classe `TokenService` criada anteriormente, e vamos utilizar o método `gerarToken` passando o usuario como parâmetro. Por fim no ResponseEntity retornamos o DTO do token.
+
+```java
+@Autowired
+private TokenService tokenService;
+
+@PostMapping
+public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+  var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+  var authentication = manager.authenticate(authenticationToken);
+  var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+
+  return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+}
+```
+
+A variável `authentication` representa o usuario autenticado, com ela podemos chamar o método `getPrincipal` para obter as informações do usuario, porem ele retorna um objeto, por isso é necessario fazer o casting dele com o `(Usuario)`. Por fim vamos criar o DTO `DadosTokenJWT` no pacote `infra.security`.
+
+```java
+public record DadosTokenJWT(String token) {}
+```
+
+Pronto, com isso a rota de *login* agora esta retornando o token JWT. Mas apesar de ter uma grande quantidade de passos para chegar nesse resultado, ainda não estamos validando esse token nas outras rotas, e é o que veremos a seguir.
