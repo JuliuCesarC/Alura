@@ -521,6 +521,27 @@ api.security.token.secret=${JWT_SECRET:123456}
 
 Quado passamos o `${JWT_SECRET}` informamos que devera ser procurado na variável de ambiente da maquina esse valor (variável essa que deve ter o nome JWT_SECRET), mas como ainda estamos em tempo de produção podemos passar um valor caso a variável não seja encontrada, por isso adicionamos o `:123456`.
 
+### Verificando o token JWT
+
+Existe mais alguns passos a frente para precisar do método de verificar o token, mas vamos aproveitar para deixar ele pronto. Este método deve receber o token, deve valida-lo e por fim retornar o email do usuário. Novamente no repositório do auth0 temos outro trecho de código de exemplo para verificar um token, fazendo as adaptações necessárias temos:
+
+```java
+public String getSubject(String tokenJWT) {
+  try {
+    var algoritmo = Algorithm.HMAC256(secret);
+    return JWT.require(algoritmo)
+        .withIssuer(Issuer)
+        .build()
+        .verify(tokenJWT)
+        .getSubject();
+  } catch (JWTVerificationException exception) {
+    throw new RuntimeException("Token JWT inválido ou expirado!");
+  }
+}
+```
+
+Configuramos o algoritmo para o mesmo que estamos utilizando, informamos o *Issuer*, chamamos o *build* e então utilizamos o `verify` para verificar o token, caso ele seja valido então chamamos o `getSubject` para pegar o email do usuario, caso não ele joga uma exception.
+
 ### Controller retornando token
 
 Agora voltamos para a classe controller e vamos criar uma propriedade da classe `TokenService` criada anteriormente, e vamos utilizar o método `gerarToken` passando o usuario como parâmetro. Por fim no ResponseEntity retornamos o DTO do token.
@@ -546,3 +567,60 @@ public record DadosTokenJWT(String token) {}
 ```
 
 Pronto, com isso a rota de *login* agora esta retornando o token JWT. Mas apesar de ter uma grande quantidade de passos para chegar nesse resultado, ainda não estamos validando esse token nas outras rotas, e é o que veremos a seguir.
+
+## Interceptando requisições
+
+Desde quando fizemos a configuração para tornar a aplicação **stateless** todos os métodos estão abertos para qualquer requisição, porem deve ser obrigatório o envio do token pelo usuario e também precisamos validar esse token, e o melhor momento para executar essa tarefa é antes dela cair no controller. Mas primeiro vamos falar sobre o pacote *jakarta.servlet*.
+
+Os Servlets são unidades que processão as requisições recebidas na aplicação, ela padroniza o tratamento de requisições e respostas de aplicações Web no Java. Por exemplo, um servlet recebe uma requisição e decide qual controller ira chamar. Esse pacote é uma especificação do java, e ja vem incorporado no Spring Boot, porem pode ser utilizado em qualquer aplicação java. Mas o que estamos interessados nesse pacote é o recurso **Filter** que permitem interceptar e manipular requisições e respostas antes de elas chegaram no próprio Spring, e é ele que vamos utilizar para autenticar o token. Obviamente os *filters* não servem apenas para isso, podendo ser utilizamos para autorização, registro de logs e auditoria, para compressão de resposta, entre outros. Na aplicação podemos ter zero ou vários filtros, sendo possível encadear diversos deles em sequencia, onde o *filter* pode chamar o proximo ou não de acordo com uma condição.
+
+## Criando o filtro
+
+Agora vamos criar um filter no pacote `infra.security` com o nome `SecurityFilter`, e a anotação da classe sera `@Component`, pois ela não é uma classe controller, nem uma repository, nem de configuração (não de configuração para o Spring) e nem uma de service, logo para esse tipo de classe temos a anotação *component*, com isso a classe sera carregada pelo Spring mas não tem um significado semântico forte.
+
+Normalmente ao construir uma classe filter do jakarta, implementamos a interface `Filter` desse mesmo pacote, porem como ja estamos carregando a classe com o Spring e queremos algumas facilidades que ele traz, vamos extender da classe `OncePerRequestFilter` que ela sim implementa a interface Filter. O nome da classe é praticamente auto explicativa, onde é para executar o filtro uma unica vez para cada requisição.
+
+```java
+@Component
+public class SecurityFilter extends OncePerRequestFilter {
+
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain){
+    System.out.println("Filtro sendo chamado!!!!");
+  }
+}
+```
+
+O único método que é obrigatório sobrescrever é o `doFilterInternal`, e após adicionarmos esse filtro, todas as rotas retornam o código 200 mas não enviam nada no corpo da resposta. Isso ocorre por que a partir do momento que adicionamos 1 filtro na aplicação, ele obrigatoriamente precisa chamar a **cadeia de filtros** caso a requisição passe pela condição, caso contrario acontece o erro citado acima, o proximo passo nunca é chamado.
+
+No método temos 3 parâmetros assinados sendo o terceiro o que representa a cadeia de filtros, ou seja precisamos chamar ele passando o *request* e o *response* como parâmetro para que as próximas função sejam chamadas corretamente.
+
+```java
+@Override
+protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain){
+  filterChain.doFilter(request, response);
+}
+```
+
+### Adicionando a logica
+
+Para recuperar o token dentro do método precisamos sabe por onde ele sera enviado, e como esta mais envolvido com a configuração de segurança ele não é enviado no corpo da requisição e sim no cabeçalho, sendo que temos um especifico para enviar o token, que é o **cabeçalho Authorization**. Lembrando que o cliente que vai consumir essa api precisar seguir essa padrão também.
+
+No Insomnia temos como simular esse cabeçalho, indo na navbar e abrindo a aba **auth** e escolhendo a opção **bearer token**, sera aberto a janela com o campo *token*m onde iremos adicionar o token enviado pela rota *login*, já no campo *prefix* vamos deixar em branco que o Insomnia automaticamente envia a string `Bearer`.
+
+Antes de validarmos o token, vamos olhar a função `recuperarToken` que sera usada no método principal, ela ira receber o `request` como parâmetro, e retorna a string do token, ou null caso esteja vazia.
+
+```java
+private String recuperarToken(HttpServletRequest request) {
+  var authorizationHeader = request.getHeader("Authorization");
+  if (authorizationHeader != null) {
+    return authorizationHeader.replace("Bearer ", "");
+  }
+  return null;
+}
+```
+
+> Na string "Bearer " do replace, não esquecer de adicionar o espaço apos a palavra, pois se não o token ira ficar com um espaço em brando antes da primeira letra.
+
+O objeto *request* já possui um método ideal que é o `getHeader` onde passamos o nome do cabeçalho e ele recupera a informação desse campo. Em seguida validamos se ele não é nulo e então retornamos o token. Utilizamos o `replace("Bearer ", "")` pois como foi dito anteriormente, o Insomnia envia o prefixo *Bearer* antes do token.
+
