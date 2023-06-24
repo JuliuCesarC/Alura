@@ -602,11 +602,11 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
 }
 ```
 
-### Adicionando a logica
+### Função para recuperar o token
 
-Para recuperar o token dentro do método precisamos sabe por onde ele sera enviado, e como esta mais envolvido com a configuração de segurança ele não é enviado no corpo da requisição e sim no cabeçalho, sendo que temos um especifico para enviar o token, que é o **cabeçalho Authorization**. Lembrando que o cliente que vai consumir essa api precisar seguir essa padrão também.
+Para recuperar o token dentro do método precisamos sabe por onde ele sera enviado, e como esta mais envolvido com a configuração de segurança ele não é enviado no corpo da requisição e sim no cabeçalho, sendo que temos um especifico para enviar o token, que é o **cabeçalho Authorization**. Lembrando que o cliente que vai consumir essa api precisar seguir esse mesmo padrão.
 
-No Insomnia temos como simular esse cabeçalho, indo na navbar e abrindo a aba **auth** e escolhendo a opção **bearer token**, sera aberto a janela com o campo *token*m onde iremos adicionar o token enviado pela rota *login*, já no campo *prefix* vamos deixar em branco que o Insomnia automaticamente envia a string `Bearer`.
+No Insomnia temos como simular esse cabeçalho, indo na navbar e abrindo a aba **auth** e escolhendo a opção **bearer token**, sera aberto a janela com o campo *token* onde iremos adicionar o token enviado pela rota *login*, já no campo *prefix* vamos deixar em branco que o Insomnia automaticamente envia a string `Bearer`.
 
 Antes de validarmos o token, vamos olhar a função `recuperarToken` que sera usada no método principal, ela ira receber o `request` como parâmetro, e retorna a string do token, ou null caso esteja vazia.
 
@@ -624,3 +624,95 @@ private String recuperarToken(HttpServletRequest request) {
 
 O objeto *request* já possui um método ideal que é o `getHeader` onde passamos o nome do cabeçalho e ele recupera a informação desse campo. Em seguida validamos se ele não é nulo e então retornamos o token. Utilizamos o `replace("Bearer ", "")` pois como foi dito anteriormente, o Insomnia envia o prefixo *Bearer* antes do token.
 
+### Adicionando a logica
+
+Os próximos passos são validar o token e autenticar o usuario que fez a requisição, e para a primeira tarefa iremos chamar o método `getSubject` da classe `TokenService`.
+
+```java
+@Autowired
+private TokenService tokenService;
+
+// Código omitido
+  var tokenJWT = recuperarToken(request);
+  var subject = tokenService.getSubject(tokenJWT);
+```
+
+Com isso tanto o token foi validado como temos na variável `subject` o email do usuario, e com ele vamos buscar o usuario no banco de dados através do email, para então autenticarmos essa requisição. Porem sera necessario verificar se esta vindo um token na requisição, pois na rota `/login` não é enviado o token, logo ao tentar valida-lo ira ocorrer um erro e a requisição não sera processada.
+
+```java
+@Autowired
+private UsuarioRepository repository;
+// Código omitido
+
+  var tokenJWT = recuperarToken(request);
+  if (tokenJWT != null) {
+    var subject = tokenService.getSubject(tokenJWT);
+    var usuario = repository.findByLogin(subject);
+  }
+```
+
+Por fim é necessario autorizar o usuario da requisição, e fazemos isso com a classe do Spring `SecurityContextHolder` chamando o método estático `getContext` e por fim setando um objeto *usuario logado* com o método `setAuthentication`. Porem este ultimo método recebe objeto *authentication* que pode ser criado instanciando a classe `UsernamePasswordAuthenticationToken`, onde ela recebe no primeiro parâmetro o objeto *Usuario*, no segundo a credencial, que no caso não é necessario devido a ja estarmos informando a entidade Usuario, e o terceiro é a autorização.
+
+```java
+@Override
+protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain 
+filterChain)
+    throws ServletException, IOException {
+  var tokenJWT = recuperarToken(request);
+  if (tokenJWT != null) {
+    var subject = tokenService.getSubject(tokenJWT);
+    var usuario = repository.findByLogin(subject);
+    var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+  }
+  filterChain.doFilter(request, response);
+}
+```
+
+Agora vamos revisar o funcionamento do método. Na primeira linha recuperamos o token para em seguida validar se esta nulo ou não, caso não, dentro do bloco de código selecionamos o email do usuario com o *getSubject* e passamos ele para o *repository* recuperar a entidade Usuario no banco de dados, em seguida criamos o objeto *authentication* passando a entidade e seu *cargo* (que no momento é apenas ROLE_USER), e por fim podemos forçar a autenticação da requisição com o *SecurityContextHolder* pois o token ja foi verificado na classe *tokenService*. Fora do bloco de códigos, não podemos esquecer de chamar o *filterChain* para que ele de sequencia a aplicação.
+
+## Configurando autenticação para as rotas
+
+Com o filtro pronto precisamos exigir a autenticação da requisição em todas as rotas, com exceção é claro da rota *login*, pois desde quando configurado a aplicação para *stateless* todas as rotas estão abertas, com agora o filtro a diferença que ele exige que seja enviado um token na requisição, porem se enviarmos qualquer coisa no token como `123456` ja é valido para executar o método.
+
+Esta configuração sera feita no arquivo `SecurityConfigurations` no método `securityFilterChain`. Vamos utilizar o `authorizeHttpRequests` para essa tarefa, ele nos fornece um objeto do tipo *AuthorizationManagerRequestMatcherRegistry* e com ele podemos configurar as restrições para as rotas.
+
+```java
+return http.csrf(csrf -> csrf.disable())
+  .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+  .authorizeHttpRequests(req -> {
+    req
+        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+        .anyRequest().authenticated();
+  })
+  .build();
+```
+
+Com o objeto `req` podemos encadear as configurações, e são elas a `requestMatchers` que nos permite mapear uma rota e atribuir uma configuração a ela, que no caso foi o `permitAll`, ou seja qualquer requisição para `/login` deve ser permitida, e em seguida utilizamo o `anyRequest` para selecionar todas as outras rotas não mapeadas e aplicamos o `authenticated` para exigir que suas requisições sejam autenticadas.
+
+### Ordenando os filtros
+
+Apos a configuração anterior, todas as rotas com exceção da *login* foram bloqueadas, isso ocorre devido ao fato de haver mais de um filtro na aplicação, o que criamos e o do próprio Spring, e por padrão ele ira chamar o seu por primeiro, logo ele checa se o usuario esta autenticado (e obviamente não esta) e já bloqueia a requisição, assim nem chamando o nosso filtro para autenticar o usuario. Para solucionar esse problema precisamos configurar a ordem de quais filtros serão chamados.
+
+Ainda no método `securityFilterChain` vamos adicionar uma nova configuração antes do `.build()`, que sera o `addFilterBefore` que recebe no primeiro parâmetro o filtro que deve ser chamado antes, e no segundo o filtro o que deve ser chamado depois.
+
+```java
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  return http.csrf(csrf -> csrf.disable())
+      .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .authorizeHttpRequests(req -> {
+        req
+            .requestMatchers(HttpMethod.POST, "/login").permitAll()
+            .anyRequest().authenticated();
+      })
+      .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+      .build();
+}
+```
+
+No primeiro parâmetro do *addFilterBefore* passamos o filtro que criamos e no segundo o filtro padrão do Spring, que podemos chamar através do `UsernamePasswordAuthenticationFilter.class`.
+
+Pronto, com isso temos todas as rotas funcionando como esperado.
+
+Em sequencia vamos adicionar a funcionalidade de *cargos* na aplicação. Como sera uma tarefa extra curso, pode ser que algumas boas praticas não sejam seguidas.
