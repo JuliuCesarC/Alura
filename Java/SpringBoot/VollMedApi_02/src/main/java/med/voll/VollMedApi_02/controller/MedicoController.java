@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class MedicoController {
   private MedicoRepository repository;
 
   @PostMapping
+  @Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
   @Transactional
   public ResponseEntity cadastrarMedico(@RequestBody @Valid DadosCadastroMedico dados,
       UriComponentsBuilder uriBuilder) {
@@ -49,13 +51,16 @@ public class MedicoController {
     var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
     return ResponseEntity.ok(page);
   }
+
   @GetMapping("/{id}")
+  @Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
   public ResponseEntity detalharMedico(@PathVariable Long id) {
     var medico = repository.getReferenceById(id);
     return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
   }
 
   @PutMapping
+  @Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
   @Transactional
   public ResponseEntity atualizarMedico(@RequestBody @Valid DadosAtualizacaoMedico dados) {
     var medico = repository.getReferenceById(dados.id());
@@ -65,6 +70,7 @@ public class MedicoController {
   }
 
   @DeleteMapping("/{id}")
+  @Secured({ "ROLE_ADMIN" })
   @Transactional
   public ResponseEntity excluirMedico(@PathVariable Long id) {
     var medico = repository.getReferenceById(id);

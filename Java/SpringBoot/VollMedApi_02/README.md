@@ -716,3 +716,68 @@ No primeiro parâmetro do *addFilterBefore* passamos o filtro que criamos e no s
 Pronto, com isso temos todas as rotas funcionando como esperado.
 
 Em sequencia vamos adicionar a funcionalidade de *cargos* na aplicação. Como sera uma tarefa extra curso, pode ser que algumas boas praticas não sejam seguidas.
+
+## Adicionando o campo de Cargo
+
+Primeiramente iremos adicionar o campo cargo na entidade usuario, que sera do tipo ENUM, e além do campo é preciso fazer uma alteração no método `getAuthorities`.
+
+```java
+@Enumerated(EnumType.STRING)
+private Cargos cargo;
+
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+  var role = "ROLE_"+cargo;
+  return List.of(new SimpleGrantedAuthority(role));
+}
+```
+
+Na variável `role` concatenamos o cargo com o `ROLE_`, pois quando se trabalha com autoridade é preciso adicionar esse prefixo, e em seguida passamos a variável para a lista de `SimpleGrantedAuthority`.
+
+Agora vamos criar o ENUM, ele também vai ser adicionado no `domain.usuario`
+
+```java
+public enum Cargos {
+  USER,
+  ADMIN,
+  MANAGER
+}
+```
+
+Além disso precisamos criar o novo campo no banco de dados, logo vamos adicionar uma nova migration com o nome `V6__alter-table-usuarios-add-column-cargo.sql`.
+
+```sql
+ALTER TABLE usuarios ADD cargo VARCHAR(50);
+UPDATE usuarios SET cargo = 'USER';
+ALTER TABLE usuarios CHANGE cargo cargo VARCHAR(50) NOT NULL;
+```
+
+Na primeira linha adicionamos a coluna nova, na segunda setamos todos os usuarios já criados para um usuario comum e na ultima adicionamos a constraint NOT NULL.
+
+### Habilitando anotação *Secured*
+
+Antes de fazer as anotações nos métodos que vamos restringir o acesso, é preciso fazer uma configuração simples no arquivo `SecurityConfigurations` no pacote `infra.security`. Em cima da declaração da classe vamos adicionar a anotação `@EnableMethodSecurity` para habilitar outra anotação que iremos utilizar a seguir.
+
+```java
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
+public class SecurityConfigurations {}
+```
+
+Ativamos o *Secured* com a configuração `securedEnabled`. Além dessa configuração temos outras como por exemplo o `jsr250Enabled` para habilitar o *@RoleAllowed*, ou o `prePostEnabled` para ativar o *@PreAuthorize* e *@PostAuthorize*.
+
+### Exigindo cargo nas rotas
+
+A anotação habilitada acima sera utilizada para exigir que alguma rote precise ter uma autoridade especifica, vamos fazer a anotação `@Secured` acima do método desejado, passando como parâmetro um objeto contendo os cargos que poderão utilizar esse método. Por exemplo o método de detalhar medico:
+
+```java
+@GetMapping("/{id}")
+@Secured({ "ROLE_ADMIN", "ROLE_MANAGER" })
+public ResponseEntity detalharMedico(@PathVariable Long id) {
+  var medico = repository.getReferenceById(id);
+  return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
+}
+```
+
+Como este método da acesso a informações sensíveis dos médicos, somente o admin e o gerente podem acessa-lo.
