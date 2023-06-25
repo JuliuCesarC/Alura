@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "VollMedApi03Application",
+            "request": "launch",
+            "mainClass": "med.voll.VollMedApi_03.VollMedApi03Application",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "ApiRestApplication",
             "request": "launch",
             "mainClass": "com.api.api_rest.ApiRestApplication",
