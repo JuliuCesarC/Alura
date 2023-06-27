@@ -118,4 +118,155 @@ Antes de qualquer coisa devemos primeiro fazer a validação das regras de negoc
 
 ## Classe de serviço para consultas
 
+A classe de serviço serve para trabalharmos com as regras de negocio, algoritmos, cálculos, validações, ou seja tudo que é referente a como o processo deve ser executado. Exemplificando com o nosso projeto para a clinica, como o processo de agendamento de consulta deve acontecer? Quais os horários que serão possíveis de agendar? Caso o paciente não escolha um médico especifico, a aplicação que deve escolher um aleatório de mesma especialidade? As respostas para essas perguntas geralmente são colocadas na classe Service.
 
+No pacote `domain.consulta` vamos adicionar a classe `AgendaDeConsultas`, e para que o Spring carregue ela vamos adicionar a anotação `@Service`. O primeiro método vai ter o nome `agendar` e deve receber o DTO de agendamento de consulta.
+
+```java
+@Service
+public class AgendaDeConsultas {
+  public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
+  }
+}
+```
+
+A construção deste método sera feita de trás para frente, ou seja, vamos começar pelo ultimo passo e ir adicionando as dependências de cada um conforme a necessidade deles. Pode parecer confuso a primero vista, mas realmente ajuda a começar um método que é bastante grade.
+
+Qual sera o ultimo código que esse método deve executar? Provavelmente sera o de salvar a consulta no banco de dados. Vamos então criar esse código e também adicionar o repository de consulta.
+
+```java
+@Autowired
+private ConsultaRepository consultaRepository;
+
+public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
+  consultaRepository.save(consulta);
+}
+```
+
+Para salvar a consulta precisamos de um objeto `consulta`, logo vamos criar essa entidade:
+
+```java
+public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
+  var consulta = new Consulta(null, medico, paciente, dados.data());
+  consultaRepository.save(consulta);
+}
+```
+
+Porem a classe *Consulta* recebe a entidade *Medico* e *Paciente*, precisamos buscar elas no banco de dados.
+
+```java
+@Autowired
+private MedicoRepository medicoRepository;
+@Autowired
+private PacienteRepository pacienteRepository;
+
+public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
+  var medico = medicoRepository.getReferenceById(dados.idMedico());
+  var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
+  var consulta = new Consulta(null, medico, paciente, dados.data());
+  consultaRepository.save(consulta);
+}
+```
+
+Utilizamos o `getReferenceById` ao invés do `findById` por que não é necessario carregar todas as informações da entidade, já que precisamos apenas criar uma relação entre tabelas a referencia da entidade é o suficiente.
+
+Chegamos no código final que deve ser executado pelo método, ele deve criar uma consulta e salvar ela no banco de dados. Agora o proximo passo sera aplicarmos as validações e as regras de negocio.
+
+### Exception personalizada
+
+Antes de prosseguirmos vamos criar uma exception personalizada, pois utilizaremos ela diversas vezes. Dentro do pacote `domain` vamos adicionar a classe `ValidacaoException`, que ira apenas chamar o construtor da classe mãe passando a mensagem recebida como parâmetro.
+
+```java
+public class ValidacaoException extends RuntimeException {
+  public ValidacaoException(String mensagem) {
+    super(mensagem);
+  }
+}
+```
+
+### Validando a integridade das informações
+
+As primeiras validações que vamos fazer é das informações enviadas pelo usuário, no caso o id do paciente e do médico. O repository do Spring ja possui um método para verificar se um id existe no banco de dados, que é o `existsById`. Porem a escolha do médico é opcional, ou seja o id pode ou não vir, mas caso venha é preciso validar.
+
+```java
+public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
+  if (!pacienteRepository.existsById(dados.idPaciente())) {
+    throw new ValidacaoException("Id do paciente não encontrado.");
+  }
+  if (dados.idMedico() != null && !medicoRepository.existsById(dados.idMedico())) {
+    throw new ValidacaoException("Id do medico não encontrado.");
+  }
+
+  // código omitido
+}
+```
+
+### Escolhendo um médico aleatório
+
+Como mencionado anteriormente o id do médico é opcional, e caso não seja informado a aplicação deve escolher aleatoriamente um médico de mesma especialidade disponível na data. Vamos então adicionar um novo método dentro da classe *AgendaDeConsultas* chamado `escolherMedico` que deve receber o DTO de agendamento de consultas. No momento esse DTO não esta recebendo a especialidade, mas basta adicionar o campo com `Especialidade especialidade`.
+
+Este método sera tanto para escolher um médico pelo id como para escolher um médico aleatório, então caso venha o id retornamos o médico, caso não, é preciso verificar se a especialidade veio na requisição. Por fim em caso dele passar pelas duas condições iremos chamar um método do repository para fazer a consulta.
+
+```java
+private Medico escolherMedico(DadosAgendamentoConsulta dados) {
+  if (dados.idMedico() != null) {
+    return medicoRepository.getReferenceById(dados.idMedico());
+  }
+  if (dados.especialidade() == null) {
+    throw new ValidacaoException("Especialidade é obrigatória no caso do médico não ser escolhido.");
+  }
+
+  return medicoRepository.escolherMedicoAleatorioLivreNaData(dados.especialidade(), dados.data());
+}
+```
+
+A funcionalidade de escolher um médico aleatório poderia ser feita dentro da classe, buscando as informações de consulta e verificando quais médicos estavam disponíveis naquele horário e que tinham a mesma especialidade. Porem a maneira mais eficiente de executar essa tarefa é diretamente com uma consulta personalizada no banco de dados.
+
+A consulta `escolherMedicoAleatorioLivreNaData` não esta seguindo o padrão das *consultas derivadas* que devem ser feitas em ingles, pois ela é uma consulta muito especifica e complexa.
+
+### Consulta personalizada para escolher médico
+
+Para criar essa query personalizada vamos utilizar o **JPQL** (Java Persistence Query Language) que faz consultas no banco de dados usando as entidades JPA. Ela é uma linguagem de consulta orientada a objetos semelhante ao SQL, mas trabalha com entidades, atributos e relacionamentos em vez de tabelas e colunas.
+
+Com o auxilio da anotação `@Query`, informamos ao Spring qual a consulta que vamos efetuar. Ela aceita tanto consultas no formato JPQL como também as nativas, bastando adicionar o parâmetro `nativeQuery` como TRUE. Abaixo temos exemplo com os 2 formatos:
+
+- **JPQL**
+
+```java
+@Query("SELECT u FROM User u WHERE u.status = 1")
+Collection<User> findAllActiveUsers();
+```
+
+- **SQL nativo**
+
+```java
+@Query(
+  value = "SELECT * FROM USERS u WHERE u.status = 1", 
+  nativeQuery = true)
+Collection<User> findAllActiveUsersNative();
+```
+
+Agora vamos para a classe repository do médico onde iremos adicionar o método `escolherMedicoAleatorioLivreNaData` que deve receber a especialidade e a data. Em cima do método vamos adicionar a anotação `@Query` e informar a consulta.
+
+```java
+@Query("""
+        select m from Medico m
+          where m.ativo = true
+          and m.especialidade = :especialidade
+          and m.id not in(
+              select c.medico.id from Consulta c
+                where c.data = :data
+          )
+        order by rand()
+        limit 1
+    """)
+Medico escolherMedicoAleatorioLivreNaData(Especialidade especialidade, LocalDateTime data);
+```
+
+> Utilizamos o *text block* **"""** para quebrar as linhas e melhorar a legibilidade do código.
+
+No arquivo [JPQL_query]() temos a explicação detalhada do método, para este documento vamos apenas dar uma olhada pelo funcionamento da query. Ela começa selecionando apenas médicos que estão ativos e tenham a mesma especialidade especificada no parâmetro `especialidade`, em seguida verificamos se o id do médico não esta em nenhuma outra consulta na mesma data, por fim ordena a lista de médicos de forma aleatória e seleciona o primeiro da lista.
+
+### Validações
+
+O proximo passo para o método `agendar` sera implementar as validações de regras de negocio, porem a forma como vamos executar essa tarefa é muito importante, sera que devemos inserir todas as validações dentro do método? ou devemos criar uma classe com todas as validações e então chamar eles no método? Apesar de ambas serem uma opção, certamente não estão seguindo as boas praticas. A melhor solução seria criar **classes separadas para cada validação** o que torna o código pequeno, facilitando o teste, a manutenção, a aplicação e  a legibilidade.
