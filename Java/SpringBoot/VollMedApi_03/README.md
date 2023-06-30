@@ -269,4 +269,38 @@ No arquivo [JPQL_query]() temos a explicação detalhada do método, para este d
 
 ### Validações
 
-O proximo passo para o método `agendar` sera implementar as validações de regras de negocio, porem a forma como vamos executar essa tarefa é muito importante, sera que devemos inserir todas as validações dentro do método? ou devemos criar uma classe com todas as validações e então chamar eles no método? Apesar de ambas serem uma opção, certamente não estão seguindo as boas praticas. A melhor solução seria criar **classes separadas para cada validação** o que torna o código pequeno, facilitando o teste, a manutenção, a aplicação e  a legibilidade.
+O proximo passo para o método `agendar` sera implementar as validações de regras de negocio, porem a forma como vamos executar essa tarefa é muito importante, devemos inserir todas as validações dentro do método? ou devemos criar uma classe com todas as validações e então chamar eles no método? Apesar de ambas serem uma opção, certamente não estão seguindo as boas praticas. A melhor solução seria criar **classes separadas para cada validação** o que torna o código pequeno, facilitando o teste, a manutenção, a aplicação e a legibilidade.
+
+Se vamos criar classes separadas para cada validação, fica a duvida, sera necessário instanciar todas elas para então chamar o método de validar? Essa é outra vantagem de utilizar o Spring, dentro da classe `AgendaDeConsultas` podemos simplesmente declarar uma propriedade sendo uma lista de uma interface e anotarmos ela com o `@Autowired`, que o Spring ira inserir nessa lista todas as classes que estão implementando essa interface. Com isso basta varrer essa lista chamando o método de validar com cada classe, independente de quantas forem ou se vamos remover ou adicionar novas no futuro. Precisamos salientar que as classes que implementarem a interface precisam estar sendo carregadas pelo Spring e também devem ter o mesmo nome para o método principal.
+
+Pode parecer um pouco confuso no começo, mais vamos começar por partes. Primeiramente vamos criar o pacote `consulta.validacoes` em seguida vamos adicionar a interface que todas as classes de validação para consulta iram implementar, que sera a `ValidadorAgendamentoDeConsulta`. Como explicamos anteriormente, eles devem ter o mesmo nome para o método principal ao qual escolhemos o `validar`.
+
+```java
+public interface ValidadorAgendamentoDeConsulta {
+
+  void validar(DadosAgendamentoConsulta dados);
+
+}
+```
+
+O proximo passo é adicionar as classes de validação, porem para esse documento vamos apresentar apenas uma classe para não tornar o arquivo muito extenso. Nas classes de validação existem algumas anotações para as partes que se destacam, em caso de duvida basta consultar cada classe.
+
+A primeira validação que faremos sera a `ValidadorHorarioFuncionamentoClinica`, que precisa validar se a consulta esta sendo agendada entre os horários de 7:00 as 18:00 horas e de segunda a sábado. Como essa validação não é uma classe de serviço, de configuração ou outra semelhante, vamos fazer a anotação genérica de `@Component`. Além disso não podemos esquecer de implementar a interface criada anteriormente.
+
+```java
+@Component
+public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendamentoDeConsulta {
+  public void validar(DadosAgendamentoConsulta dados) {
+    var dataConsulta = dados.data();
+
+    var domingo = dataConsulta.getDayOfWeek().equals(DayOfWeek.SUNDAY);
+    var antesDaAberturaDaClinica = dataConsulta.getHour() < 7;
+    var depoisDoEncerramentoDaClinica = dataConsulta.getHour() > 18;
+    if (domingo || antesDaAberturaDaClinica || depoisDoEncerramentoDaClinica) {
+      throw new ValidacaoException("Consulta fora do horário de funcionamento da clínica");
+    }
+  }
+}
+```
+
+Vamos explicar essa validação por partes, primeiro adicionarmos o método principal `validar` e logo em seguida separamos a data em uma variável. A primeira condicional é o dia domingo, que podemos selecionar com o método `getDayOfWeek()` e para tornar a variável um booliano encadeamos o `equals` que ira verificar se o dia informado é igual ao dia de domingo `DayOfWeek.SUNDAY`. As outras 2 condicionais do horário são muito simples de selecionar, bastando utilizar o método `getHour()` comparando com o horário setado pela clinica. Por fim verificamos se qualquer uma das condicionais é verdadeira, caso seja o método joga uma exceção que barra a aplicação.
