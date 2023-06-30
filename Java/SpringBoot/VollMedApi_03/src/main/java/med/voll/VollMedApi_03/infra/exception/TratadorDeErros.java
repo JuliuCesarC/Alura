@@ -1,6 +1,7 @@
 package med.voll.VollMedApi_03.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import med.voll.VollMedApi_03.domain.ValidacaoException;
 
 import java.nio.file.AccessDeniedException;
 
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class TratadorDeErros {
 
-@ExceptionHandler(EntityNotFoundException.class)
+  @ExceptionHandler(EntityNotFoundException.class)
   public ResponseEntity trataErro404() {
     return ResponseEntity.notFound().build();
   }
@@ -31,6 +32,11 @@ public class TratadorDeErros {
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity tratarErro400(HttpMessageNotReadableException ex) {
+    return ResponseEntity.badRequest().body(ex.getMessage());
+  }
+
+  @ExceptionHandler(ValidacaoException.class)
+  public ResponseEntity tratarErroRegraDeNegocio(ValidacaoException ex) {
     return ResponseEntity.badRequest().body(ex.getMessage());
   }
 

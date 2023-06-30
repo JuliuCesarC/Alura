@@ -265,7 +265,7 @@ Medico escolherMedicoAleatorioLivreNaData(Especialidade especialidade, LocalDate
 
 > Utilizamos o *text block* **"""** para quebrar as linhas e melhorar a legibilidade do código.
 
-No arquivo [JPQL_query]() temos a explicação detalhada do método, para este documento vamos apenas dar uma olhada pelo funcionamento da query. Ela começa selecionando apenas médicos que estão ativos e tenham a mesma especialidade especificada no parâmetro `especialidade`, em seguida verificamos se o id do médico não esta em nenhuma outra consulta na mesma data, por fim ordena a lista de médicos de forma aleatória e seleciona o primeiro da lista.
+No arquivo [JPQL_query](https://github.com/JuliuCesarC/Alura/blob/main/Java/SpringBoot/VollMedApi_03/JPQL_query.md) temos a explicação detalhada do método, para este documento vamos apenas dar uma olhada pelo funcionamento da query. Ela começa selecionando apenas médicos que estão ativos e tenham a mesma especialidade especificada no parâmetro `especialidade`, em seguida verificamos se o id do médico não esta em nenhuma outra consulta na mesma data, por fim ordena a lista de médicos de forma aleatória e seleciona o primeiro da lista.
 
 ### Validações
 
@@ -304,3 +304,81 @@ public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendament
 ```
 
 Vamos explicar essa validação por partes, primeiro adicionarmos o método principal `validar` e logo em seguida separamos a data em uma variável. A primeira condicional é o dia domingo, que podemos selecionar com o método `getDayOfWeek()` e para tornar a variável um booliano encadeamos o `equals` que ira verificar se o dia informado é igual ao dia de domingo `DayOfWeek.SUNDAY`. As outras 2 condicionais do horário são muito simples de selecionar, bastando utilizar o método `getHour()` comparando com o horário setado pela clinica. Por fim verificamos se qualquer uma das condicionais é verdadeira, caso seja o método joga uma exceção que barra a aplicação.
+
+### Aplicando as validações
+
+Apos adicionar todas as classes de validação, vamos voltar para o arquivo `AgendaDeConsultas` onde iremos criar uma propriedade que ira armazenar a lista com todas as validações.
+
+```java
+@Autowired
+private List<ValidadorAgendamentoDeConsulta> validadoresAgendar;
+```
+
+Precisamos destacar essa funcionalidade, pois ela facilita imensamente a aplicação de múltiplas validações. O funcionamento dela consiste em criar uma propriedade do tipo `List` com o generics sendo a interface que implementamos nas validações, e assinarmos ela com a anotação `@Autowired`. O Spring Automaticamente cria uma lista com todas as classes que estão implementando a interface e então injeta ela na propriedade.
+
+Agora dentro do método `agendar` vamos varrer a propriedade chamando o método principal `validar`.
+
+```java
+validadoresAgendar.forEach(v -> v.validar(dados));
+```
+
+Com apenas uma linha adicionamos 6 validações até o momento, podendo ser expandida, alterada ou removida sem a necessidade de nenhuma modificação no método *agendar*.
+
+### Retornando entidade Consulta
+
+Para finalizar o método `agendar` basta retornar a entidade Consulta, com isso temos o código final:
+
+```java
+public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
+  if (!pacienteRepository.existsById(dados.idPaciente())) {
+    throw new ValidacaoException("Id do paciente não encontrado, ou paciente não cadastrado.");
+  }
+  if (dados.idMedico() != null && !medicoRepository.existsById(dados.idMedico())) {
+    throw new ValidacaoException("Id do medico não encontrado.");
+  }
+  validadoresAgendar.forEach(v -> v.validar(dados));
+
+  var medico = escolherMedico(dados);
+  var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
+  if (medico == null) {
+    throw new ValidacaoException("Não existe médico disponível neste horário");
+  }
+  var consulta = new Consulta(null, medico, paciente, dados.data());
+
+  consultaRepository.save(consulta);
+  return new DadosDetalhamentoConsulta(consulta);
+}
+```
+
+## Adicionando as consultas
+
+Vamos retornar para a classe controller `ConsultaController` onde vamos chamar o método `agendar`.
+
+```java
+@Autowired
+private AgendaDeConsultas agenda;
+
+@PostMapping
+@Transactional
+public ResponseEntity agendarConsulta(@RequestBody @Valid DadosAgendamentoConsulta dados) {
+  var dto = agenda.agendar(dados);
+  return ResponseEntity.ok(dto);
+}
+```
+
+Primeiramente criamos a propriedade `agenda`, que vamos chamar dentro do método e salvar seu retorno na variável `dto`, que por fim retornamos no ResponseEntity.
+
+## Tratando novo tipo de exceção
+
+No estado atual a aplicação ja conseguimos adicionar uma consulta caso todos os dados estejam corretos, porem ao bater em uma validação, a reposta da aplicação é 403 e sem nenhuma mensagem, o que faz com que o usuário sequer saiba qual foi o problema. Para resolver isso vamos adicionar mais um tipo de exceção que a classe `TratadorDeErros` vai lidar.
+
+```java
+@ExceptionHandler(ValidacaoException.class)
+public ResponseEntity tratarErroRegraDeNegocio(ValidacaoException ex) {
+  return ResponseEntity.badRequest().body(ex.getMessage());
+}
+```
+
+O tipo da exceção sera `ValidacaoException` e o código http de resposta sera o 400 BAD REQUEST, onde enviamos a mensagem de erro da validação.
+
+

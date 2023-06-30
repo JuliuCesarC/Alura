@@ -1,4 +1,4 @@
-package med.voll.VollMedApi_03.domain.consulta.validacoes;
+package med.voll.VollMedApi_03.domain.consulta.validacoes.agendamento;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -9,6 +9,7 @@ import med.voll.VollMedApi_03.domain.ValidacaoException;
 import med.voll.VollMedApi_03.domain.consulta.DadosAgendamentoConsulta;
 
 @Component("ValidadorHorarioAntecedenciaAgendamento")
+// Como temos 2 classes com o mesmo nome, precisamos passar um nome único para a anotação "Component". Mesmo que no java seja permitido que 2 classes de pacotes diferentes tenham o mesmo nome, o Spring causa um erro.
 public class ValidadorHorarioAntecedenciaAgendar implements ValidadorAgendamentoDeConsulta {
 
   public void validar(DadosAgendamentoConsulta dados) {
