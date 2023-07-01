@@ -381,4 +381,94 @@ public ResponseEntity tratarErroRegraDeNegocio(ValidacaoException ex) {
 
 O tipo da exceção sera `ValidacaoException` e o código http de resposta sera o 400 BAD REQUEST, onde enviamos a mensagem de erro da validação.
 
+## Documentação com SpringDoc
+
+Neste momento temos a aplicação praticamente finalizada, com todas as rotas funcionando corretamente, porem para que o cliente consiga utilizar essa aplicação seria necessario criar uma documentação manualmente ou disponibilizar o código fonte para quem ira consumir a api, mas nenhuma das 2 alternativas são interessantes, pois não necessariamente o cliente tera conhecimento em java e Spring Boot, e ficar modificando a documentação sempre que houver uma alteração na api é muito trabalhoso. É nessa situação que podemos utilizar a biblioteca **SpringDoc**, que ira gerar uma documentação automaticamente da nossa api.
+
+Essa biblioteca após instalada gera 2 rotas, uma delas para uma pagina html onde podemos acessar a documentação e até mesmo fazer alguns testes, e outra para um JSON contendo as informações da api. Nas configurações da nossa aplicação, bloqueamos todas as rotas com exceção da */login*, isso pode ser desejado ja que não queremos que todos tenham acesso as informações da api, porem para este projeto vamos deixar essas rotas abertas. No arquivo `SecurityConfigurations` vamos adicionar mais uma configuração.
+
+```java
+req
+    .requestMatchers(HttpMethod.POST, "/login").permitAll()
+    .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+    .anyRequest().authenticated();
+```
+
+As primeiras 2 url são para o arquivo JSON e para a pagina da documentação, e a terceira url é para alguns documentos que a pagina web precisa carregar, como css e configurações. Utilizamos o `/**` para indicar que qualquer subdiretório a partir dessa rota também estará incluso.
+
+Podemos acessar as seguintes rotas:
+
+- `/v3/api-docs` : retorna um json contendo as informações da api.
+
+- `/swagger-ui/index.html` : acessa a pagina web com a documentação da api.
+
+Dentro da pagina temos as rotas com seus parâmetros e o tipo de resposta esperado. Além disso podemos expandir alguma opção de rota e clicar no botão `Try it out` para abrir um bloco de texto onde iremos inserir os parâmetros necessários e então clicar em executar para testar a rota.
+
+### Configurando pagina da documentação para token JWT
+
+Apesar de ser possível testar as rotas pela pagina de documentação, todas elas são bloqueadas para uma requisição sem o token JWT, e por padrão não temos uma opção onde inserir esse token, sera necessario criar uma configuração para isso.
+
+Na documentação do SpringDoc temos um tópico que explica como fazer essa configuração e disponibiliza o código que vamos ver abaixo. Para adicionar a segurança com token na documentação da api é necessario disponibilizar um método com o nome `customOpenAPI` para o SpringDoc. Vamos criar essa classe dentro do pacote `infra.springdoc` e com o nome `SpringDocConfigurations`.
+
+```java
+@Configuration
+public class SpringDocConfigurations {
+  @Bean
+  public OpenAPI customOpenAPI() {
+    return new OpenAPI()
+        .components(new Components()
+            .addSecuritySchemes("bearer-key",
+                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+  }
+}
+```
+
+Na linha do return é instanciado o objeto *OpenAPI* e em seguida é chamado o método que configura componentes, sendo esse componente o `addSecuritySchemes` onde ele recebe como parâmetro a chave `bearer-key` e um objeto `SecurityScheme` que indica que a configuração é para o protocolo HTTP, o esquema é `bearer` e o formato `JWT`.
+
+Agora que criamos o arquivo de configuração, precisamos informar ao SpringDoc quais rotas vão utilizar o token para fazer a autenticação, e fazemos isso através da anotação `@SecurityRequirement` passando como parâmetro a chave que foi definida na configuração acima `bearer-key`. Essa anotação pode ser feita tanto nos métodos individualmente ou na classe inteira. Como todos os métodos com a exceção de *login* são bloqueados, vamos adicionar nas classes *MedicoController*, *PacienteController* e *ConsultaController* a anotação como feito abaixo.
+
+```java
+@RestController
+@RequestMapping("medicos")
+@SecurityRequirement(name = "bearer-key")
+public class MedicoController {}
+```
+
+Após efetuar as configurações e atualizar a pagina da documentação veremos algumas mudanças, agora em cada opção de rota existe um ícone de cadeado, e na parte superior direita temo um novo botão chamado `Authorize`, ambos servem para adicionar o token JWT na requisição porem a opção do *authorize* envia o token em todas as rotas.
+
+## Testes automatizados para a API
+
+Os testes que efetuamos até o momento são testes manuais, feitos com o Insomnia, com o navegador ou até mesmo coma a documentação. Porém é muito importante criar **testes automatizados**, principalmente para as regras de negocio como por exemplo o controller de *Consulta*, e as classes de validação. Porém neste curso vamos focar nos testes das classes do Spring Boot, como o **controller** e o **repository**. Já as classes de validação podem ser facilmente testadas com testes unitários, utilizando por exemplo o JUnit ou Mockito, o que não veremos nesse curso.
+
+A biblioteca padrão para escrever testes automatizadas é a **JUnit**, mas não é necessario adicionar ela pois quando criamos o projeto com o Spring Boot, ele trouxe como padrão a dependência `spring-boot-starter-test` que adiciona diversas bibliotecas, sendo algumas delas:
+
+- **JUnit**: Uma das bibliotecas de teste mais populares em Java, usada para escrever testes de unidade.
+
+- **Mockito**: Uma biblioteca de mocking em Java que permite criar objetos simulados (mocks) para testes. O Mockito ajuda a isolar partes específicas do código durante os testes, substituindo dependências externas.
+
+- **AssertJ**: Uma biblioteca de asserção que oferece uma API fluente e expressiva para escrever asserções em testes. Ela facilita a verificação de resultados esperados em testes de unidade.
+
+- **Hamcrest**: Outra biblioteca de asserção que fornece um conjunto de matchers para verificar condições em testes. Os matchers do Hamcrest oferecem uma sintaxe mais legível e expressiva para escrever asserções.
+
+- **Spring Test**: Fornece suporte para escrever testes de unidade e integração usando o framework Spring. Ele oferece recursos como a execução de testes dentro do contexto do Spring, injeção de dependência automática e gerenciamento de transações.
+
+- **Spring Boot Test**: Fornece anotações e recursos adicionais para escrever testes de unidade e integração no contexto do Spring Boot. Ele inclui anotações como @SpringBootTest, @WebMvcTest, @DataJpaTest, entre outras, que permitem configurar e executar testes em diferentes camadas do aplicativo.
+
+### Importante
+
+Ao utilizar o VS Code como IDE, é preciso verificar se a extenção [Test Runner for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-test) esta instalada, pois é ela que permite trabalharmos com testes automatizados em java.
+
+### Testando a classe repository
+
+Para o primeiro teste vamos utilizar a classe *médicoRepository*, que possui três métodos. O primeiro é o `findAllByAtivoTrue`, que foi escrita no formato de *consulta derivada*, ou seja, o próprio Spring se encarrega de testar esse tipo de consulta, nesse caso especifico ele verifica se existe um campo `ativo` na tabela de médico e se ele é do tipo booliano. O terceiro método é o `findAtivoById`, que apesar de ser uma consulta personalizada, ela é muito simples para criar uma classe de teste para esse caso. O segundo método é o tipico caso que vale a pena criar um teste, é uma consulta personalizada de relativa complexidade e de suma importância para o funcionamento da aplicação, logo vamos criar um teste para o método `escolherMedicoAleatorioLivreNaData`.
+
+Para criar a classe de teste temos algumas opções, podemos criar manualmente ou com algum atalho. No Intellij com o método selecionado podemos apertar o atalho `Alt` + `Insert` e escolher a opção *Test...*, ele ira abrir uma janela com algumas opções e basta clicar em *ok*. Já para o VS Code dentro da classe desejada podemos utilizar o atalho `Ctrl` + `Shift` + `P` e filtrar pela opção **Java: Go to Test**, com ela sera exibida uma sequencia de pop ups onde podemos escolher as opções desejadas, e apesar de não ser apenas clicar em ok como no Intellij, é super intuitivo:
+
+1. Ao clicar em *Go to Test* ele obviamente não ira encontrar um arquivo de testes referente a essa classe, então exibe 2 opções, a primeira é a que vamos escolher `generate tests...`.
+
+2. Em seguida sera exibido uma caixa de texto onde devemos informar o caminho do arquivo, mas como utilizamos esse atalho ja dentro da classe, ele automaticamente preenche esse campo com o caminho. No caso o caminho fica *med.voll.VollMedApi_03.domain.medico.MedicoRepositoryTest*
+
+3. Agora sera exibido uma lista de checkbox contendo todos os métodos da classe, basta selecionar a desejada e clicar em OK. No caso vamos escolher a *"escolherMedicoAleatorioLivreNaData"*.
+
+Ambas as IDEs criam o arquivo ja na pasta correta, que é a `src.test.java`, além de seguir os pacotes corretos da classe, que seria `domain.medico`. A estrutura de arquivo sera igual a que criamos, porem dentro da pasta *test*.
 
