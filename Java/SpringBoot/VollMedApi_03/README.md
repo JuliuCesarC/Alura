@@ -470,5 +470,158 @@ Para criar a classe de teste temos algumas opções, podemos criar manualmente o
 
 3. Agora sera exibido uma lista de checkbox contendo todos os métodos da classe, basta selecionar a desejada e clicar em OK. No caso vamos escolher a *"escolherMedicoAleatorioLivreNaData"*.
 
-Ambas as IDEs criam o arquivo ja na pasta correta, que é a `src.test.java`, além de seguir os pacotes corretos da classe, que seria `domain.medico`. A estrutura de arquivo sera igual a que criamos, porem dentro da pasta *test*.
+Ambas as IDEs criam o arquivo ja na pasta correta, que é a `src.test.java`, além de seguir os pacotes corretos da classe, que seria `domain.medico`. A estrutura de arquivo sera igual a que criamos até o momento, porem dentro da pasta *test*. Em cima da classe vamos fazer a anotação `@DataJpaTest` que é utilizada para testar interfaces Repository, com apenas ela o Spring já ira subir o contexto, carregar o Entity Manager e as configurações de persistência do projeto.
+
+## Banco de dados para os testes
+
+Por padrão o Spring tenta utilizar um banco de dados de teste *in-memory* para rodas os testes automatizados. A vantagem de utilizar um banco de dados em memória é que ele sera mais rápido, e a desvantagem é que a aplicação utiliza um tipo de banco de dados mas o teste esta sendo executado em outro, existindo a possibilidade do teste passar mas dar erro quando o código for colocado na pratica. Para este projeto vamos utilizar o mesmo banco de dados da aplicação, porem é importante utilizar um database diferente para não correr o risco de ser feito alguma alteração nos dados.
+
+A configuração para que o teste utilize o banco de dados original é feita na própria classe, com a anotação `AutoConfigureTestDatabase` passamos o parâmetro `NONE`.
+
+```java
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class MedicoRepositoryTest {}
+```
+
+### Criando um perfil de teste
+
+O arquivo onde colocamos as configurações de database, usuário, senha, entre outras é o `application.properties`, que é o perfil padrão, porem podemos criar outros perfis e utiliza-los nas classes que desejamos. Para criar um novo perfil basta adicionar um sufixo após o nome *application* (-nomePerfil), por exemplo vamos criar o perfil `application-test.properties` para o ambiente de teste. Este novo arquivo herda todas as configurações do *application* original, e dentro dele vamos adicionar apenas as configurações que queremos substituir para o ambiente de teste, que no caso sera o `datasource.url`.
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/nomeDatabse_test
+```
+
+Agora sera necessario selecionar o perfil de teste com as configurações do novo database, e isso é feito através da anotação `@ActiveProfiles` onde passamos o nome do sufixo que utilizamos no *application*, que no caso é `test`.
+
+```java
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test")
+public class MedicoRepositoryTest {}
+```
+
+## Adicionando os cenários de teste
+
+Precisamos testar o método de escolher médico, porem existem diversas cenários onde esse método sera executado, pode ser que não tenhamos nenhum médico da especialidade escolhida cadastrado, pode ser que não tenhamos um médico disponível na data, pode ser que tenhamos um médico e ele esteja disponível na data, ou seja, precisamos testar diversas possibilidades, e cada novo cenário sera um método diferente.
+
+Para diferenciar e tornar descritivo qual a função do métodos, podemos descrever ele no próprio nome, porem isso pode ser um pouco limitado, e para simplificar essa tarefa vamos utilizar um recurso do JUnit que é a anotação `@DisplayName`, onde nela podemos descrever o que o método deveria executar em cada cenário.
+
+```java
+@Test
+@DisplayName("Deveria devolver NULL quando único medico cadastrado nao esta disponível na data")
+void escolherMedicoAleatorioLivreNaDataCenario1() {}
+```
+
+## Cenário 1 para escolher médico aleatório
+
+O que esse primeiro cenário deve testar é que se o único médico cadastrado não estiver disponível na data, a query no bando de dados deve retornar nulo, logo precisamos da dependência que acessa o bando de dados.
+
+Apesar de ser uma classe de teste a injeção de dependência funciona normalmente, com isso bastando fazer adicionar a propriedade repository.
+
+```java
+@Autowired
+private MedicoRepository medicoRepository;
+```
+
+Vamos utilizar a mesma tática de começar o método pela ultima função que ele deveria executar, que no caso seria buscar um médico no banco de dados e verificar se o resultado retornou nulo.
+
+```java
+var medicoLivre = medicoRepository.escolherMedicoAleatorioLivreNaData();
+assertThat(medicoLivre).isNull();
+```
+
+> Prestar atenção se a importação do método estático *assertThat* esta sendo feito do pacote `org.assertj.core.api.Assertions`.
+
+Salvamos o retorno da propriedade `medicoRepository` na variável `medicoLivre` e fazemos a assertiva com o método estático `assertThat` onde passamos a variável e esperamos que ela seja nula. Utilizamos a biblioteca **AssertJ** para fazer a assertiva pois ela facilita a escrita com uma sintaxe mais simples e outras vantagens como suporte a tipos específicos e melhores mensagens de erro.
+
+### Persistindo os dados de teste
+
+Apesar do FlyWay aplicar todas as migrations o database de teste esta vazio, logo sera necessario criar todos os dados fictícios para executar o teste. Vamos utilizar o **EntityManager** para persistir os dados, além de criarmos métodos separadas para criar essas entidades.
+
+```java
+@Autowired
+private TestEntityManager entityManager;
+
+// { Código omitido }
+
+private Medico cadastrarMedico(String nome, String email, String crm, Especialidade especialidade) {
+  var medico = new Medico(dadosMedico(nome, email, crm, especialidade));
+  entityManager.persist(medico);
+  return medico;
+}
+
+private DadosCadastroMedico dadosMedico(String nome, String email, String crm, Especialidade 
+especialidade) {
+  return new DadosCadastroMedico(
+      nome,
+      email,
+      "61999999999",
+      crm,
+      especialidade,
+      dadosEndereco());
+}
+```
+
+> Destacamos nesse trecho apenas a entidade médico, para ver os outros métodos consultar o arquivo original.
+
+### Finalizando cenário 1 para escolher médico
+
+O proximo passo é chamar os método para criar as entidades em uma data padrão e então tentar escolher o médico nesta mesma data. Para garantir um padrão de horário, vamos definir a data para sendo sempre a proxima segunda as 10 horas.
+
+```java
+@Test
+@DisplayName("Deveria devolver null quando unico medico cadastrado nao esta disponivel na data")
+void escolherMedicoAleatorioLivreNaDataCenario1() {
+  var proximaSegundaAs10 = LocalDate.now()
+      .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+      .atTime(10, 0);
+  var medico = cadastrarMedico("Medico", "medico@voll.med", "123456", Especialidade.CARDIOLOGIA);
+  var paciente = cadastrarPaciente("Paciente", "paciente@email.com", "00000000000");
+  cadastrarConsulta(medico, paciente, proximaSegundaAs10);
+
+  var medicoLivre = medicoRepository.escolherMedicoAleatorioLivreNaData(Especialidade.CARDIOLOGIA, proximaSegundaAs10);
+  assertThat(medicoLivre).isNull();
+}
+```
+
+Na variável `proximaSegundaAs10` selecionamos a data atual e com o `with` chamamos o método `TemporalAdjusters` que nos permite selecionar uma data futura, no caso selecionamos segunda feira com o `MONDAY` e por fim o horário com o `atTime`. Essa data sera utilizada tento para cadastrar a consulta, como para o método `escolherMedicoAleatorioLivreNaData`. Lembrando de certificar de o médico e a query tenham a mesma especialidade `CARDIOLOGIA`.
+
+Ao final do método o Spring faz o **RollBack** do banco de dados, para garantir que as informações de uma cenário não atrapalhem os próximos. Devido a esse fato é necessario sempre adicionar as informações que serão utilizas para o teste em cada método.
+
+## Criando um segundo cenário para escolher médico aleatório
+
+Apesar de no primeiro cenário termos que adicionar diversos métodos para poder executar o teste, o segundo cenário se torna mais simples, bastando duplicar o anterior e adaptar para o novo caso.
+
+```java
+@Test
+@DisplayName("Deveria devolver medico quando ele estiver disponível na data")
+void escolherMedicoAleatorioLivreNaDataCenario2() {
+  var proximaSegundaAs10 = LocalDate.now()
+      .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+      .atTime(10, 0);
+  var medico = cadastrarMedico("Medico", "medico@voll.med", "123456", Especialidade.CARDIOLOGIA);
+
+  var medicoLivre = medicoRepository.escolherMedicoAleatorioLivreNaData(Especialidade.CARDIOLOGIA, proximaSegundaAs10);
+  assertThat(medicoLivre).isEqualTo(medico);
+}
+```
+
+Novamente escolhemos a data padrão e cadastramos o médico, porem não adicionamos nenhuma consulta para ele, em seguida buscamos no banco de dados o médico e na assertiva verificamos se o método retornado é o mesmo que acabamos de cadastrar.
+
+## Testando a classe consulta controller
+
+A proxima classe que vamos testar sera o controller de consulta e com ela vem algumas diferenças. A mais obvia é que o controller diferente do repository é chamando quando ele recebe uma requisição. Além disso temos duas estrategias para testar essa classe, podemos fazer um teste de integração ou um teste unitário, sendo o primeiro mais custoso, pois ele vai realmente subir um container da aplicação, vai chamar as classes service, repository e qualquer outra dependência, tornando o processo mais lento, já o segundo é apenas simulado a requisição e analisado como o controller se comporta. Para este projeto vamos fazer apenas o teste unitário, pois queremos saber apenas o reação do controller em cada caso.
+
+Após criar a classe de teste, vamos adicionar em cima dela a anotação `@SpringBootTest`, que é utilizada para testar controllers. Para criar um *mock* das requisição http temos a classe `MockMvc` do Spring que simula requisições no padrão MVC, ela exige também a anotação `@AutoConfigureMockMvc` na classe.
+
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+public class ConsultaControllerTest {
+  @Autowired
+  private MockMvc mvc;
+}
+```
+
 

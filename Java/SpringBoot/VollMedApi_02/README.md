@@ -513,7 +513,7 @@ private Instant dataExpiracao() {
 }
 ```
 
-Com a anotação `@Value` o Spring nos permite ler alguma informação no arquivo `application.properties`, que além de configurações de projeto, podemos adicionar campos personalizados. Como passamos a chave `${api.security.token.secret}` como parâmetro,  ele ira procurar no arquivo o valor inserido nessa chave. Logo precisamos configurar essas informações no arquivo.
+Com a anotação `@Value` o Spring nos permite ler alguma informação no arquivo `application.properties`, que além de configurações de projeto, podemos adicionar campos personalizados. Como passamos a chave `${api.security.token.secret}` como parâmetro, ele ira procurar no arquivo o valor inserido nessa chave. Logo precisamos configurar essas informações no arquivo.
 
 ```properties
 api.security.token.secret=${JWT_SECRET:123456}
