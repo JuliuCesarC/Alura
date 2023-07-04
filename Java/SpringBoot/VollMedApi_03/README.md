@@ -624,4 +624,67 @@ public class ConsultaControllerTest {
 }
 ```
 
+### Agendando consulta sem enviar os dados
 
+O primeiro cenário que vamos testar sera o de não enviar os dados necessários para cadastrar a consulta, com isso é esperado que a api retorne o código http 400. Porem vamos receber o código 403 pois a rota é bloqueada para quem não estiver logado, e como o intuito não é testar a segurança da api, vamos simular um usuário logado. Para essa tarefa temos a anotação `@WithMockUser`, que como o nome sugere cria um mock de usuário.
+
+```java
+@Test
+@DisplayName("Deveria devolver código http 400 quando informações estão invalidas")
+@WithMockUser
+void agendar_cenario1() throws Exception {
+  var response = mvc.perform(post("/consultas")).andReturn().getResponse();
+  assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+}
+```
+
+Com a propriedade `mvc` temos o método `perform` para simular uma requisição, dentro dela passar o verbo que sera o `post` e como parâmetro passamos a URI da rota, em seguida encadeamos o `andReturn` para pegar o retorno da api e o `getResponse` para pegar a resposta. Na assertiva verificamos se o status da resposta é igual ao código http 400. Para simular o código utilizamos o `HttpStatus` que é um ENUM que contem diversos tipos de código http, e podemos pegar o valor dele com o `value`.
+
+### Agendando consulta enviando os dados corretamente
+
+Para este cenário sera preciso trabalhar com o JSON, tanto o enviado na requisição como o retornado pela resposta, e temos 2 maneiras de lidar com ele, podemos criar manualmente todo o json ou utilizar uma biblioteca para facilitar esse processo, e certamente vamos escolher a segunda opção. A classe em questão é a `JacksonTester` que escreve um JSON através de um DTO recebido como parâmetro.
+
+Na classe vamos criar 2 propriedades do tipo `JacksonTester`, sendo o primeiro para os dados de agendamento de consulta e o segundo para os dados de detalhamento de consulta. Além disso é preciso fazer uma anotação em cima da classe para que o *JacksonTester* funcione, que é a `@AutoConfigureJsonTesters`.
+
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+@AutoConfigureJsonTesters
+public class ConsultaControllerTest {
+@Autowired
+private JacksonTester<DadosAgendamentoConsulta> dadosAgendamentoConsultaJson;
+@Autowired
+private JacksonTester<DadosDetalhamentoConsulta> dadosDetalhamentoConsultaJson;
+
+@MockBean
+private AgendaDeConsultas agendaDeConsultas;
+}
+```
+
+Quando for performado uma requisição de teste para a classe controller, precisamos lembrar que uma de suas funções é chamar a classe de serviço `AgendaDeConsultas`, e isso é um problema, pois dentro do método *agendar* é chamado outras classes que vão fazer validações e também se conectaram com o bando de dados. Logo a solução sera criar um mock para essa classe, e foi isso que fizemos ao adicionar a anotação `@MockBean` na propriedade `AgendaDeConsultas` no trecho de código acima. Com isso ele indica ao Spring que não deve ser chamado a classe original e sim o mock. Porem apenas isso não sera o suficiente, o método *agendar* precisa retornar um DTO após finalizar o processo, e vamos fazer isso simulando o funcionamento da classe dentro do método do cenário que estamos trabalhando.
+
+```java
+@Test
+@DisplayName("Deveria devolver codigo http 200 quando informacoes estao validas")
+@WithMockUser
+void agendar_cenario2() throws Exception {
+  var data = LocalDateTime.now().plusHours(1);
+  var especialidade = Especialidade.CARDIOLOGIA;
+  var dadosAgendamento = new DadosAgendamentoConsulta(2l, 5l, data, especialidade);
+  var dadosDetalhamento = new DadosDetalhamentoConsulta(null, 2l, 5l, data);
+
+  when(agendaDeConsultas.agendar(any())).thenReturn(dadosDetalhamento);
+
+  var response = mvc.perform(
+      post("/consultas")
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(dadosAgendamentoConsultaJson.write(dadosAgendamento).getJson()))
+      .andReturn().getResponse();
+
+  assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+  var jsonEsperado = dadosDetalhamentoConsultaJson.write(dadosDetalhamento).getJson();
+  assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
+}
+```
+
+No arquivo [agendarCenario2]() temos a explicação detalhada desse método, mas vamos dar uma passada por cima.
