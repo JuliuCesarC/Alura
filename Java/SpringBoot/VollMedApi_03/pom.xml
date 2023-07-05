@@ -10,8 +10,8 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>med.voll</groupId>
-  <artifactId>VollMedApi_03</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>Api_03</artifactId>
+  <version>0.0.1</version>
   <name>VollMedApi_03</name>
   <description>Voll Med Apir 03</description>
   <properties>

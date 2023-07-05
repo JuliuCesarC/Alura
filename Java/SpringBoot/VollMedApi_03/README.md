@@ -709,7 +709,7 @@ Nem todos os testes foram apresentados nesse documento, mas a base geral pra a c
 
 ## Build do projeto
 
-Suponhamos que finalizamos toda a aplicação ou apenas uma primeira versão, o proximo passo é fazer o build do projeto para então executar ele no servidor. Mas antes de executarmos o build é preciso configurar alguns arquivos do projeto. Voltando a pasta `resources`, vamos criar um novo perfil de configuração chamado `application-prod.properties`, que sera escolhido quando executarmos ele no servidor. As configurações que vamos substituir serão as de conexão com o bando de dados, pois no momento estamos utilizando um servidor MySql rodando na própria maquina, e além dela vamos desativar o log das consultas sql.
+O proximo passo apos finalizar a aplicação é fazer o build do projeto para então executa-lo no servidor, mas primeiramente sera preciso efetuar algumas configurações. Voltando a pasta `resources`, vamos criar um novo perfil de configuração chamado `application-prod.properties`, que sera escolhido ao executarmos o projeto dentro do servidor. As configurações que vamos substituir serão as de conexão com o bando de dados, pois no momento estamos utilizando um servidor MySql rodando na própria maquina, e além dela vamos desativar o log das consultas sql.
 
 ```properties
 spring.datasource.url=${DATASOURCE_URL}
@@ -720,4 +720,56 @@ spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.format_sql=false
 ```
 
-Por questão de segurança não deixamos informações sensíveis no código fonte do projeto, para esta situação utilizamos as variáveis de ambiente, ou seja antes de executar a aplicação sera necessario configurar a variável `DATASOURCE_URL` com o url do bando de dados MySql, e o mesmo vale para o usuário e a senha.
+Por questão de segurança não deixamos as informações sensíveis no código fonte do projeto, como digitar manualmente a senha e a url do bando de dados no *application.properties*, para esta situação é interessante utilizar as **variáveis de ambiente**, ou seja antes de executar a aplicação sera necessario configurar a variável `DATASOURCE_URL` com o url do bando de dados MySql no servidor em que o projeto ira rodar, e o mesmo vale para o usuário e a senha. Lembrando que ao criar a variável ela precisa ter exatamente o mesmo nome que digitamos no arquivo de configuração.
+
+### Efetuando o build com o Maven
+
+Ao criar o projeto escolhemos utilizar o gerenciador de pacotes Maven, e com isso ele fica responsável por algumas funções da aplicação. A mais comum que vimos até o momento foi a de gerenciar as bibliotecas através do arquivo `pom.xml`, porem ele possui outras funções como a `Lifecycle` que gerencia o ciclo de vida da aplicação. Dentro do *Lifecycle* temos diversas opções que executam tarefas distintas, e a que estamos interessado no momento é a `package`, que cria o build do projeto.
+
+Para abrir a aba do Maven no VS Code ou no Intellij, temos um passo a passo diferente. Vamos começar com o **VS Code**:
+
+1. No canto superior esquerdo temos na sidebar a opção `Explorer`, que exibe a aba padrão para explorar os arquivos.
+
+2. Nela temos algumas opções do tipo collapse, como a`OPEN EDITORS` que exibe todos os arquivos abertos. Mais abaixo temos a opção `MAVEN`.
+
+3. Ao abrir o *MAVEN* sera exibido todos os projetos da pasta que estão utilizando o Maven. Caso seja aberta a pasta raiz da aplicação, somente o projeto em questão sera exibido.
+
+4. Clicando no projeto sera exibido algumas das responsabilidades do Maven, como o `Dependencies` e o `LifeCycle`.
+
+Já para o **Intellij** é um pouco mais simples, no canto superior direito temo a opção `Maven`, e sera aberto a aba com as responsabilidades do Maven, dentre elas a `LifeCycle`.
+
+### Erro sistema não pode encontrar o arquivo "maven-wrapper.properties"
+
+Ao utilizar o VS Code e executar o `package`, pode ocorrer o erro do sistema não encontrar o arquivo `maven-wrapper.properties`, mas isso é causado apenas por que o **terminal** do vs code não esta na pasta raiz do projeto, bastando no terminal (`Ctrl` + `'`) abrir a pasta da aplicação.
+
+___
+
+Após fazer o build do projeto, sera criado na pasta `target` o arquivo **.jar** que contem toda aplicação, sendo ele que deve ser enviado ao servidor para ser executado. O nome do nosso arquivo ficou `VollMedApi_03-0.0.1-SNAPSHOT`, porem ele pode ser alterado no arquivo `pom.xml` na tag `artifactId` para alterar o nome e na tag `version` para mudar a versão.
+
+## Executando a aplicação pelo terminal
+
+Neste curso não sera abordado o deploy da aplicação em algum servidor, vamos apenas executar o projeto na própria maquina simulando como se ela fosse o servidor. O arquivo *jar* pode ser executado como qualquer outro arquivo java, podemos utilizar o terminal do VS Code, do Intellij ou o próprio cmd. O comando que utilizaremos para rodar a aplicação sera:
+
+```terminal
+java -DperfilSpring=nomePerfil -DvariavelAmbiente_url=urlBancoDeDados -DDvariavelAmbiente_usuario=nomeUsuario -DDvariavelAmbiente_senha=senhaUsuario -jar diretorio/nomeArquivoAplicação.jar
+```
+
+Agora basta substituir para os nome corretos.
+
+```terminal
+java -Dspring.profiles.active=prod -DDATASOURCE_URL=jdbc:mysql://localhost/vollmed_api -DDATASOURCE_USERNAME=root -DDATASOURCE_PASSWORD=root -jar api-0.0.1-SNAPSHOT.jar
+```
+
+1. `-Dspring.profiles.active` : define o perfil de configuração do Spring.
+
+2. `-DDATASOURCE_URL` : configura a variável de ambiente do URL do banco de dados.
+
+3. `-DDATASOURCE_USERNAME` : configura a variável de ambiente do nome do usuário.
+
+4. `-DDATASOURCE_PASSWORD` : configura a variável de ambiente da senha do usuário. Utilizamos a senha *root* apenas como exemplo, pois a que for utilizada no servidor deve ser uma senha forte.
+
+5. `-jar` : informa que sera executado um arquivo jar.
+
+6. `api-0.0.1-SNAPSHOT.jar` : caminho para o arquivo da aplicação. Como executamos o comando no diretório do arquivo, não é preciso colocar o nome da pasta primeiro.
+
+Com essa passo a passo teremos a aplicação rodando na maquina, e para testar basta abrir a documentação com a rota `/swagger-ui/index.html`. Lembrando que é preciso instalar o Java 17 para executar essa aplicação.
