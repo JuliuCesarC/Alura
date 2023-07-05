@@ -589,6 +589,24 @@ Na variável `proximaSegundaAs10` selecionamos a data atual e com o `with` chama
 
 Ao final do método o Spring faz o **RollBack** do banco de dados, para garantir que as informações de uma cenário não atrapalhem os próximos. Devido a esse fato é necessario sempre adicionar as informações que serão utilizas para o teste em cada método.
 
+## Executando os testes
+
+Ao utilizar o VS Code temos algumas formas para executar os testes, primeiramente veremos as opções disponíveis na aba `Testing` que fica na lateral esquerda da janela, nele podemos:
+
+- Executar todos os testes do projeto : basta selecionar a pasta do projeto e clicar no ícone de play.
+
+- Executar todos os testes dentro de um pacote : selecionar o pacote desejado e clicar no ícone de play.
+
+- Executar todos os testes de uma classe : selecionar a classe e clicar no ícone de play.
+
+- Executar cenários de teste específicos : ao expandir uma classe de teste sera exibido todos os métodos dela, basta selecionar o cenário e clicar no ícone de play.
+
+Dentro da própria classe ao lado do numero de linhas sera exibido um ícone verde de play, com ele podemos:
+
+- Executar todos os testes da classe : clicar no ícone de play na linha de declaração da classe.
+
+- Executar cada método individualmente : clicar no ícone de play na linha de declaração do método.
+
 ## Criando um segundo cenário para escolher médico aleatório
 
 Apesar de no primeiro cenário termos que adicionar diversos métodos para poder executar o teste, o segundo cenário se torna mais simples, bastando duplicar o anterior e adaptar para o novo caso.
@@ -669,14 +687,12 @@ Quando for performado uma requisição de teste para a classe controller, precis
 @WithMockUser
 void agendar_cenario2() throws Exception {
   var data = LocalDateTime.now().plusHours(1);
-  var especialidade = Especialidade.CARDIOLOGIA;
-  var dadosAgendamento = new DadosAgendamentoConsulta(2l, 5l, data, especialidade);
+  var dadosAgendamento = new DadosAgendamentoConsulta(2l, 5l, data, Especialidade.CARDIOLOGIA;);
   var dadosDetalhamento = new DadosDetalhamentoConsulta(null, 2l, 5l, data);
 
   when(agendaDeConsultas.agendar(any())).thenReturn(dadosDetalhamento);
 
-  var response = mvc.perform(
-      post("/consultas")
+  var response = mvc.perform(post("/consultas")
           .contentType(MediaType.APPLICATION_JSON)
           .content(dadosAgendamentoConsultaJson.write(dadosAgendamento).getJson()))
       .andReturn().getResponse();
@@ -687,4 +703,21 @@ void agendar_cenario2() throws Exception {
 }
 ```
 
-No arquivo [agendarCenario2]() temos a explicação detalhada desse método, mas vamos dar uma passada por cima.
+No arquivo [agendarCenario2](https://github.com/JuliuCesarC/Alura/blob/main/Java/SpringBoot/VollMedApi_03/agendarCenario2.md) temos a explicação detalhada desse método, neste documento vamos apenas explicar o funcionamento geral. Primeiramente criamos as variáveis como a data e os DTOs. Em seguida simulamos o funcionamento da classe `agendaDeConsultas` com o método estático `when` da biblioteca **Mockito**, onde configuramos que independente dos parâmetros recebidos, ela devera retornar o DTO de *detalhamento*. Então criamos um requisição do tipo POST para o controller através do `mvc.perform`, e configuramos no cabeçalho que sera enviado informações no formato json (`contentType`), e logo abaixo enviamos o json (`content`). Lembrando que o `write` e o `getJson` são da biblioteca **JacksonTester** que nos auxilia a criar o json. Por fim efetuamos as duas assertivas, sendo a primeira para verificar se o status retornado na resposta é o http 200, e a segunda para verificar se o json retornado pelo controller é igual ao json que criamos na variável `jsonEsperado`.
+
+Nem todos os testes foram apresentados nesse documento, mas a base geral pra a criação de todos eles foi. Se for seguido o passo a passo, todos os testes devem passar sem problemas.
+
+## Build do projeto
+
+Suponhamos que finalizamos toda a aplicação ou apenas uma primeira versão, o proximo passo é fazer o build do projeto para então executar ele no servidor. Mas antes de executarmos o build é preciso configurar alguns arquivos do projeto. Voltando a pasta `resources`, vamos criar um novo perfil de configuração chamado `application-prod.properties`, que sera escolhido quando executarmos ele no servidor. As configurações que vamos substituir serão as de conexão com o bando de dados, pois no momento estamos utilizando um servidor MySql rodando na própria maquina, e além dela vamos desativar o log das consultas sql.
+
+```properties
+spring.datasource.url=${DATASOURCE_URL}
+spring.datasource.username=${DATASOURCE_USERNAME}
+spring.datasource.password=${DATASOURCE_PASSWORD}
+
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=false
+```
+
+Por questão de segurança não deixamos informações sensíveis no código fonte do projeto, para esta situação utilizamos as variáveis de ambiente, ou seja antes de executar a aplicação sera necessario configurar a variável `DATASOURCE_URL` com o url do bando de dados MySql, e o mesmo vale para o usuário e a senha.

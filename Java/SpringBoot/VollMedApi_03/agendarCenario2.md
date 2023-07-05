@@ -30,13 +30,13 @@ void agendar_cenario2() throws Exception {
 
 3. DTO detalhamento : variável com o dto de `DadosDetalhamentoConsulta` que sera utilizado para criar o json para a segunda assertiva.
 
-4. Utilizamos o método estático `when` da biblioteca Mockito para simular o funcionamento da classe `agendaDeConsultas`, isso significa que quando ela for chamada o seu comportamento padrão sera o que configuramos. Dentro do *when* chamamos o método `agendar` da propriedade *agendaDeConsultas*, e informamos que independente de quais parâmetros receba `any()`, ele devera retornar `thenReturn` o dto de detalhamento de consulta `dadosDetalhamento`.
+4. Utilizamos o método estático `when` da biblioteca **Mockito** para simular o funcionamento da classe `agendaDeConsultas`, isso significa que quando ela for chamada o seu comportamento padrão sera o que configuramos. Dentro do *when* chamamos o método `agendar` da propriedade *agendaDeConsultas*, e informamos que independente de quais parâmetros receba `any()`, ele devera retornar `thenReturn` o dto de detalhamento de consulta `dadosDetalhamento`.
 
 5. Agora performamos a requisição do tipo POST para o controller com o `mvc.perform` e salvamos o seu retorno em uma variável, muito semelhante ao que foi feito no cenário 1.
 
 6. Em seguida configuramos o cabeçalho da requisição para informar que sera enviado um json, e fazemos isso com o `contentType` passando o *MediaType* como `APPLICATION_JSON`. Dessa forma informamos para o servidor que receber a requisição que estamos enviando informações no formato JSON.
 
-7. Para enviar as informações de *dadosAgendamento* no corpo da requisição vamos utilizar o `content`, que recebe como parâmetro as informações no formato json, mas não vamos digitar esse json manualmente. O que faremos é utilizar a biblioteca **JacksonTester** para facilitar esse processo. Dentro da classe foi declarado a propriedade `dadosDetalhamentoConsultaJson` sendo do tipo *JacksonTester*, e com ela temos o método `write` que escreve o json através de um dto recebido como parâmetro, logo passamos o `dadosAgendamento`. Lembrando que é preciso encadear o `getJson()` apos o *white*.
+7. Para enviar as informações de *dadosAgendamento* no corpo da requisição vamos utilizar o `content`, que recebe como parâmetro as informações no formato json, mas não vamos digitar esse json manualmente. O que faremos é utilizar a biblioteca **JacksonTester** para facilitar esse processo. Dentro da classe foi declarado a propriedade `dadosDetalhamentoConsultaJson` sendo do tipo *JacksonTester*, e com ela temos o método `write` que escreve o json através de um dto recebido como parâmetro, logo passamos o `dadosAgendamento`. Lembrando que é preciso encadear o `getJson()` apos o *write*.
 
 8. Por fim utilizamos o `.andReturn()` para pegar o retorno e o `.getResponse()` para pegar a resposta.
 
